@@ -62,10 +62,34 @@ function DELETE(id, successCallBack, errorCallBack) {
 
 
 /*Local storage utilities fonctions*/
+/*
 function tokenRequestURL() {
     return server + '/token'
 }
 
+function storeAccessToken(token){
+    localStorage.setItem('access_Token', token);
+}
+
+function eraseAccessToken(){
+    localStorage.removeItem('access_Token');
+}
+function retriveAccessToken(){
+    return localStorage.getItem('access_Token');
+}
+
+function getBearerAuthorizationToken(){
+    return {'Authorization': 'Bearer '+ retriveAccessToken()};
+}
+
+function registerRequestURL(){
+    return server + 'Accounts/register';
+}
+
+function storeLoggedUser(user){
+    localStorage.setItem('user', JSON.str)
+}
+*/
 
 
 /* AJAX functions utilites */
@@ -84,12 +108,6 @@ function REGISTER(profil, successCallBack, errorCallBack){
         error : function(jqXHR) {errorCallBack(jqXHR.status)}
     })
 }
-
-
-
-
-
-
 
 /*
 function login(Email, Password, sucessCallBack, errorCallBack) {
