@@ -1,4 +1,5 @@
 const apiBaseURL = "http://localhost:5000/api/images";
+const server = "http://localhost:5000";
 
 function HEAD(successCallBack, errorCallBack) {
     $.ajax({
@@ -27,6 +28,7 @@ function GET_ALL(successCallBack, errorCallBack, queryString = null) {
     });
 }
 function POST(data, successCallBack, errorCallBack) {
+    alert("post");
     $.ajax({
         url: apiBaseURL,
         type: 'POST',
@@ -54,3 +56,47 @@ function DELETE(id, successCallBack, errorCallBack) {
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     });
 }
+
+
+
+
+
+
+/* AJAX functions utilites */
+
+function REGISTER(profil, successCallBack, errorCallBack){
+    alert("API register 2");
+    $.ajax({
+        url: server + "/accounts/register",
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(profil),
+        success: function(profil){
+            console.log(profil);
+            sucessCallBack(profil);
+        },
+        error : function(jqXHR) {errorCallBack(jqXHR.status)}
+    })
+}
+
+
+
+
+
+
+
+/*
+function login(Email, Password, sucessCallBack, errorCallBack) {
+    $.ajax({
+        url: tokenRequestURL(),
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({Email, Password}),
+        success: function(profil){
+            storeAccessToken(profil.Access_token);
+            getUserInfo(profil.UserId, sucessCallBack, errorCallBack);
+        },
+        error : function(jqXHR) {errorCallBack(jqXHR.status)}
+    })
+}
+*/

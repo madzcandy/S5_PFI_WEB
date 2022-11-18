@@ -63,7 +63,7 @@ module.exports =
             gmail.send(user.Email, 'Courriel confirmé...', html);
         }
 
-        //GET : /accounts/verify?id=...&code=.....
+          //GET : /accounts/verify?id=...&code=.....
         verify() {
             let id = parseInt(this.HttpContext.path.params.id);
             let code = parseInt(this.HttpContext.path.params.code);
@@ -79,11 +79,13 @@ module.exports =
                     }
                 } else {
                     this.HttpContext.response.ok();
+                    this.HttpContext.response.unverifiedUser();
                 }
             } else {
                 this.HttpContext.response.unprocessable();
             }
         }
+
 
         // POST: account/register body payload[{"Id": 0, "Name": "...", "Email": "...", "Password": "..."}]
         register(user) {
