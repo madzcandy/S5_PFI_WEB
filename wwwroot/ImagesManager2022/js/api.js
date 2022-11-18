@@ -1,5 +1,6 @@
 const apiBaseURL = "http://localhost:5000/api/images";
 const server = "http://localhost:5000";
+const service = "/api/images";
 
 function HEAD(successCallBack, errorCallBack) {
     $.ajax({
@@ -59,6 +60,11 @@ function DELETE(id, successCallBack, errorCallBack) {
 
 
 
+
+/*Local storage utilities fonctions*/
+function tokenRequestURL() {
+    return server + '/token'
+}
 
 
 
