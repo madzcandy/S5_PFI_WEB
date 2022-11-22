@@ -66,14 +66,19 @@ function DELETE(id, successCallBack, errorCallBack) {
 function tokenRequestURL() {
     return server + '/token'
 }
+*/
 
 function storeAccessToken(token){
     localStorage.setItem('access_Token', token);
 }
 
+
+
+/*
 function eraseAccessToken(){
     localStorage.removeItem('access_Token');
 }
+
 function retriveAccessToken(){
     return localStorage.getItem('access_Token');
 }
@@ -119,9 +124,14 @@ alert(loginInfo);
         data: JSON.stringify(loginInfo),
         success: function(profil){
             alert("sucess");
-            //storeAccessToken(profil.Access_token);
+            storeAccessToken(profil.Access_token);
             //getUserInfo(profil.UserId, sucessCallBack, errorCallBack);
         },
         error : function(jqXHR) {errorCallBack(jqXHR.status)}
     })
+}
+
+
+function VERIFY_EMAIL(userId, verifyCode, sucessCallBack, errorCallBack) {
+
 }
