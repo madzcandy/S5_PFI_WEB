@@ -60,6 +60,9 @@
                     <span class="menu">
                         <span class="cmd fa fa-plus-square" id="registerCmd" title="Register"
                         data-toggle="tooltip"></span>
+
+                        <span class="cmd fa fa-plus-square" id="loginCmd" title="Login"
+                        data-toggle="tooltip"></span>
     
                         <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
                             data-toggle="tooltip"></span>
@@ -119,6 +122,23 @@
                         <div class="note">Cliquez-Déposez votre avatar</div>
                     </form>
                 </div>
+
+                <div id="loginDlg">
+                    <form id="loginForm">
+                        <input type="hidden" id="log_Id_input" value="0">
+                        <input type="hidden" id="log_date_input" value="0">
+                        <input type="hidden" id="log_GUID_input" value="">
+
+                        <label for="log_email_input">Courriel</label>
+                        <input id="log_email_input" class="form-control" required>
+
+                        <label for="log_mdp_input">Mot de passe</label>
+                        <input id="log_mdp_input" class="form-control" required>
+                        
+                        <input type="checkbox" id="log_souvenir">Se souvenir de moi</div>
+                    </form>
+                </div>
+
 
                 <div id="confirmDeleteDlg">
                     <span id="confirmationMessage"></span>
@@ -262,40 +282,26 @@
                 $("#registerDlg").dialog('option', 'title', "Création de compte");
                 $("#registerDlgOkBtn").text("Créer");
                 $("#registerDlg").dialog('open');
-               alert("SSSSS");
             }
 
             function registerFromForm() {
-
-                // VERIFIER *************
                 let registerinfo = {
-                    /////////TODO TODO 
-                        email: $("#email_input").val(),
-                    /////////TODO TODO 
-                        /*Id: parseInt($("#Id_input").val()),
-                        GUID: $("#GUID_input").val(),
-                        Title: $("#title_input").val(),
-                        Description: $("#description_input").val(),
-                        ImageData: ImageUploader.getImageData('image'),
-                        Date: parseInt($("#date_input").val())*/
-                    };
- 
+                        Id: 0, // parseInt($("#id_input").val()),
+                        Name: ($("#user_input").val()),
+                        Email: $("#email_input").val(),
+                        Password: $("#mdp_input").val(),
+                };
                 return registerinfo;
 
 
-               /* if ($("#registerForm")[0].checkValidity()) {
-
-                    let image = {
-                        Id: parseInt($("#Id_input").val()),
-                        GUID: $("#GUID_input").val(),
-                        Title: $("#title_input").val(),
-                        Description: $("#description_input").val(),
-                        ImageData: ImageUploader.getImageData('image'),
-                        Date: parseInt($("#date_input").val())
+                /* if ($("#registerForm")[0].checkValidity()) {
+                    let registerinfo = {
+                        Id: 0, // parseInt($("#id_input").val()),
+                        Name: ($("#user_input").val()),
+                        Email: $("#email_input").val(),
+                        Password: $("#mdp_input").val(),
                     };
- 
-                    //return image;
-                    return true;
+                    return registerinfo;
                 } else {
                     $("#registerForm")[0].reportValidity()
                 }
@@ -312,6 +318,50 @@
                 $("#description_input").val(image.Description);
                 ImageUploader.setImage('image', image.OriginalURL);
             }
+
+
+
+            function loginCmd() {
+                holdCheckETag = true;
+                createMode = true;
+                $("#loginDlg").dialog('option', 'title', "Connexion");
+                $("#loginDlgOkBtn").text("Connexion");
+                $("#loginDlg").dialog('open');
+            }
+
+            function loginFromForm() {
+                let logininfo = {
+                        Email: $("#log_email_input").val(),
+                        Password: $("#log_mdp_input").val(),
+                };
+                return logininfo;
+
+
+                /* if ($("#registerForm")[0].checkValidity()) {
+                    let registerinfo = {
+                        Id: 0, // parseInt($("#id_input").val()),
+                        Name: ($("#user_input").val()),
+                        Email: $("#email_input").val(),
+                        Password: $("#mdp_input").val(),
+                    };
+                    return registerinfo;
+                } else {
+                    $("#registerForm")[0].reportValidity()
+                }
+                */
+                //return false;
+                //return true;
+            }
+            function loginToForm(image) {
+                $("#Id_input").val(image.Id);
+                $("#GUID_input").val(image.GUID);
+                $("#date_input").val(image.Date);
+                //$("#date_input").val(Date.now());
+                $("#title_input").val(image.Title);
+                $("#description_input").val(image.Description);
+                ImageUploader.setImage('image', image.OriginalURL);
+            }
+
 
 
 
@@ -384,12 +434,17 @@
             }
 
             function successRegister() {
-                alert("Creation avec succes");
+                alert("Creation avec succès");
+            }
+
+            function successLogin() {
+                alert("Login avec succès");
             }
 
             function init_UI() {
                 $("#newImageCmd").click(newImage)
                 $("#registerCmd").click(registerCmd)
+                $("#loginCmd").click(loginCmd)
 
                 $("#registerDlg").dialog({
                     title: "...",
@@ -411,13 +466,45 @@
                             let register = registerFromForm();
                             alert(register);
                             if (register) {
-                                
-
-                                REGISTER(register, successRegister, error);
-                               
-
-                               alert("reg");
+                                REGISTER(register, successRegister, error);                
+                                alert("reg");
                                 resetimageForm();
+                                holdCheckETag = false;
+                                $(this).dialog("close");
+                            }
+                        }
+                    },
+                    {
+                        text: "Annuler",
+                        click: function () {
+                            holdCheckETag = false;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+
+                $("#loginDlg").dialog({
+                    title: "...",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 540,
+                    minWidth: 540,
+                    maxWidth: 540,
+                    height: 350,
+                    minHeight: 350,
+                    maxHeight: 350,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [{
+                        id: "loginDlgOkBtn",
+                        text: "Title will be changed dynamically",
+                        click: function () {
+                            let login = loginFromForm();
+                            alert(login);
+                            if (login) {
+                                LOGIN(login, successLogin, error);                
+                                alert("log");
                                 holdCheckETag = false;
                                 $(this).dialog("close");
                             }

@@ -109,18 +109,19 @@ function REGISTER(profil, successCallBack, errorCallBack){
     })
 }
 
-/*
-function login(Email, Password, sucessCallBack, errorCallBack) {
+
+function LOGIN(loginInfo, sucessCallBack, errorCallBack) {
+alert(loginInfo);
     $.ajax({
-        url: tokenRequestURL(),
+        url: server + "/token",
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({Email, Password}),
+        data: JSON.stringify(loginInfo),
         success: function(profil){
-            storeAccessToken(profil.Access_token);
-            getUserInfo(profil.UserId, sucessCallBack, errorCallBack);
+            alert("sucess");
+            //storeAccessToken(profil.Access_token);
+            //getUserInfo(profil.UserId, sucessCallBack, errorCallBack);
         },
         error : function(jqXHR) {errorCallBack(jqXHR.status)}
     })
 }
-*/
