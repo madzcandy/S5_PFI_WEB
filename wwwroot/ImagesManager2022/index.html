@@ -68,11 +68,11 @@
 
                         <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
                             data-toggle="tooltip"></span>
-                    </span>    
+                    </span>  
                     <div>
                         <img id="loginLogo" src="" alt="logo utilisateur" width="30" height="30">
                         LoginName:<span id="loginName"></span>
-                    </div>             
+                    </div>            
                 </div>
             </div>
 
@@ -120,8 +120,8 @@
                         <label for="cmdp_input">Confirmation</label>
                         <input id="cmdp_input" class="form-control" required>
 
-                        <label for="image">Avatar</label>
-                        <div id='image' class='ImageUploader' defaultImage='images/No_Avatar.png'
+                        <label for="reg_image">Avatar</label>
+                        <div id='reg_image' class='ImageUploader' defaultImage='images/No_Avatar.png'
                             waitingImage='images/writing.gif'>
                         </div>
                         
@@ -493,7 +493,7 @@
                 ///alert("Token"+token);
                // $("#loginName").text(token);
                 $('#loginName').html(token);
-
+                //$('#loginName').text("allo");
             }
 
             function successLogout() {
@@ -510,8 +510,7 @@
                 console.log("getINFO success!"+profil);
                 //alert("GetUSERINFO avec succès222222"+profil.Name);
                 $("#loginName").text(profil.Name);
-                $('#loginLogo').attr('src', profil.AvatarURL);
-            
+                $('#loginLogo').attr('src', profil.AvatarURL);     
             }
 
             function init_UI() {
