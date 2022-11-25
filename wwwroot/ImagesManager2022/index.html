@@ -120,8 +120,8 @@
                         <label for="cmdp_input">Confirmation</label>
                         <input id="cmdp_input" class="form-control" required>
 
-                        <label for="image">Avatar</label>
-                        <div id='image' class='ImageUploader' defaultImage='images/No_Avatar.png'
+                        <label for="reg_image">Avatar</label>
+                        <div id='reg_image' class='ImageUploader' defaultImage='images/No_Avatar.png'
                             waitingImage='images/writing.gif'>
                         </div>
                         
@@ -296,6 +296,7 @@
                         Name: ($("#user_input").val()),
                         Email: $("#email_input").val(),
                         Password: $("#mdp_input").val(),
+                        ImageData: $("#reg_image").val(),
                 };
                 return registerinfo;
 
@@ -551,6 +552,7 @@
                             let register = registerFromForm();
                             alert(register);
                             if (register) {
+                                console.log(register);
                                 REGISTER(register, successRegister, error);                
                                 alert("reg");
                                 resetimageForm();
