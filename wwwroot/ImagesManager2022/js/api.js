@@ -196,5 +196,13 @@ function GETUSERINFO(userid, sucessCallBack, errorCallBack) {
 
 
 function VERIFY_EMAIL(userId, verifyCode, sucessCallBack, errorCallBack) {
-
+    $.ajax({
+        url: server + `/Accounts/verify^id=${userId}&code=${verifyCode}`,
+        type: 'GET',
+        contentType: 'text/plain',
+        date: {},
+        success: function () {
+            GETUSERINFO(userId, sucessCallBack, error);
+        }
+    })
 }

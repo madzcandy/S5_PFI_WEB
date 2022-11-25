@@ -68,11 +68,11 @@
 
                         <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
                             data-toggle="tooltip"></span>
-                    </span>    
+                    </span>  
                     <div>
                         <img id="loginLogo" src="" alt="logo utilisateur" width="30" height="30">
                         LoginName:<span id="loginName"></span>
-                    </div>             
+                    </div>            
                 </div>
             </div>
 
@@ -494,7 +494,7 @@
                 ///alert("Token"+token);
                // $("#loginName").text(token);
                 $('#loginName').html(token);
-
+                //$('#loginName').text("allo");
             }
 
             function successLogout() {
@@ -511,8 +511,7 @@
                 console.log("getINFO success!"+profil);
                 //alert("GetUSERINFO avec succès222222"+profil.Name);
                 $("#loginName").text(profil.Name);
-                $('#loginLogo').attr('src', profil.AvatarURL);
-            
+                $('#loginLogo').attr('src', profil.AvatarURL);     
             }
 
             function init_UI() {
