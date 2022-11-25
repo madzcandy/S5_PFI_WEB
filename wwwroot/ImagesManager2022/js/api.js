@@ -69,9 +69,26 @@ function tokenRequestURL() {
 */
 
 function storeAccessToken(token){
+    //alert("token" + token);
     localStorage.setItem('access_Token', token);
 }
+function getAccessToken(){
+    return localStorage.getItem('access_Token');
+}
 
+function storeUserLogged(userid){
+    localStorage.setItem('userid', userid)
+}
+function getUserLogged(){
+    return localStorage.getItem('userid')
+}
+
+function removeAccessToken(){
+    localStorage.removeItem('access_Token');
+}
+function removeUserLogged(){
+    localStorage.removeItem('userid');
+}
 
 
 /*
@@ -124,12 +141,58 @@ alert(loginInfo);
         data: JSON.stringify(loginInfo),
         success: function(profil){
             alert("sucess");
+            //console.log("sucess");
+            //console.log(profil);
+            //alert(profil);
+            
+            //alert("token111:"+profil.Access_token);
+            alert("userid4444:"+profil.UserId);
+
             storeAccessToken(profil.Access_token);
+            storeUserLogged(profil.UserId);
+            //getUserInfo(profil.UserId, sucessCallBack, errorCallBack);
+            //sucessCallBack(profil);
+            //alert(profil.Access_token);
             //getUserInfo(profil.UserId, sucessCallBack, errorCallBack);
         },
         error : function(jqXHR) {errorCallBack(jqXHR.status)}
     })
 }
+
+function LOGOUT(userid, sucessCallBack, errorCallBack) {
+    //alert(loginInfo);
+        $.ajax({
+            url: server + "/accounts/logout/"+userid,
+            type: 'GET',            
+            data: {},
+            success: function(){
+                alert("sucess Logout22");
+                removeAccessToken();
+                removeUserLogged();
+            },
+            error : function(jqXHR) {errorCallBack(jqXHR.status)}
+        })
+    }
+
+    
+function GETUSERINFO(userid, sucessCallBack, errorCallBack) {
+    //alert(loginInfo);
+        $.ajax({
+            url: server + "/accounts/index/"+userid,
+            type: 'GET',            
+            contentType: 'text/plain',
+            data: {},
+            success: function(profil){
+                alert("sucess GETUSERINFO");
+                console.log(profil);
+                alert("sucess GETUSERINFO name:"+profil.Name);
+                sucessCallBack(profil);
+            },
+            error : function(jqXHR) {errorCallBack(jqXHR.status)}
+        })
+    }
+
+
 
 
 function VERIFY_EMAIL(userId, verifyCode, sucessCallBack, errorCallBack) {

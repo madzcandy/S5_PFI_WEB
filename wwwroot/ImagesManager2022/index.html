@@ -23,9 +23,8 @@
         <div class="mainContainer">
             <div class="headerPanel">
                 <div class="headerLayout">
-                    <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon"
-                        title="Gestionnaire d'images">
-                   <div style="display:flex">
+                    <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images">
+                    <div style="display:flex">
                         <span class="header outLinedText tbg-yellow">
                             P
                         </span>
@@ -58,15 +57,22 @@
                         </span>
                     </div>
                     <span class="menu">
-                        <span class="cmd fa fa-plus-square" id="registerCmd" title="Register"
+                        <span class="cmd fa fa-user-plus" id="registerCmd" title="Register"
                         data-toggle="tooltip"></span>
 
-                        <span class="cmd fa fa-plus-square" id="loginCmd" title="Login"
+                        <span class="cmd fa fa-user" id="loginCmd" title="Login"
                         data-toggle="tooltip"></span>
     
+                        <span class="cmd fa fa-user-times" id="logoutCmd" title="Logout"
+                        data-toggle="tooltip"></span>
+
                         <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
                             data-toggle="tooltip"></span>
-                    </span>                 
+                    </span>    
+                    <div>
+                        <img id="loginLogo" src="" alt="logo utilisateur" width="30" height="30">
+                        LoginName:<span id="loginName"></span>
+                    </div>             
                 </div>
             </div>
 
@@ -363,6 +369,50 @@
             }
 
 
+            function logoutCmd() {
+                holdCheckETag = true;
+                alert("1");
+                let userId = getUserLogged();
+                alert("2");
+                LOGOUT(userId, successLogout, error);                
+                alert("logout");
+                holdCheckETag = false;
+               
+            }
+
+            function logoutFromForm() {
+                let logoutinfo = {
+                        Email: $("#log_email_input").val(),
+                        Password: $("#log_mdp_input").val(),
+                };
+                return logininfo;
+
+
+                /* if ($("#registerForm")[0].checkValidity()) {
+                    let registerinfo = {
+                        Id: 0, // parseInt($("#id_input").val()),
+                        Name: ($("#user_input").val()),
+                        Email: $("#email_input").val(),
+                        Password: $("#mdp_input").val(),
+                    };
+                    return registerinfo;
+                } else {
+                    $("#registerForm")[0].reportValidity()
+                }
+                */
+                //return false;
+                //return true;
+            }
+            function loginToForm(image) {
+                $("#Id_input").val(image.Id);
+                $("#GUID_input").val(image.GUID);
+                $("#date_input").val(image.Date);
+                //$("#date_input").val(Date.now());
+                $("#title_input").val(image.Title);
+                $("#description_input").val(image.Description);
+                ImageUploader.setImage('image', image.OriginalURL);
+            }
+
 
 
             function newImage() {
@@ -438,13 +488,48 @@
             }
 
             function successLogin() {
-                alert("Login avec succès");
+                //alert("Login avec succès");
+                var token = getAccessToken();
+                ///alert("Token"+token);
+               // $("#loginName").text(token);
+                $('#loginName').html(token);
+
+            }
+
+            function successLogout() {
+                //alert("Logout avec succès");
+                var token = getAccessToken();
+                ///alert("Token"+token);
+                $("#loginName").text("");  
+                $('#loginName').html("");         
+
+            }
+
+            function successGetUser(profil){
+                //alert("GetUSERINFO avec succès");
+                console.log("getINFO success!"+profil);
+                //alert("GetUSERINFO avec succès222222"+profil.Name);
+                $("#loginName").text(profil.Name);
+                $('#loginLogo').attr('src', profil.AvatarURL);
+            
             }
 
             function init_UI() {
                 $("#newImageCmd").click(newImage)
                 $("#registerCmd").click(registerCmd)
                 $("#loginCmd").click(loginCmd)
+                $("#logoutCmd").click(logoutCmd)
+
+                var token = getAccessToken();
+                alert("Token"+token);
+                //$("#loginName").text(token);
+
+                let userId = getUserLogged();
+                alert("userID"+userId);
+                if (userId!=undefined){
+                    GETUSERINFO(userId,successGetUser,error);
+                }
+                
 
                 $("#registerDlg").dialog({
                     title: "...",
