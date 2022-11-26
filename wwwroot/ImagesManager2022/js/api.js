@@ -29,7 +29,7 @@ function GET_ALL(successCallBack, errorCallBack, queryString = null) {
     });
 }
 function POST(data, successCallBack, errorCallBack) {
-    alert("post");
+    //alert("post");
     $.ajax({
         url: apiBaseURL,
         type: 'POST',
@@ -68,26 +68,29 @@ function tokenRequestURL() {
 }
 */
 
-function storeAccessToken(token){
+function storeAccessToken(token) {
     //alert("token" + token);
     localStorage.setItem('access_Token', token);
 }
-function getAccessToken(){
+function getAccessToken() {
     return localStorage.getItem('access_Token');
 }
 
-function storeUserLogged(userid){
-    localStorage.setItem('userid', userid)
+function storeUserLogged(user) {
+    localStorage.setItem('user', JSON.stringify(user))
 }
-function getUserLogged(){
-    return localStorage.getItem('userid')
+function getUserLogged() {
+    let userJson = localStorage.getItem('user')
+    if (userJson != null)
+        return JSON.parse(userJson);
+    return null;
 }
 
-function removeAccessToken(){
+function removeAccessToken() {
     localStorage.removeItem('access_Token');
 }
-function removeUserLogged(){
-    localStorage.removeItem('userid');
+function removeUserLogged() {
+    localStorage.removeItem('user');
 }
 
 
@@ -116,81 +119,65 @@ function storeLoggedUser(user){
 
 /* AJAX functions utilites */
 
-function REGISTER(profil, successCallBack, errorCallBack){
-    alert("API register 2");
+function REGISTER(profil, successCallBack, errorCallBack) {
+   // alert("API register 2");
     $.ajax({
         url: server + "/accounts/register",
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(profil),
-        success: function(profil){
+        success: function (profil) {
             console.log(profil);
             sucessCallBack(profil);
         },
-        error : function(jqXHR) {errorCallBack(jqXHR.status)}
+        error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
 }
 
 
 function LOGIN(loginInfo, sucessCallBack, errorCallBack) {
-alert(loginInfo);
     $.ajax({
         url: server + "/token",
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(loginInfo),
-        success: function(profil){
-            alert("sucess");
-            //console.log("sucess");
-            //console.log(profil);
-            //alert(profil);
-            
-            //alert("token111:"+profil.Access_token);
-            alert("userid4444:"+profil.UserId);
-
-            storeAccessToken(profil.Access_token);
-            storeUserLogged(profil.UserId);
-            //getUserInfo(profil.UserId, sucessCallBack, errorCallBack);
-            //sucessCallBack(profil);
-            //alert(profil.Access_token);
-            //getUserInfo(profil.UserId, sucessCallBack, errorCallBack);
+        success: function (tokenInfo) {
+            storeAccessToken(tokenInfo.Access_token);
+            GETUSERINFO(tokenInfo.UserId, sucessCallBack, errorCallBack)
         },
-        error : function(jqXHR) {errorCallBack(jqXHR.status)}
+        error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
 }
 
 function LOGOUT(userid, sucessCallBack, errorCallBack) {
-    //alert(loginInfo);
-        $.ajax({
-            url: server + "/accounts/logout/"+userid,
-            type: 'GET',            
-            data: {},
-            success: function(){
-                alert("sucess Logout22");
-                removeAccessToken();
-                removeUserLogged();
-            },
-            error : function(jqXHR) {errorCallBack(jqXHR.status)}
-        })
-    }
+    $.ajax({
+        url: server + "/accounts/logout/" + userid,
+        type: 'GET',
+        data: {},
+        success: function () {
+           // alert("sucess Logout22");
+            removeAccessToken();
+            removeUserLogged();
+            sucessCallBack()
+        },
+        error: function (jqXHR) { errorCallBack(jqXHR.status) }
+    })
+}
 
-    
+
 function GETUSERINFO(userid, sucessCallBack, errorCallBack) {
-    //alert(loginInfo);
-        $.ajax({
-            url: server + "/accounts/index/"+userid,
-            type: 'GET',            
-            contentType: 'text/plain',
-            data: {},
-            success: function(profil){
-                alert("sucess GETUSERINFO");
-                console.log(profil);
-                alert("sucess GETUSERINFO name:"+profil.Name);
-                sucessCallBack(profil);
-            },
-            error : function(jqXHR) {errorCallBack(jqXHR.status)}
-        })
-    }
+    $.ajax({
+        url: server + "/accounts/index/" + userid,
+        type: 'GET',
+        contentType: 'text/plain',
+        data: {},
+        success: function (profil) {
+            storeUserLogged(profil);
+            sucessCallBack(profil);
+        },
+        error: function (jqXHR) { errorCallBack(jqXHR.status) }
+    })
+}
 
 
 
@@ -203,6 +190,24 @@ function VERIFY_EMAIL(userId, verifyCode, sucessCallBack, errorCallBack) {
         date: {},
         success: function () {
             GETUSERINFO(userId, sucessCallBack, error);
-        }
+            sucessCallBack();
+        },
+        error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
 }
+
+
+function MODIFY_USER_INFO(userId, sucessCallBack, errorCallBack) {
+    $.ajax({
+        url: server + "/Accounts/verify" + "/" + userInfo.Id,
+        type: 'PUT',
+        contentType: 'application/json',
+        headers: getBearerAuthorizationToken(),
+        date: JSON.stringify(userInfo),
+        success: function () {
+            GETUSERINFO(userId, sucessCallBack, error);
+        },
+        error: function (jqXHR) { errorCallBack(jqXHR.status) }
+    })
+}
+

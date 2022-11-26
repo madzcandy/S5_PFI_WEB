@@ -123,8 +123,7 @@
                         <label for="reg_image">Avatar</label>
                         <div id='reg_image' class='ImageUploader' defaultImage='images/No_Avatar.png'
                             waitingImage='images/writing.gif'>
-                        </div>
-                        
+                        </div>                      
                         <div class="note">Cliquez-Déposez votre avatar</div>
                     </form>
                 </div>
@@ -372,13 +371,12 @@
 
             function logoutCmd() {
                 holdCheckETag = true;
-                alert("1");
+                //alert("1");
                 let userId = getUserLogged();
-                alert("2");
+                //alert("2");
                 LOGOUT(userId, successLogout, error);                
-                alert("logout");
-                holdCheckETag = false;
-               
+                //alert("logout");
+                holdCheckETag = false;            
             }
 
             function logoutFromForm() {
@@ -485,33 +483,28 @@
             }
 
             function successRegister() {
-                alert("Creation avec succès");
+                //alert("Creation avec succès");
             }
 
             function successLogin() {
-                //alert("Login avec succès");
-                var token = getAccessToken();
-                ///alert("Token"+token);
-               // $("#loginName").text(token);
-                $('#loginName').html(token);
-                //$('#loginName').text("allo");
+                var user = getUserLogged();
+                if (user != null) {
+                    $("#loginLogo").attr("src", user.AvatarURL);
+                    $("#loginName").text(user.Name);
+                }
             }
 
             function successLogout() {
-                //alert("Logout avec succès");
-                var token = getAccessToken();
-                ///alert("Token"+token);
+                $("#loginLogo").attr("src", "");
                 $("#loginName").text("");  
-                $('#loginName').html("");         
-
             }
 
             function successGetUser(profil){
-                //alert("GetUSERINFO avec succès");
-                console.log("getINFO success!"+profil);
-                //alert("GetUSERINFO avec succès222222"+profil.Name);
-                $("#loginName").text(profil.Name);
-                $('#loginLogo').attr('src', profil.AvatarURL);     
+                var user = getUserLogged();
+                if (user != null) {
+                    $("#loginLogo").attr("src", user.AvatarURL);
+                    $("#loginName").text(user.Name);
+                }   
             }
 
             function init_UI() {
@@ -521,11 +514,7 @@
                 $("#logoutCmd").click(logoutCmd)
 
                 var token = getAccessToken();
-                alert("Token"+token);
-                //$("#loginName").text(token);
-
                 let userId = getUserLogged();
-                alert("userID"+userId);
                 if (userId!=undefined){
                     GETUSERINFO(userId,successGetUser,error);
                 }
@@ -549,11 +538,11 @@
                         text: "Title will be changed dynamically",
                         click: function () {
                             let register = registerFromForm();
-                            alert(register);
+                            //alert(register);
                             if (register) {
                                 console.log(register);
                                 REGISTER(register, successRegister, error);                
-                                alert("reg");
+                               // alert("reg");
                                 resetimageForm();
                                 holdCheckETag = false;
                                 $(this).dialog("close");
@@ -587,10 +576,10 @@
                         text: "Title will be changed dynamically",
                         click: function () {
                             let login = loginFromForm();
-                            alert(login);
+                            //alert(login);
                             if (login) {
                                 LOGIN(login, successLogin, error);                
-                                alert("log");
+                                //alert("log");
                                 holdCheckETag = false;
                                 $(this).dialog("close");
                             }
