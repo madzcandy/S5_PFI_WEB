@@ -104,9 +104,9 @@
 
                 <div id="registerDlg">
                     <form id="registerForm">
-                        <input type="hidden" id="Id_input" value="0">
-                        <input type="hidden" id="date_input" value="0">
-                        <input type="hidden" id="GUID_input" value="">
+                        <input type="hidden" id="reg_Id_input" value="0">
+                        <input type="hidden" id="reg_date_input" value="0">
+                        <input type="hidden" id="reg_GUID_input" value="">
 
                         <label for="user_input">Nom d'usager</label>
                         <input type="text" id="user_input" class="form-control" required>
@@ -315,17 +315,6 @@
                 //return false;
                 //return true;
             }
-            function registerToForm(image) {
-                $("#Id_input").val(image.Id);
-                $("#GUID_input").val(image.GUID);
-                $("#date_input").val(image.Date);
-                //$("#date_input").val(Date.now());
-                $("#title_input").val(image.Title);
-                $("#description_input").val(image.Description);
-                ImageUploader.setImage('image', image.OriginalURL);
-            }
-
-
 
             function loginCmd() {
                 holdCheckETag = true;
@@ -357,15 +346,6 @@
                 */
                 //return false;
                 //return true;
-            }
-            function loginToForm(image) {
-                $("#Id_input").val(image.Id);
-                $("#GUID_input").val(image.GUID);
-                $("#date_input").val(image.Date);
-                //$("#date_input").val(Date.now());
-                $("#title_input").val(image.Title);
-                $("#description_input").val(image.Description);
-                ImageUploader.setImage('image', image.OriginalURL);
             }
 
 
@@ -402,15 +382,8 @@
                 //return false;
                 //return true;
             }
-            function loginToForm(image) {
-                $("#Id_input").val(image.Id);
-                $("#GUID_input").val(image.GUID);
-                $("#date_input").val(image.Date);
-                //$("#date_input").val(Date.now());
-                $("#title_input").val(image.Title);
-                $("#description_input").val(image.Description);
-                ImageUploader.setImage('image', image.OriginalURL);
-            }
+
+
 
 
 
@@ -611,7 +584,15 @@
                         id: "imageDlgOkBtn",
                         text: "Title will be changed dynamically",
                         click: function () {
+                            let token = getAccessToken();
+                            let userId = getUserLogged();
+                            console.log(token);
+                            console.log(userId);
+                            let user = GETUSERINFO();
+                            $("#Id_input").text(user.id);
+                            $("#GUID_input").text(user.GUID);
                             let image = imageFromForm();
+                            console.log(image);
                             if (image) {
                                 if (createMode) {
                                     POST(image, getImagesList, error);
