@@ -57,22 +57,26 @@
                         </span>
                     </div>
                     <span class="menu">
-                        <span class="cmd fa fa-user-plus" id="registerCmd" title="Register"
+                        <span class="cmd fa fa-user-plus" id="registerCmd" title="S'inscrire"
                         data-toggle="tooltip"></span>
 
-                        <span class="cmd fa fa-user" id="loginCmd" title="Login"
+                        <span class="cmd fa fa-user-pen" id="editProfileCmd" title="Modifier le profil"
                         data-toggle="tooltip"></span>
-    
-                        <span class="cmd fa fa-user-times" id="logoutCmd" title="Logout"
+
+                        <span class="cmd fa fa-user" id="loginCmd" title="Connexion"
+                        data-toggle="tooltip"></span>
+
+                        <span class="cmd fa fa-user-times" id="logoutCmd" title="Déconnexion"
                         data-toggle="tooltip"></span>
 
                         <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
                             data-toggle="tooltip"></span>
-                    </span>  
+                    </span>
                     <div>
                         <img id="loginLogo" src="" alt="logo utilisateur" width="30" height="30">
                         LoginName:<span id="loginName"></span>
-                    </div>            
+                        Test:<span id="tester"></span>
+                    </div>
                 </div>
             </div>
 
@@ -120,10 +124,10 @@
                         <label for="cmdp_input">Confirmation</label>
                         <input id="cmdp_input" class="form-control" required>
 
-                        <label for="reg_image">Avatar</label>
-                        <div id='reg_image' class='ImageUploader' defaultImage='images/No_Avatar.png'
+                        <label for="avatarImage">Avatar</label>
+                        <div id='avatarImage' class='ImageUploader' defaultImage='images/No_Avatar.png'
                             waitingImage='images/writing.gif'>
-                        </div>                      
+                        </div>
                         <div class="note">Cliquez-Déposez votre avatar</div>
                     </form>
                 </div>
@@ -139,7 +143,7 @@
 
                         <label for="log_mdp_input">Mot de passe</label>
                         <input id="log_mdp_input" class="form-control" required>
-                        
+
                         <input type="checkbox" id="log_souvenir">Se souvenir de moi</div>
                     </form>
                 </div>
@@ -165,6 +169,7 @@
             let holdCheckETag = false;
             let currentETag = "";
             let createMode = true;
+            let registerMode = true;
             let searchCategory = "";
             let searchTitle = "";
             let hideSearchBar = true;
@@ -204,23 +209,23 @@
                 function insertIntoImageList(image) {
 
                     $("#imagesList").append(
-                        $(` 
+                        $(`
                                 <div class='imageLayout'>
                                     <div class='imageHeader'>
                                         <div class="imageTitle">${image.Title}</div>
-                                        <div    class="cmd editCmd  fa fa-pencil-square" 
-                                                imageid="${image.Id}" 
-                                                title="Editer ${image.Title}" 
+                                        <div    class="cmd editCmd  fa fa-pencil-square"
+                                                imageid="${image.Id}"
+                                                title="Editer ${image.Title}"
                                                 data-toggle="tooltip">
                                         </div>
-                                        <div    class="cmd deleteCmd fa fa-window-close" 
-                                                imageid="${image.Id}" 
-                                                title="Effacer ${image.Title}" 
+                                        <div    class="cmd deleteCmd fa fa-window-close"
+                                                imageid="${image.Id}"
+                                                title="Effacer ${image.Title}"
                                                 data-toggle="tooltip">
                                         </div>
                                     </div>
                                     <a href="${image.OriginalURL}" target="_blank">
-                                        <div    class='image' 
+                                        <div    class='image'
                                                 style="background-image:url('${image.ThumbnailURL}')">
                                         </div>
                                     </a>
@@ -282,20 +287,43 @@
 
             function registerCmd() {
                 holdCheckETag = true;
-                createMode = true;
-                resetimageForm();
+                registerMode = true;
+                ImageUploader.resetImage('avatarImage');
                 $("#registerDlg").dialog('option', 'title', "Création de compte");
                 $("#registerDlgOkBtn").text("Créer");
                 $("#registerDlg").dialog('open');
             }
+            function editProfileCmd() {
+                holdCheckETag = true;
+                registerMode = false;
+                // $("email_input").val(token.Email); //Pas encore fonctionnel
 
-            function registerFromForm() {
+                // ImageUploader.setImage('avatarImage', token.AvatarURL);
+                ImageUploader.resetImage('avatarImage');//To delete after the token works
+                $("#registerDlg").dialog('option', 'title', "Modification de compte");
+                $("#registerDlgOkBtn").text("Modifier");
+                $("#registerDlg").dialog('open');
+            }
+                        /*
+                        <label for="user_input">Nom d'usager</label>
+                        <input type="text" id="user_input" class="form-control" required>
+
+                        <label for="email_input">Courriel</label>
+                        <input id="email_input" class="form-control" required>
+
+                        <label for="mdp_input">Mot de passe</label>
+                        <input id="mdp_input" class="form-control" required>
+
+                        <label for="cmdp_input">Confirmation</label>
+                        <input id="cmdp_input" class="form-control" required>
+                        */
+            function profileInfoFromForm() {
                 let registerinfo = {
                         Id: 0, // parseInt($("#id_input").val()),
                         Name: ($("#user_input").val()),
                         Email: $("#email_input").val(),
                         Password: $("#mdp_input").val(),
-                        ImageData: $("#reg_image").val(),
+                        ImageData: ImageUploader.getImageData('avatarImage'),
                 };
                 return registerinfo;
 
@@ -354,9 +382,9 @@
                 //alert("1");
                 let userId = getUserLogged();
                 //alert("2");
-                LOGOUT(userId, successLogout, error);                
+                LOGOUT(userId, successLogout, error);
                 //alert("logout");
-                holdCheckETag = false;            
+                holdCheckETag = false;
             }
 
             function logoutFromForm() {
@@ -456,7 +484,8 @@
             }
 
             function successRegister() {
-                //alert("Creation avec succès");
+                //TODO se login lorsqu'on crée un usager
+                console.log("Register Callback effectué, présentement une fonctione vide");
             }
 
             function successLogin() {
@@ -464,12 +493,14 @@
                 if (user != null) {
                     $("#loginLogo").attr("src", user.AvatarURL);
                     $("#loginName").text(user.Name);
+                    token = getAccessToken();
+                    console.log(token);
                 }
             }
 
             function successLogout() {
                 $("#loginLogo").attr("src", "");
-                $("#loginName").text("");  
+                $("#loginName").text("");
             }
 
             function successGetUser(profil){
@@ -477,12 +508,13 @@
                 if (user != null) {
                     $("#loginLogo").attr("src", user.AvatarURL);
                     $("#loginName").text(user.Name);
-                }   
+                }
             }
 
             function init_UI() {
                 $("#newImageCmd").click(newImage)
                 $("#registerCmd").click(registerCmd)
+                $("#editProfileCmd").click(editProfileCmd)
                 $("#loginCmd").click(loginCmd)
                 $("#logoutCmd").click(logoutCmd)
 
@@ -491,7 +523,7 @@
                 if (userId!=undefined){
                     GETUSERINFO(userId,successGetUser,error);
                 }
-                
+
 
                 $("#registerDlg").dialog({
                     title: "...",
@@ -510,13 +542,13 @@
                         id: "registerDlgOkBtn",
                         text: "Title will be changed dynamically",
                         click: function () {
-                            let register = registerFromForm();
+                            let register = profileInfoFromForm();
                             //alert(register);
                             if (register) {
                                 console.log(register);
-                                REGISTER(register, successRegister, error);                
+                                REGISTER(register, successRegister, error);
                                // alert("reg");
-                                resetimageForm();
+                                ImageUploader.resetImage('avatarImage');
                                 holdCheckETag = false;
                                 $(this).dialog("close");
                             }
@@ -551,7 +583,7 @@
                             let login = loginFromForm();
                             //alert(login);
                             if (login) {
-                                LOGIN(login, successLogin, error);                
+                                LOGIN(login, successLogin, error);
                                 //alert("log");
                                 holdCheckETag = false;
                                 $(this).dialog("close");
