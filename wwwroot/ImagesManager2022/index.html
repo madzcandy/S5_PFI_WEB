@@ -296,7 +296,7 @@
                         Name: ($("#user_input").val()),
                         Email: $("#email_input").val(),
                         Password: $("#mdp_input").val(),
-                        ImageData: $("#reg_image").val(),
+                        ImageData: ImageUploader.getImageData('reg_image'),
                 };
                 return registerinfo;
 
@@ -323,7 +323,7 @@
                 //$("#date_input").val(Date.now());
                 $("#title_input").val(image.Title);
                 $("#description_input").val(image.Description);
-                ImageUploader.setImage('image', image.OriginalURL);
+                ImageUploader.setImage('reg_image', image.OriginalURL);
             }
 
 
