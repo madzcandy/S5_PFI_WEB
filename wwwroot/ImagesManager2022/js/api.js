@@ -29,7 +29,7 @@ function GET_ALL(successCallBack, errorCallBack, queryString = null) {
     });
 }
 function POST(data, successCallBack, errorCallBack) {
-    alert("post");
+    //alert("post");
     $.ajax({
         url: apiBaseURL,
         type: 'POST',
@@ -120,7 +120,7 @@ function storeLoggedUser(user){
 /* AJAX functions utilites */
 
 function REGISTER(profil, successCallBack, errorCallBack) {
-    alert("API register 2");
+   // alert("API register 2");
     $.ajax({
         url: server + "/accounts/register",
         type: 'POST',
@@ -150,15 +150,15 @@ function LOGIN(loginInfo, sucessCallBack, errorCallBack) {
 }
 
 function LOGOUT(userid, sucessCallBack, errorCallBack) {
-    //alert(loginInfo);
     $.ajax({
         url: server + "/accounts/logout/" + userid,
         type: 'GET',
         data: {},
         success: function () {
-            alert("sucess Logout22");
+           // alert("sucess Logout22");
             removeAccessToken();
             removeUserLogged();
+            sucessCallBack()
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })

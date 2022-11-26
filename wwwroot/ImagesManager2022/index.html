@@ -371,11 +371,11 @@
 
             function logoutCmd() {
                 holdCheckETag = true;
-                alert("1");
+                //alert("1");
                 let userId = getUserLogged();
-                alert("2");
+                //alert("2");
                 LOGOUT(userId, successLogout, error);                
-                alert("logout");
+                //alert("logout");
                 holdCheckETag = false;            
             }
 
@@ -483,11 +483,10 @@
             }
 
             function successRegister() {
-                alert("Creation avec succès");
+                //alert("Creation avec succès");
             }
 
             function successLogin() {
-
                 var user = getUserLogged();
                 if (user != null) {
                     $("#loginLogo").attr("src", user.AvatarURL);
@@ -496,12 +495,8 @@
             }
 
             function successLogout() {
-                //alert("Logout avec succès");
-                var token = getAccessToken();
-                ///alert("Token"+token);
+                $("#loginLogo").attr("src", "");
                 $("#loginName").text("");  
-                $('#loginName').html("");         
-
             }
 
             function successGetUser(profil){
@@ -519,11 +514,7 @@
                 $("#logoutCmd").click(logoutCmd)
 
                 var token = getAccessToken();
-                alert("Token"+token);
-                //$("#loginName").text(token);
-
                 let userId = getUserLogged();
-                alert("userID"+userId);
                 if (userId!=undefined){
                     GETUSERINFO(userId,successGetUser,error);
                 }
@@ -547,11 +538,11 @@
                         text: "Title will be changed dynamically",
                         click: function () {
                             let register = registerFromForm();
-                            alert(register);
+                            //alert(register);
                             if (register) {
                                 console.log(register);
                                 REGISTER(register, successRegister, error);                
-                                alert("reg");
+                               // alert("reg");
                                 resetimageForm();
                                 holdCheckETag = false;
                                 $(this).dialog("close");
@@ -585,10 +576,10 @@
                         text: "Title will be changed dynamically",
                         click: function () {
                             let login = loginFromForm();
-                            alert(login);
+                            //alert(login);
                             if (login) {
                                 LOGIN(login, successLogin, error);                
-                                alert("log");
+                                //alert("log");
                                 holdCheckETag = false;
                                 $(this).dialog("close");
                             }
