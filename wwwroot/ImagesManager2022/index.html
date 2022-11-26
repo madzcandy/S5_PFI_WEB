@@ -295,6 +295,7 @@
                         Name: ($("#user_input").val()),
                         Email: $("#email_input").val(),
                         Password: $("#mdp_input").val(),
+                        ImageData: $("#reg_image").val(),
                 };
                 return registerinfo;
 
@@ -548,6 +549,7 @@
                             let register = registerFromForm();
                             alert(register);
                             if (register) {
+                                console.log(register);
                                 REGISTER(register, successRegister, error);                
                                 alert("reg");
                                 resetimageForm();
