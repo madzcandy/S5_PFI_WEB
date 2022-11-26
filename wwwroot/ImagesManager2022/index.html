@@ -123,8 +123,7 @@
                         <label for="reg_image">Avatar</label>
                         <div id='reg_image' class='ImageUploader' defaultImage='images/No_Avatar.png'
                             waitingImage='images/writing.gif'>
-                        </div>
-                        
+                        </div>                      
                         <div class="note">Cliquez-Déposez votre avatar</div>
                     </form>
                 </div>
@@ -376,8 +375,7 @@
                 alert("2");
                 LOGOUT(userId, successLogout, error);                
                 alert("logout");
-                holdCheckETag = false;
-               
+                holdCheckETag = false;            
             }
 
             function logoutFromForm() {
@@ -488,12 +486,12 @@
             }
 
             function successLogin() {
-                //alert("Login avec succès");
-                var token = getAccessToken();
-                ///alert("Token"+token);
-               // $("#loginName").text(token);
-                $('#loginName').html(token);
-                //$('#loginName').text("allo");
+
+                var user = getUserLogged();
+                if (user != null) {
+                    $("#loginLogo").attr("src", user.AvatarURL);
+                    $("#loginName").text(user.Name);
+                }
             }
 
             function successLogout() {
@@ -506,11 +504,11 @@
             }
 
             function successGetUser(profil){
-                //alert("GetUSERINFO avec succès");
-                console.log("getINFO success!"+profil);
-                //alert("GetUSERINFO avec succès222222"+profil.Name);
-                $("#loginName").text(profil.Name);
-                $('#loginLogo').attr('src', profil.AvatarURL);     
+                var user = getUserLogged();
+                if (user != null) {
+                    $("#loginLogo").attr("src", user.AvatarURL);
+                    $("#loginName").text(user.Name);
+                }   
             }
 
             function init_UI() {
