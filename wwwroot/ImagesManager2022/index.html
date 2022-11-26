@@ -57,13 +57,16 @@
                         </span>
                     </div>
                     <span class="menu">
-                        <span class="cmd fa fa-user-plus" id="registerCmd" title="Register"
+                        <span class="cmd fa fa-user-plus" id="registerCmd" title="S'inscrire"
                         data-toggle="tooltip"></span>
 
-                        <span class="cmd fa fa-user" id="loginCmd" title="Login"
+                        <span class="cmd fa fa-user-pen" id="editProfileCmd" title="Modifier le profil"
+                        data-toggle="tooltip"></span>
+
+                        <span class="cmd fa fa-user" id="loginCmd" title="Connexion"
                         data-toggle="tooltip"></span>
     
-                        <span class="cmd fa fa-user-times" id="logoutCmd" title="Logout"
+                        <span class="cmd fa fa-user-times" id="logoutCmd" title="Déconnexion"
                         data-toggle="tooltip"></span>
 
                         <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
@@ -72,6 +75,7 @@
                     <div>
                         <img id="loginLogo" src="" alt="logo utilisateur" width="30" height="30">
                         LoginName:<span id="loginName"></span>
+                        Test:<span id="tester"></span>
                     </div>            
                 </div>
             </div>
@@ -120,8 +124,8 @@
                         <label for="cmdp_input">Confirmation</label>
                         <input id="cmdp_input" class="form-control" required>
 
-                        <label for="reg_image">Avatar</label>
-                        <div id='reg_image' class='ImageUploader' defaultImage='images/No_Avatar.png'
+                        <label for="avatarImage">Avatar</label>
+                        <div id='avatarImage' class='ImageUploader' defaultImage='images/No_Avatar.png'
                             waitingImage='images/writing.gif'>
                         </div>                      
                         <div class="note">Cliquez-Déposez votre avatar</div>
@@ -165,6 +169,7 @@
             let holdCheckETag = false;
             let currentETag = "";
             let createMode = true;
+            let registerMode = true;
             let searchCategory = "";
             let searchTitle = "";
             let hideSearchBar = true;
@@ -282,20 +287,43 @@
 
             function registerCmd() {
                 holdCheckETag = true;
-                createMode = true;
-                resetimageForm();
+                registerMode = true;
+                ImageUploader.resetImage('avatarImage');
                 $("#registerDlg").dialog('option', 'title', "Création de compte");
                 $("#registerDlgOkBtn").text("Créer");
                 $("#registerDlg").dialog('open');
             }
+            function editProfileCmd() {
+                holdCheckETag = true;
+                registerMode = false;
+                // $("email_input").val(token.Email); //Pas encore fonctionnel
 
-            function registerFromForm() {
+                // ImageUploader.setImage('avatarImage', token.AvatarURL);
+                ImageUploader.resetImage('avatarImage');//To delete after the token works
+                $("#registerDlg").dialog('option', 'title', "Modification de compte");
+                $("#registerDlgOkBtn").text("Modifier");
+                $("#registerDlg").dialog('open');
+            }
+                        /*
+                        <label for="user_input">Nom d'usager</label>
+                        <input type="text" id="user_input" class="form-control" required>
+
+                        <label for="email_input">Courriel</label>
+                        <input id="email_input" class="form-control" required>
+
+                        <label for="mdp_input">Mot de passe</label>
+                        <input id="mdp_input" class="form-control" required>
+
+                        <label for="cmdp_input">Confirmation</label>
+                        <input id="cmdp_input" class="form-control" required>
+                        */
+            function profileInfoFromForm() {
                 let registerinfo = {
                         Id: 0, // parseInt($("#id_input").val()),
                         Name: ($("#user_input").val()),
                         Email: $("#email_input").val(),
                         Password: $("#mdp_input").val(),
-                        ImageData: ImageUploader.getImageData('reg_image'),
+                        ImageData: ImageUploader.getImageData('avatarImage'),
                 };
                 return registerinfo;
 
@@ -316,13 +344,14 @@
                 //return true;
             }
             function registerToForm(image) {
-                $("#Id_input").val(image.Id);
-                $("#GUID_input").val(image.GUID);
-                $("#date_input").val(image.Date);
-                //$("#date_input").val(Date.now());
-                $("#title_input").val(image.Title);
-                $("#description_input").val(image.Description);
-                ImageUploader.setImage('reg_image', image.OriginalURL);
+                //TODO faire modification du profil
+                // $("#Id_input").val(image.Id);
+                // $("#GUID_input").val(image.GUID);
+                // $("#date_input").val(image.Date);
+                // //$("#date_input").val(Date.now());
+                // $("#title_input").val(image.Title);
+                // $("#description_input").val(image.Description);
+                // ImageUploader.setImage('avatarImage', image.OriginalURL);
             }
 
 
@@ -358,6 +387,13 @@
                 //return false;
                 //return true;
             }
+            
+            //******Fonctions en double??????***    vincent
+            //******Fonctions en double??????***    vincent
+            //******Fonctions en double??????***    vincent
+            //******Fonctions en double??????***    vincent
+            //******Fonctions en double??????***    vincent
+            //******Fonctions en double??????***    vincent
             function loginToForm(image) {
                 $("#Id_input").val(image.Id);
                 $("#GUID_input").val(image.GUID);
@@ -402,6 +438,14 @@
                 //return false;
                 //return true;
             }
+            
+            //******Fonctions en double??????***    vincent 2
+            //******Fonctions en double??????***    vincent 2
+            //******Fonctions en double??????***    vincent 2
+            //******Fonctions en double??????***    vincent 2
+            //******Fonctions en double??????***    vincent 2
+            //******Fonctions en double??????***    vincent 2
+            //******Fonctions en double??????***    vincent 2
             function loginToForm(image) {
                 $("#Id_input").val(image.Id);
                 $("#GUID_input").val(image.GUID);
@@ -483,7 +527,8 @@
             }
 
             function successRegister() {
-                //alert("Creation avec succès");
+                //TODO se login lorsqu'on crée un usager
+                console.log("Register Callback effectué, présentement une fonctione vide");
             }
 
             function successLogin() {
@@ -491,6 +536,8 @@
                 if (user != null) {
                     $("#loginLogo").attr("src", user.AvatarURL);
                     $("#loginName").text(user.Name);
+                    token = getAccessToken();
+                    console.log(token);
                 }
             }
 
@@ -510,6 +557,7 @@
             function init_UI() {
                 $("#newImageCmd").click(newImage)
                 $("#registerCmd").click(registerCmd)
+                $("#editProfileCmd").click(editProfileCmd)
                 $("#loginCmd").click(loginCmd)
                 $("#logoutCmd").click(logoutCmd)
 
@@ -537,13 +585,13 @@
                         id: "registerDlgOkBtn",
                         text: "Title will be changed dynamically",
                         click: function () {
-                            let register = registerFromForm();
+                            let register = profileInfoFromForm();
                             //alert(register);
                             if (register) {
                                 console.log(register);
                                 REGISTER(register, successRegister, error);                
                                // alert("reg");
-                                resetimageForm();
+                                ImageUploader.resetImage('avatarImage');
                                 holdCheckETag = false;
                                 $(this).dialog("close");
                             }

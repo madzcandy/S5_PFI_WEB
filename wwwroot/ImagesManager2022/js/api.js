@@ -128,14 +128,14 @@ function REGISTER(profil, successCallBack, errorCallBack) {
         data: JSON.stringify(profil),
         success: function (profil) {
             console.log(profil);
-            sucessCallBack(profil);
+            successCallBack(profil);
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
 }
 
 
-function LOGIN(loginInfo, sucessCallBack, errorCallBack) {
+function LOGIN(loginInfo, successCallBack, errorCallBack) {
     $.ajax({
         url: server + "/token",
         type: 'POST',
@@ -143,29 +143,29 @@ function LOGIN(loginInfo, sucessCallBack, errorCallBack) {
         data: JSON.stringify(loginInfo),
         success: function (tokenInfo) {
             storeAccessToken(tokenInfo.Access_token);
-            GETUSERINFO(tokenInfo.UserId, sucessCallBack, errorCallBack)
+            GETUSERINFO(tokenInfo.UserId, successCallBack, errorCallBack)
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
 }
 
-function LOGOUT(userid, sucessCallBack, errorCallBack) {
+function LOGOUT(userid, successCallBack, errorCallBack) {
     $.ajax({
         url: server + "/accounts/logout/" + userid,
         type: 'GET',
         data: {},
         success: function () {
-           // alert("sucess Logout22");
+           // alert("success Logout22");
             removeAccessToken();
             removeUserLogged();
-            sucessCallBack()
+            successCallBack()
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
 }
 
 
-function GETUSERINFO(userid, sucessCallBack, errorCallBack) {
+function GETUSERINFO(userid, successCallBack, errorCallBack) {
     $.ajax({
         url: server + "/accounts/index/" + userid,
         type: 'GET',
@@ -173,7 +173,7 @@ function GETUSERINFO(userid, sucessCallBack, errorCallBack) {
         data: {},
         success: function (profil) {
             storeUserLogged(profil);
-            sucessCallBack(profil);
+            successCallBack(profil);
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
@@ -182,22 +182,22 @@ function GETUSERINFO(userid, sucessCallBack, errorCallBack) {
 
 
 
-function VERIFY_EMAIL(userId, verifyCode, sucessCallBack, errorCallBack) {
+function VERIFY_EMAIL(userId, verifyCode, successCallBack, errorCallBack) {
     $.ajax({
         url: server + `/Accounts/verify^id=${userId}&code=${verifyCode}`,
         type: 'GET',
         contentType: 'text/plain',
         date: {},
         success: function () {
-            GETUSERINFO(userId, sucessCallBack, error);
-            sucessCallBack();
+            GETUSERINFO(userId, successCallBack, error);
+            successCallBack();
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
 }
 
 
-function MODIFY_USER_INFO(userId, sucessCallBack, errorCallBack) {
+function MODIFY_USER_INFO(userId, successCallBack, errorCallBack) {
     $.ajax({
         url: server + "/Accounts/verify" + "/" + userInfo.Id,
         type: 'PUT',
@@ -205,7 +205,7 @@ function MODIFY_USER_INFO(userId, sucessCallBack, errorCallBack) {
         headers: getBearerAuthorizationToken(),
         date: JSON.stringify(userInfo),
         success: function () {
-            GETUSERINFO(userId, sucessCallBack, error);
+            GETUSERINFO(userId, successCallBack, error);
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
