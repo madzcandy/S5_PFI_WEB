@@ -144,6 +144,7 @@ function LOGIN(loginInfo, successCallBack, errorCallBack) {
         success: function (tokenInfo) {
             storeAccessToken(tokenInfo.Access_token);
             GETUSERINFO(tokenInfo.UserId, successCallBack, errorCallBack)
+            // successCallBack()
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })

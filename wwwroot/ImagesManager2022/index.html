@@ -108,9 +108,7 @@
 
                 <div id="registerDlg">
                     <form id="registerForm">
-                        <input type="hidden" id="reg_Id_input" value="0">
-                        <input type="hidden" id="reg_date_input" value="0">
-                        <input type="hidden" id="reg_GUID_input" value="">
+                        <!-- <input type="hidden" id="UserIdProfileInput" value="0"> -->
 
                         <label for="user_input">Nom d'usager</label>
                         <input type="text" id="user_input" class="form-control" required>
@@ -296,8 +294,9 @@
             function editProfileCmd() {
                 holdCheckETag = true;
                 registerMode = false;
+                var user = getUserLogged();
                 // $("email_input").val(token.Email); //Pas encore fonctionnel
-
+                $("tester").val(user.Email);
                 // ImageUploader.setImage('avatarImage', token.AvatarURL);
                 ImageUploader.resetImage('avatarImage');//To delete after the token works
                 $("#registerDlg").dialog('option', 'title', "Modification de compte");
@@ -493,14 +492,18 @@
                 if (user != null) {
                     $("#loginLogo").attr("src", user.AvatarURL);
                     $("#loginName").text(user.Name);
-                    token = getAccessToken();
-                    console.log(token);
+
+                    $("#registerCmd").attr("disabled", "disabled");
+                    $("#editProfileCmd").attr("disabled", "enabled");
                 }
             }
 
             function successLogout() {
                 $("#loginLogo").attr("src", "");
                 $("#loginName").text("");
+
+                $("#registerCmd").attr("disabled", "enabled");
+                $("#editProfileCmd").attr("disabled", "disabled");
             }
 
             function successGetUser(profil){
@@ -519,9 +522,9 @@
                 $("#logoutCmd").click(logoutCmd)
 
                 var token = getAccessToken();
-                let userId = getUserLogged();
-                if (userId!=undefined){
-                    GETUSERINFO(userId,successGetUser,error);
+                let user = getUserLogged();
+                if (user!=undefined){
+                    GETUSERINFO(user.Id,successGetUser,error);
                 }
 
 
@@ -617,9 +620,7 @@
                         text: "Title will be changed dynamically",
                         click: function () {
                             let token = getAccessToken();
-                            let userId = getUserLogged();
-                            console.log(token);
-                            console.log(userId);
+                            let userId = getUserLogged().Id;
                             let user = GETUSERINFO();
                             $("#Id_input").text(user.id);
                             $("#GUID_input").text(user.GUID);
