@@ -33,7 +33,7 @@ class UsersRepository extends require('./repository') {
     }
     update(user) {
         if (this.model.valid(user)) {
-            let foundUser = super.get(user.Id);
+            let foundUser = super.get(parseInt(user.Id));
             if (foundUser) {
                 user["Created"] = foundUser["Created"];
                 user["AvatarGUID"] = ImageFilesRepository.storeImageData(user["AvatarGUID"], user["ImageData"]);

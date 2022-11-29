@@ -94,27 +94,25 @@ function removeUserLogged() {
 }
 
 
-/*
-function eraseAccessToken(){
-    localStorage.removeItem('access_Token');
-}
+// function eraseAccessToken(){
+//     localStorage.removeItem('access_Token');
+// }
 
-function retriveAccessToken(){
+function retrieveAccessToken(){
     return localStorage.getItem('access_Token');
 }
 
 function getBearerAuthorizationToken(){
-    return {'Authorization': 'Bearer '+ retriveAccessToken()};
+    return {'authorization': 'Bearer '+ retrieveAccessToken()};
 }
 
-function registerRequestURL(){
-    return server + 'Accounts/register';
-}
+// function registerRequestURL(){
+//     return server + 'Accounts/register';
+// }
 
-function storeLoggedUser(user){
-    localStorage.setItem('user', JSON.str)
-}
-*/
+// function storeLoggedUser(user){
+//     localStorage.setItem('user', JSON.str)
+// }
 
 
 /* AJAX functions utilites */
@@ -127,7 +125,6 @@ function REGISTER(profil, successCallBack, errorCallBack) {
         contentType: 'application/json',
         data: JSON.stringify(profil),
         success: function (profil) {
-            console.log(profil);
             successCallBack(profil);
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
@@ -198,17 +195,37 @@ function VERIFY_EMAIL(userId, verifyCode, successCallBack, errorCallBack) {
 }
 
 
-function MODIFY_USER_INFO(userId, successCallBack, errorCallBack) {
+// function MODIFY_USER_INFO(userInfo, successCallBack, errorCallBack) {
+//     $.ajax({
+//         url: server + "/Accounts/verify" + "/" + userInfo.Id,
+//         type: 'PUT',
+//         contentType: 'application/json',
+//         headers: getBearerAuthorizationToken(),
+//         date: JSON.stringify(userInfo),
+//         success: function () {
+
+//             GETUSERINFO(userId, successCallBack, error);
+//         },
+//         error: function (jqXHR) { errorCallBack(jqXHR.status) }
+//     })
+// }
+function MODIFY_USER_INFO(userInfo, successCallBack, errorCallBack) {
+    // console.log(getBearerAuthorizationToken());
+    // userInfo.Id = parseInt(userInfo.Id);
     $.ajax({
-        url: server + "/Accounts/verify" + "/" + userInfo.Id,
+        url: server + "/accounts/modify",
         type: 'PUT',
         contentType: 'application/json',
-        headers: getBearerAuthorizationToken(),
-        date: JSON.stringify(userInfo),
-        success: function () {
-            GETUSERINFO(userId, successCallBack, error);
+        // headers: getBearerAuthorizationToken(),
+        // authorization: 'Bearer '+ retrieveAccessToken(),
+        headers: {
+            authorization: 'Bearer '+ retrieveAccessToken()
+        },
+        data: JSON.parse(userInfo),
+        success: function (status) {
+            successCallBack(status);
+            // GETUSERINFO(userId, successCallBack, error);
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
 }
-

@@ -135,7 +135,7 @@ class Repository {
       if (!conflict) {
         let index = 0;
         for (let object of this.objects()) {
-          if (object.Id === objectToModify.Id) {
+          if (object.Id === parseInt(objectToModify.Id)) {
             this.objectsList[index] = objectToModify;
             this.write();
             return this.updateResult.ok;

@@ -103,10 +103,11 @@ module.exports =
         modify(user) {
             if (this.writeAuthorization()) {
                 user.Created = utilities.nowInSeconds();
-                let foundedUser = this.repository.findByField("Id", user.Id);
-                user.VerifyCode = foundedUser.VerifyCode
+                var userId = parseInt(user.Id);
+                let foundUser = this.repository.findByField("Id", userId);
+                user.VerifyCode = foundUser.VerifyCode
                 if (user.Password == '') { // password not changed
-                    user.Password = foundedUser.Password;
+                    user.Password = foundUser.Password;
                 }
                 if (this.repository != null) {
                     let updateResult = this.repository.update(user);

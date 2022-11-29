@@ -108,19 +108,24 @@
 
                 <div id="registerDlg">
                     <form id="registerForm">
-                        <!-- <input type="hidden" id="UserIdProfileInput" value="0"> -->
+                        <input type="hidden" id="profile_userId_input" value="0">
+                        <input type="hidden" id="profile_userCode_input">
+                        <input type="hidden" id="profile_avatarUrl_input">
+                        
+                        <label for="profile_user_input">Nom d'usager</label>
+                        <input type="text" id="profile_user_input" class="form-control" required>
 
-                        <label for="user_input">Nom d'usager</label>
-                        <input type="text" id="user_input" class="form-control" required>
+                        <label for="profile_email_input">Courriel</label>
+                        <input id="profile_email_input" class="form-control" required>
 
-                        <label for="email_input">Courriel</label>
-                        <input id="email_input" class="form-control" required>
+                        <label for="profile_oldmdp_input">Ancien mot de passe</label>
+                        <input id="profile_oldmdp_input" class="form-control" required> 
 
-                        <label for="mdp_input">Mot de passe</label>
-                        <input id="mdp_input" class="form-control" required>
+                        <label for="profile_mdp_input">Mot de passe</label>
+                        <input id="profile_mdp_input" class="form-control" required>
 
-                        <label for="cmdp_input">Confirmation</label>
-                        <input id="cmdp_input" class="form-control" required>
+                        <label for="profile_cmdp_input">Confirmation</label>
+                        <input id="profile_cmdp_input" class="form-control" required>
 
                         <label for="avatarImage">Avatar</label>
                         <div id='avatarImage' class='ImageUploader' defaultImage='images/No_Avatar.png'
@@ -286,7 +291,24 @@
             function registerCmd() {
                 holdCheckETag = true;
                 registerMode = true;
+                var user = getUserLogged();
+                //Hidding previous password input
+                $('label[for="profile_oldmdp_input"]').attr("hidden", "true")
+                $("#profile_oldmdp_input").attr("hidden", "true")
+
+                //Reset from data
+                $("#profile_userId_input").val(0);
+                $("#profile_userCode_input").val("");
+                $("#profile_avatarUrl_input").val("");
+
+                $("#profile_user_input").val("");
+                $("#profile_email_input").val("");
+                $('label[for="profile_mdp_input"]').text("Mot de passe")
+                $("#profile_oldmdp_input").val("");
+                $("#profile_mdp_input").val("");
+                $("#profile_cmdp_input").val("");
                 ImageUploader.resetImage('avatarImage');
+
                 $("#registerDlg").dialog('option', 'title', "Création de compte");
                 $("#registerDlgOkBtn").text("Créer");
                 $("#registerDlg").dialog('open');
@@ -295,34 +317,42 @@
                 holdCheckETag = true;
                 registerMode = false;
                 var user = getUserLogged();
-                // $("email_input").val(token.Email); //Pas encore fonctionnel
-                $("tester").val(user.Email);
-                // ImageUploader.setImage('avatarImage', token.AvatarURL);
-                ImageUploader.resetImage('avatarImage');//To delete after the token works
+                console.log(user);
+                
+
+                //Showing previous password input
+                $('label[for="profile_oldmdp_input"]').removeAttr("hidden")
+                $("#profile_oldmdp_input").removeAttr("hidden")
+
+                //Set form data
+                $("#profile_userId_input").val(user.Id);
+                $("#profile_userCode_input").val(user.VerifyCode);
+                $("#profile_avatarUrl_input").val(user.AvatarURL);
+
+                $("#profile_user_input").val(user.Name);
+                $("#profile_email_input").val(user.Email);
+                $('label[for="profile_mdp_input"]').text("Nouveau mot de passe")
+                $("#profile_oldmdp_input").val("");
+                $("#profile_mdp_input").val("");
+                $("#profile_cmdp_input").val("");
+                ImageUploader.setImage('avatarImage', user.AvatarURL);
+
+                // ImageUploader.resetImage('avatarImage');//To delete after the token works
                 $("#registerDlg").dialog('option', 'title', "Modification de compte");
                 $("#registerDlgOkBtn").text("Modifier");
                 $("#registerDlg").dialog('open');
             }
-                        /*
-                        <label for="user_input">Nom d'usager</label>
-                        <input type="text" id="user_input" class="form-control" required>
-
-                        <label for="email_input">Courriel</label>
-                        <input id="email_input" class="form-control" required>
-
-                        <label for="mdp_input">Mot de passe</label>
-                        <input id="mdp_input" class="form-control" required>
-
-                        <label for="cmdp_input">Confirmation</label>
-                        <input id="cmdp_input" class="form-control" required>
-                        */
             function profileInfoFromForm() {
                 let registerinfo = {
-                        Id: 0, // parseInt($("#id_input").val()),
-                        Name: ($("#user_input").val()),
-                        Email: $("#email_input").val(),
-                        Password: $("#mdp_input").val(),
+                        Id: $("#profile_userId_input").val(),
+                        Name: ($("#profile_user_input").val()),
+                        Email: $("#profile_email_input").val(),
+                        OldPassword: $("#profile_oldmdp_input").val(),
+                        Password: $("#profile_mdp_input").val(),
+                        ConfirmPassword: $("#profile_cmdp_input").val(),
                         ImageData: ImageUploader.getImageData('avatarImage'),
+                        AvatarURL: $("#profile_userCode_input").val(),
+                        VerifyCode: $("#profile_userCode_input").val(),
                 };
                 return registerinfo;
 
@@ -330,9 +360,9 @@
                 /* if ($("#registerForm")[0].checkValidity()) {
                     let registerinfo = {
                         Id: 0, // parseInt($("#id_input").val()),
-                        Name: ($("#user_input").val()),
-                        Email: $("#email_input").val(),
-                        Password: $("#mdp_input").val(),
+                        Name: ($("#profile_user_input").val()),
+                        Email: $("#profile_email_input").val(),
+                        Password: $("#profile_mdp_input").val(),
                     };
                     return registerinfo;
                 } else {
@@ -362,9 +392,9 @@
                 /* if ($("#registerForm")[0].checkValidity()) {
                     let registerinfo = {
                         Id: 0, // parseInt($("#id_input").val()),
-                        Name: ($("#user_input").val()),
-                        Email: $("#email_input").val(),
-                        Password: $("#mdp_input").val(),
+                        Name: ($("#profile_user_input").val()),
+                        Email: $("#profile_email_input").val(),
+                        Password: $("#profile_mdp_input").val(),
                     };
                     return registerinfo;
                 } else {
@@ -397,9 +427,9 @@
                 /* if ($("#registerForm")[0].checkValidity()) {
                     let registerinfo = {
                         Id: 0, // parseInt($("#id_input").val()),
-                        Name: ($("#user_input").val()),
-                        Email: $("#email_input").val(),
-                        Password: $("#mdp_input").val(),
+                        Name: ($("#profile_user_input").val()),
+                        Email: $("#profile_email_input").val(),
+                        Password: $("#profile_mdp_input").val(),
                     };
                     return registerinfo;
                 } else {
@@ -486,24 +516,37 @@
                 //TODO se login lorsqu'on crée un usager
                 console.log("Register Callback effectué, présentement une fonctione vide");
             }
-
+            function errorRegister(status) {
+                $("#errorMessage").text("ERROR " + status);
+                $("#errorDlg").dialog('open');
+            }
+            function successEditUser() {
+                console.log("EditUser Callback effectué, présentement une fonctione vide");
+            }
+            function errorEditUser(status) {
+                $("#errorMessage").text("ERROR " + status);
+                $("#errorDlg").dialog('open');
+            }
             function successLogin() {
                 var user = getUserLogged();
                 if (user != null) {
                     $("#loginLogo").attr("src", user.AvatarURL);
                     $("#loginName").text(user.Name);
-
-                    $("#registerCmd").attr("disabled", "disabled");
-                    $("#editProfileCmd").attr("disabled", "enabled");
                 }
             }
-
+            function errorLogin(status) {
+                console.log(status);
+                if(status == 481)
+                    $("#errorMessage").text("Courriel invalide");
+                else if (482)
+                    $("#errorMessage").text("Mot de passe invalide");
+                else
+                    $("#errorMessage").text("Connexion échouée");
+                $("#errorDlg").dialog('open');
+            }
             function successLogout() {
                 $("#loginLogo").attr("src", "");
                 $("#loginName").text("");
-
-                $("#registerCmd").attr("disabled", "enabled");
-                $("#editProfileCmd").attr("disabled", "disabled");
             }
 
             function successGetUser(profil){
@@ -545,16 +588,19 @@
                         id: "registerDlgOkBtn",
                         text: "Title will be changed dynamically",
                         click: function () {
-                            let register = profileInfoFromForm();
-                            //alert(register);
-                            if (register) {
-                                console.log(register);
-                                REGISTER(register, successRegister, error);
-                               // alert("reg");
-                                ImageUploader.resetImage('avatarImage');
+                            let updatedUser = profileInfoFromForm();
+                            if (registerMode) {
+                                console.log(updatedUser);
+                                REGISTER(updatedUser, successRegister, errorRegister);
                                 holdCheckETag = false;
                                 $(this).dialog("close");
                             }
+                            else{
+                                MODIFY_USER_INFO(updatedUser, successEditUser, errorEditUser)
+                                holdCheckETag = false;
+                                $(this).dialog("close");
+                            }
+                            
                         }
                     },
                     {
@@ -584,10 +630,8 @@
                         text: "Title will be changed dynamically",
                         click: function () {
                             let login = loginFromForm();
-                            //alert(login);
                             if (login) {
-                                LOGIN(login, successLogin, error);
-                                //alert("log");
+                                LOGIN(login, successLogin, errorLogin);
                                 holdCheckETag = false;
                                 $(this).dialog("close");
                             }
