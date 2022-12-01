@@ -57,25 +57,26 @@
                         </span>
                     </div>
                     <span class="menu">
-                        <span class="cmd fa fa-user-plus" id="registerCmd" title="S'inscrire"
-                        data-toggle="tooltip"></span>
-
-                        <span class="cmd fa fa-user-pen" id="editProfileCmd" title="Modifier le profil"
-                        data-toggle="tooltip"></span>
-
-                        <span class="cmd fa fa-user" id="loginCmd" title="Connexion"
-                        data-toggle="tooltip"></span>
-
-                        <span class="cmd fa fa-user-times" id="logoutCmd" title="Déconnexion"
-                        data-toggle="tooltip"></span>
-
-                        <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
+                        <span class="menuUser">
+                            <span class="cmd fa fa-user-plus" id="registerCmd" title="S'inscrire"
                             data-toggle="tooltip"></span>
+    
+                            <span class="cmd fa fa-user-pen" id="editProfileCmd" title="Modifier le profil"
+                            data-toggle="tooltip"></span>
+    
+                            <span class="cmd fa fa-user" id="loginCmd" title="Connexion"
+                            data-toggle="tooltip"></span>
+    
+                            <span class="cmd fa fa-user-times" id="logoutCmd" title="Déconnexion"
+                            data-toggle="tooltip"></span>
+                        </span>                  
+                        <span>
+                            <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
+                                data-toggle="tooltip"></span>
+                        </span>
                     </span>
-                    <div>
-                        <img id="loginLogo" src="" alt="logo utilisateur" width="30" height="30">
-                        LoginName:<span id="loginName"></span>
-                        Test:<span id="tester"></span>
+                    <div>                       
+                        <span id="loginUser"></span>
                     </div>
                 </div>
             </div>
@@ -103,6 +104,7 @@
                             waitingImage='images/writing.gif'>
                         </div>
                         <div class="note">Cliquez-Déposez une image</div>
+                        <div> <input type="checkbox" id="partager" value=""><label for="partager">Partager</label></div>
                     </form>
                 </div>
 
@@ -137,10 +139,6 @@
 
                 <div id="loginDlg">
                     <form id="loginForm">
-                        <input type="hidden" id="log_Id_input" value="0">
-                        <input type="hidden" id="log_date_input" value="0">
-                        <input type="hidden" id="log_GUID_input" value="">
-
                         <label for="log_email_input">Courriel</label>
                         <input id="log_email_input" class="form-control" required>
 
@@ -450,6 +448,7 @@
                 resetimageForm();
                 ImageUploader.imageRequired('image', true);
                 $("#imageDlg").dialog('option', 'title', "Ajout d'image");
+                $("#partager").prop( "checked", false);
                 $("#imageDlgOkBtn").text("Ajouter");
                 $("#imageDlg").dialog('open');
             }
@@ -487,10 +486,20 @@
                 ImageUploader.resetImage('image');
             }
             function imageFromForm() {
-                if ($("#imageForm")[0].checkValidity()) {
+                if ($("#imageForm")[0].checkValidity()) {                 
+                    let token = getAccessToken();                           
+                    let userId = getUserLogged().Id;                      
+                    let partager = 0;
+
+                    if($("#partager").prop("checked"))
+                    {
+                        partager = 1;
+                    }
+
                     let image = {
-                        Id: parseInt($("#Id_input").val()),
-                        GUID: $("#GUID_input").val(),
+                        Id: parseInt(userId),
+                        GUID: token,
+                        Shared: partager,
                         Title: $("#title_input").val(),
                         Description: $("#description_input").val(),
                         ImageData: ImageUploader.getImageData('image'),
@@ -530,8 +539,7 @@
             function successLogin() {
                 var user = getUserLogged();
                 if (user != null) {
-                    $("#loginLogo").attr("src", user.AvatarURL);
-                    $("#loginName").text(user.Name);
+                    $("#loginUser").html(`<img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">` + user.Name);
                 }
             }
             function errorLogin(status) {
@@ -545,15 +553,13 @@
                 $("#errorDlg").dialog('open');
             }
             function successLogout() {
-                $("#loginLogo").attr("src", "");
-                $("#loginName").text("");
+                $("#loginUser").html("");
             }
 
             function successGetUser(profil){
                 var user = getUserLogged();
                 if (user != null) {
-                    $("#loginLogo").attr("src", user.AvatarURL);
-                    $("#loginName").text(user.Name);
+                    $("#loginUser").html(`<img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">` + user.Name);
                 }
             }
 
@@ -663,11 +669,7 @@
                         id: "imageDlgOkBtn",
                         text: "Title will be changed dynamically",
                         click: function () {
-                            let token = getAccessToken();
-                            let userId = getUserLogged().Id;
-                            let user = GETUSERINFO();
-                            $("#Id_input").text(user.id);
-                            $("#GUID_input").text(user.GUID);
+                           
                             let image = imageFromForm();
                             console.log(image);
                             if (image) {

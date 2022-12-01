@@ -238,3 +238,9 @@ span2 {
     display: grid;
     grid-template-columns: auto 35px 35px;
 }
+
+.menuUser{
+    grid-template-columns: auto 35px 35px;
+    text-align: right;
+    float: right;
+}
