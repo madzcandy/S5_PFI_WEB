@@ -199,7 +199,13 @@
                 appendMode = !refresh;
                 function prepareQueryString() {
                     let queryString = "";
-                    let userId = getUserLogged.Id;
+                    let userId = 0;
+                    let user =getUserLogged();
+     
+                    if(user != undefined){
+                        userId=user.Id;
+                    }
+        
                     if (appendMode) {
                         queryString = `?id=`+ userId +`&sort=Date,` + sort + `&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
                         imagesCount += appendCount;
@@ -557,6 +563,7 @@
                 if (user != null) {
                     $("#loginUser").html(`<img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">` + user.Name);
                 }
+                getImagesList(true);
             }
             function errorLogin(status) {
                 console.log(status);
@@ -570,6 +577,7 @@
             }
             function successLogout() {
                 $("#loginUser").html("");
+                getImagesList(true);
             }
 
             function successGetUser(profil){

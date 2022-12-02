@@ -189,7 +189,7 @@ module.exports =
         removePrivateImage() {
             let subCollection = [];
             for (let item of this.collection) {
-                if(item['Shared'] == 1)
+                if(item['Shared'] == 1 || item['UserId'] == this.userid)
                 {
                     subCollection.push(item);
                 }
