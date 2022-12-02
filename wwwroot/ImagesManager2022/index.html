@@ -363,7 +363,7 @@
                         Password: $("#profile_mdp_input").val(),
                         ConfirmPassword: $("#profile_cmdp_input").val(),
                         ImageData: ImageUploader.getImageData('avatarImage'),
-                        AvatarURL: $("#profile_userCode_input").val(),
+                        // AvatarURL: $("#profile_userCode_input").val(),
                         VerifyCode: $("#profile_userCode_input").val(),
                 };
                 return registerinfo;
@@ -627,7 +627,6 @@
                         click: function () {
                             let updatedUser = profileInfoFromForm();
                             if (registerMode) {
-                                // delete updatedUser['OldPassword'];
                                 delete updatedUser.OldPassword;
                                 delete updatedUser.ConfirmPassword;
                                 
