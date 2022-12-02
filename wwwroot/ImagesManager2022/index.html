@@ -73,6 +73,8 @@
                         <span>
                             <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
                                 data-toggle="tooltip"></span>
+                            <span class="cmd fa fa-sort-amount-desc" id="sort" title="Trier"
+                            data-toggle="tooltip"></span>
                         </span>
                     </span>
                     <div>                       
@@ -180,6 +182,7 @@
             let appendCount = 3;
             let previousScrollPosition = 0;
             let appendMode = false;
+            let sort = "desc";
 
             init_UI();
             HEAD(checkETag, error);
@@ -196,11 +199,12 @@
                 appendMode = !refresh;
                 function prepareQueryString() {
                     let queryString = "";
+                    let userId = getUserLogged.Id;
                     if (appendMode) {
-                        queryString = `?sort=Date,desc&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
+                        queryString = `?id=`+ userId +`&sort=Date,` + sort + `&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
                         imagesCount += appendCount;
                     } else {
-                        queryString = `?sort=Date,desc&offset=${0}&limit=${imagesCount}`;
+                        queryString = `?id=`+ userId +`&sort=Date,` + sort + `&offset=${0}&limit=${imagesCount}`;
                     }
                     return queryString;
                 }
@@ -485,6 +489,18 @@
                 $("#description_input").val("");
                 ImageUploader.resetImage('image');
             }
+            function sortCmd(){
+                if(sort == 'asc')
+                {
+                    sort = 'desc';
+                }
+                else
+                {
+                    sort = 'asc';
+                }
+                getImagesList(true);
+            }
+
             function imageFromForm() {
                 if ($("#imageForm")[0].checkValidity()) {                 
                     let token = getAccessToken();                           
@@ -569,13 +585,13 @@
                 $("#editProfileCmd").click(editProfileCmd)
                 $("#loginCmd").click(loginCmd)
                 $("#logoutCmd").click(logoutCmd)
+                $("#sort").click(sortCmd)
 
                 var token = getAccessToken();
                 let user = getUserLogged();
                 if (user!=undefined){
                     GETUSERINFO(user.Id,successGetUser,error);
                 }
-
 
                 $("#registerDlg").dialog({
                     title: "...",
@@ -668,8 +684,7 @@
                     buttons: [{
                         id: "imageDlgOkBtn",
                         text: "Title will be changed dynamically",
-                        click: function () {
-                           
+                        click: function () {                         
                             let image = imageFromForm();
                             console.log(image);
                             if (image) {
