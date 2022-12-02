@@ -187,7 +187,7 @@ function VERIFY_EMAIL(userId, verifyCode, successCallBack, errorCallBack) {
         contentType: 'text/plain',
         date: {},
         success: function () {
-            GETUSERINFO(userId, successCallBack, error);
+            GETUSERINFO(userId, successCallBack, errorCallBack);
             successCallBack();
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
@@ -210,21 +210,17 @@ function VERIFY_EMAIL(userId, verifyCode, successCallBack, errorCallBack) {
 //     })
 // }
 function MODIFY_USER_INFO(userInfo, successCallBack, errorCallBack) {
-    // console.log(getBearerAuthorizationToken());
-    // userInfo.Id = parseInt(userInfo.Id);
     $.ajax({
         url: server + "/accounts/modify",
         type: 'PUT',
         contentType: 'application/json',
-        // headers: getBearerAuthorizationToken(),
-        // authorization: 'Bearer '+ retrieveAccessToken(),
         headers: {
             authorization: 'Bearer '+ retrieveAccessToken()
         },
         data: JSON.parse(userInfo),
         success: function (status) {
             successCallBack(status);
-            // GETUSERINFO(userId, successCallBack, error);
+            GETUSERINFO(userId, successCallBack, error);
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
