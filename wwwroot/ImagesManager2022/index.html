@@ -327,29 +327,33 @@
                 registerMode = false;
                 var user = getUserLogged();
                 console.log(user);
-                
+                if(user == null){
+                    $("#errorMessage").text("Vous n'êtes pas connecté");
+                    $("#errorDlg").dialog('open');
+                }
+                else{
+                    //Showing previous password input
+                    $('label[for="profile_oldmdp_input"]').removeAttr("hidden")
+                    $("#profile_oldmdp_input").removeAttr("hidden")
 
-                //Showing previous password input
-                $('label[for="profile_oldmdp_input"]').removeAttr("hidden")
-                $("#profile_oldmdp_input").removeAttr("hidden")
+                    //Set form data
+                    $("#profile_userId_input").val(user.Id);
+                    $("#profile_userCode_input").val(user.VerifyCode);
+                    $("#profile_avatarUrl_input").val(user.AvatarURL);
 
-                //Set form data
-                $("#profile_userId_input").val(user.Id);
-                $("#profile_userCode_input").val(user.VerifyCode);
-                $("#profile_avatarUrl_input").val(user.AvatarURL);
+                    $("#profile_user_input").val(user.Name);
+                    $("#profile_email_input").val(user.Email);
+                    $('label[for="profile_mdp_input"]').text("Nouveau mot de passe")
+                    $("#profile_oldmdp_input").val("");
+                    $("#profile_mdp_input").val("");
+                    $("#profile_cmdp_input").val("");
+                    ImageUploader.setImage('avatarImage', user.AvatarURL);
 
-                $("#profile_user_input").val(user.Name);
-                $("#profile_email_input").val(user.Email);
-                $('label[for="profile_mdp_input"]').text("Nouveau mot de passe")
-                $("#profile_oldmdp_input").val("");
-                $("#profile_mdp_input").val("");
-                $("#profile_cmdp_input").val("");
-                ImageUploader.setImage('avatarImage', user.AvatarURL);
-
-                // ImageUploader.resetImage('avatarImage');//To delete after the token works
-                $("#registerDlg").dialog('option', 'title', "Modification de compte");
-                $("#registerDlgOkBtn").text("Modifier");
-                $("#registerDlg").dialog('open');
+                    // ImageUploader.resetImage('avatarImage');//To delete after the token works
+                    $("#registerDlg").dialog('option', 'title', "Modification de compte");
+                    $("#registerDlgOkBtn").text("Modifier");
+                    $("#registerDlg").dialog('open');
+                }
             }
             function profileInfoFromForm() {
                 let registerinfo = {
@@ -360,7 +364,7 @@
                         Password: $("#profile_mdp_input").val(),
                         ConfirmPassword: $("#profile_cmdp_input").val(),
                         ImageData: ImageUploader.getImageData('avatarImage'),
-                        AvatarURL: $("#profile_userCode_input").val(),
+                        // AvatarURL: $("#profile_userCode_input").val(),
                         VerifyCode: $("#profile_userCode_input").val(),
                 };
                 return registerinfo;
@@ -547,16 +551,18 @@
 
             function successRegister() {
                 //TODO se login lorsqu'on crée un usager
-                console.log("Register Callback effectué, présentement une fonctione vide");
+                console.log("Success register Callback effectué, présentement une fonctione vide");
             }
             function errorRegister(status) {
+                console.log("Error Register (Callback)")
                 $("#errorMessage").text("ERROR " + status);
                 $("#errorDlg").dialog('open');
             }
             function successEditUser() {
-                console.log("EditUser Callback effectué, présentement une fonctione vide");
+                console.log("Success EditUser Callback effectué, présentement une fonctione vide");
             }
             function errorEditUser(status) {
+                console.log("Error EditUser (Callback)")
                 $("#errorMessage").text("ERROR " + status);
                 $("#errorDlg").dialog('open');
             }
@@ -568,10 +574,10 @@
                 getImagesList(true);
             }
             function errorLogin(status) {
-                console.log(status);
+                console.log("Erreur lors de la connexion --- Statut: " + status);
                 if(status == 481)
                     $("#errorMessage").text("Courriel invalide");
-                else if (482)
+                else if (status == 482)
                     $("#errorMessage").text("Mot de passe invalide");
                 else
                     $("#errorMessage").text("Connexion échouée");
@@ -622,12 +628,27 @@
                         click: function () {
                             let updatedUser = profileInfoFromForm();
                             if (registerMode) {
+                                delete updatedUser.OldPassword;
+                                delete updatedUser.ConfirmPassword;
+                                
                                 console.log(updatedUser);
                                 REGISTER(updatedUser, successRegister, errorRegister);
                                 holdCheckETag = false;
                                 $(this).dialog("close");
                             }
                             else{
+                                var currentUser = getUserLogged();
+                                //Check if user wants to change his password and check if some requirements are met
+                                if(
+                                !(updatedUser.Password != String.empty &&
+                                 updatedUser.OldPassword == currentUser.Password &&
+                                 updatedUser.Password == updatedUser.ConfirmPassword))
+                                {
+                                    updatedUser.Password = currentUser.Password;
+                                }
+                                delete updatedUser.OldPassword;
+                                delete updatedUser.ConfirmPassword;
+
                                 MODIFY_USER_INFO(updatedUser, successEditUser, errorEditUser)
                                 holdCheckETag = false;
                                 $(this).dialog("close");
