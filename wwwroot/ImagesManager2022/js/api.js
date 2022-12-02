@@ -39,13 +39,15 @@ function POST(data, successCallBack, errorCallBack) {
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     });
 }
-function PUT(bookmark, successCallBack, errorCallBack) {
+function PUT(image, successCallBack, errorCallBack) {
+    alert("1");
+    console.log(image);
     $.ajax({
-        url: apiBaseURL + "/" + bookmark.Id,
+        url: apiBaseURL + "/" + image.Id,
         type: 'PUT',
         contentType: 'application/json',
-        data: JSON.stringify(bookmark),
-        success: () => { successCallBack() },
+        data: JSON.stringify(image),
+        success: (image) => { successCallBack(image) },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     });
 }

@@ -238,6 +238,7 @@
                                     <a href="${image.OriginalURL}" target="_blank">
                                         <div    class='image'
                                                 style="background-image:url('${image.ThumbnailURL}')">
+                                                <img src="${image.Logouser}" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images">
                                         </div>
                                     </a>
                                     <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>
@@ -519,7 +520,7 @@
                     }
 
                     let image = {
-                        Id: 0,
+                        Id: 0,//if on est en ajout mettre 0 si modif mettre lid de limage courante
                         GUID: token,
                         Shared: partager,
                         UserId: parseInt(userId),

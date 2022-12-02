@@ -191,6 +191,7 @@ module.exports =
             for (let item of this.collection) {
                 if(item['Shared'] == 1 || item['UserId'] == this.userid)
                 {
+                    item.Logouser="images/camera.png";
                     subCollection.push(item);
                 }
             }
