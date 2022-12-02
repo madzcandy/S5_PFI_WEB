@@ -10,6 +10,7 @@ module.exports =
             this.searchKeys = [];
             this.fields = [];
             this.filteredCollection = [];
+            this.userid = 0;
             this.limit = 0;
             this.offset = 0;
             let instance = this;
@@ -18,6 +19,7 @@ module.exports =
                 let paramValue = filterParams[paramName];
                 if (paramValue) {
                     switch (paramName) {
+                        case "id": instance.userid = parseInt(paramValue); break;
                         case "sort": instance.setSortFields(paramValue); break;
                         case "limit": instance.limit = parseInt(paramValue); break;
                         case "offset": instance.offset = parseInt(paramValue); break;
@@ -182,9 +184,26 @@ module.exports =
         sort() {
             this.filteredCollection.sort((a, b) => this.compare(a, b));
         }
+
+
+        removePrivateImage() {
+            let subCollection = [];
+            for (let item of this.collection) {
+                if(item['Shared'] == 1)
+                {
+                    subCollection.push(item);
+                }
+            }
+            return subCollection;
+        }
+
+
         get() {
 
             this.findByKeys(this.keepFields());
+
+
+            this.filteredCollection = this.removePrivateImage();
 
             if (this.sortFields.length > 0)
                 this.sort();
