@@ -519,9 +519,10 @@
                     }
 
                     let image = {
-                        Id: parseInt(userId),
+                        Id: 0,
                         GUID: token,
                         Shared: partager,
+                        UserId: parseInt(userId),
                         Title: $("#title_input").val(),
                         Description: $("#description_input").val(),
                         ImageData: ImageUploader.getImageData('image'),
