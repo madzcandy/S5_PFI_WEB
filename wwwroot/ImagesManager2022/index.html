@@ -63,6 +63,9 @@
     
                             <span class="cmd fa fa-user-pen" id="editProfileCmd" title="Modifier le profil"
                             data-toggle="tooltip"></span>
+
+                            <span class="cmd fa fa-envelope" id="mailCmd" title="Vérification de courriel"
+                            data-toggle="tooltip"></span>
     
                             <span class="cmd fa fa-user" id="loginCmd" title="Connexion"
                             data-toggle="tooltip"></span>
@@ -151,6 +154,15 @@
                     </form>
                 </div>
 
+                <div id="mailDlg">
+                    <form id="mailForm">
+                        Consultez votre boite de courriel pour connaître votre code 
+                        de vérification et inscrivez-le ci-dessous
+
+                        <label for="mailCode_input">Code de vérification</label>
+                        <input id="mailCode_input" class="form-control" required>
+                    </form>
+                </div>
 
                 <div id="confirmDeleteDlg">
                     <span id="confirmationMessage"></span>
@@ -386,6 +398,25 @@
                 //return true;
             }
 
+            function mailCmd() {
+                holdCheckETag = true;
+                createMode = true;
+                $("#mailDlg").dialog('option', 'title', "Vérification de courriel");
+                $("#mailDlgOkBtn").text("Envoyer");
+                $("#mailDlg").dialog('open');
+            }
+            function successMail() {
+                alert("success mail");
+
+                console.log("Success register Callback effectué, présentement une fonctione vide");
+            }
+            function errorMail(status) {
+                alert("error mail");
+                console.log("Error Register (Callback)")
+                $("#errorMessage").text("ERROR " + status);
+                $("#errorDlg").dialog('open');
+            }
+
             function loginCmd() {
                 holdCheckETag = true;
                 createMode = true;
@@ -602,6 +633,7 @@
                 $("#loginCmd").click(loginCmd)
                 $("#logoutCmd").click(logoutCmd)
                 $("#sort").click(sortCmd)
+                $("#mailCmd").click(mailCmd)
 
                 var token = getAccessToken();
                 let user = getUserLogged();
@@ -652,8 +684,42 @@
                                 MODIFY_USER_INFO(updatedUser, successEditUser, errorEditUser)
                                 holdCheckETag = false;
                                 $(this).dialog("close");
-                            }
-                            
+                            }                           
+                        }
+                    },
+                    {
+                        text: "Annuler",
+                        click: function () {
+                            holdCheckETag = false;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+
+                $("#mailDlg").dialog({
+                    title: "...",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 540,
+                    minWidth: 540,
+                    maxWidth: 540,
+                    height: 350,
+                    minHeight: 350,
+                    maxHeight: 350,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [{
+                        id: "mailDlgOkBtn",
+                        text: "Title will be changed dynamically",
+                        click: function () {     
+                            let userId = getUserLogged().Id;
+                            let verifyCode = $("#mailCode_input").val();
+                            alert(userId);
+                            alert(verifyCode);
+                            VERIFY_EMAIL(userId, verifyCode, successMail, errorMail)               
+                            holdCheckETag = false;
+                            $(this).dialog("close");                       
                         }
                     },
                     {

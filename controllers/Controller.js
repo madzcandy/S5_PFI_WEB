@@ -8,6 +8,7 @@
 // Author : Nicolas Chourot
 // Lionel-Groulx College
 /////////////////////////////////////////////////////////////////////
+const User = require('../models/user');
 const TokenManager = require('../tokenManager');
 module.exports =
     class Controller {
@@ -56,7 +57,7 @@ module.exports =
                 this.HttpContext.response.unAuthorized();
         }
         post(data) {
-            if (this.writeAuthorization()) {
+            if (this.writeAuthorization() /*&& User.VerifyCode*/) {  //TODOO : Verifier que le email est verifier pour ajout dimage
                 if (this.repository != null) {
                     data = this.repository.add(data);
                     if (data) {
