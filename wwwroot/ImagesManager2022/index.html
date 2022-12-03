@@ -125,9 +125,6 @@
                         <label for="profile_email_input">Courriel</label>
                         <input id="profile_email_input" class="form-control" required>
 
-                        <label for="profile_oldmdp_input">Ancien mot de passe</label>
-                        <input id="profile_oldmdp_input" class="form-control" required> 
-
                         <label for="profile_mdp_input">Mot de passe</label>
                         <input id="profile_mdp_input" class="form-control" required>
 
@@ -313,9 +310,6 @@
                 holdCheckETag = true;
                 registerMode = true;
                 var user = getUserLogged();
-                //Hidding previous password input
-                $('label[for="profile_oldmdp_input"]').attr("hidden", "true")
-                $("#profile_oldmdp_input").attr("hidden", "true")
 
                 //Reset from data
                 $("#profile_userId_input").val(0);
@@ -325,7 +319,6 @@
                 $("#profile_user_input").val("");
                 $("#profile_email_input").val("");
                 $('label[for="profile_mdp_input"]').text("Mot de passe")
-                $("#profile_oldmdp_input").val("");
                 $("#profile_mdp_input").val("");
                 $("#profile_cmdp_input").val("");
                 ImageUploader.resetImage('avatarImage');
@@ -344,10 +337,6 @@
                     $("#errorDlg").dialog('open');
                 }
                 else{
-                    //Showing previous password input
-                    $('label[for="profile_oldmdp_input"]').removeAttr("hidden")
-                    $("#profile_oldmdp_input").removeAttr("hidden")
-
                     //Set form data
                     $("#profile_userId_input").val(user.Id);
                     $("#profile_userCode_input").val(user.VerifyCode);
@@ -356,7 +345,6 @@
                     $("#profile_user_input").val(user.Name);
                     $("#profile_email_input").val(user.Email);
                     $('label[for="profile_mdp_input"]').text("Nouveau mot de passe")
-                    $("#profile_oldmdp_input").val("");
                     $("#profile_mdp_input").val("");
                     $("#profile_cmdp_input").val("");
                     ImageUploader.setImage('avatarImage', user.AvatarURL);
@@ -372,9 +360,7 @@
                         Id: $("#profile_userId_input").val(),
                         Name: ($("#profile_user_input").val()),
                         Email: $("#profile_email_input").val(),
-                        OldPassword: $("#profile_oldmdp_input").val(),
                         Password: $("#profile_mdp_input").val(),
-                        ConfirmPassword: $("#profile_cmdp_input").val(),
                         ImageData: ImageUploader.getImageData('avatarImage'),
                         // AvatarURL: $("#profile_userCode_input").val(),
                         VerifyCode: $("#profile_userCode_input").val(),
@@ -660,8 +646,6 @@
                         click: function () {
                             let updatedUser = profileInfoFromForm();
                             if (registerMode) {
-                                delete updatedUser.OldPassword;
-                                delete updatedUser.ConfirmPassword;
                                 
                                 console.log(updatedUser);
                                 REGISTER(updatedUser, successRegister, errorRegister);
@@ -671,15 +655,6 @@
                             else{
                                 var currentUser = getUserLogged();
                                 //Check if user wants to change his password and check if some requirements are met
-                                if(
-                                !(updatedUser.Password != String.empty &&
-                                 updatedUser.OldPassword == currentUser.Password &&
-                                 updatedUser.Password == updatedUser.ConfirmPassword))
-                                {
-                                    updatedUser.Password = currentUser.Password;
-                                }
-                                delete updatedUser.OldPassword;
-                                delete updatedUser.ConfirmPassword;
 
                                 MODIFY_USER_INFO(updatedUser, successEditUser, errorEditUser)
                                 holdCheckETag = false;

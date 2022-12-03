@@ -113,7 +113,7 @@ module.exports =
                     let updateResult = this.repository.update(user);
                     if (updateResult == this.repository.updateResult.ok) {
                         this.HttpContext.response.ok();
-                        if (user.Email != foundedUser.Email) {
+                        if (user.Email != foundUser.Email) {
                             user.VerifyCode = utilities.makeVerifyCode(6);
                             this.repository.update(user);
                             this.sendVerificationEmail(user);
