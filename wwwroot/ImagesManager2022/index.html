@@ -357,7 +357,8 @@
             }
             function profileInfoFromForm() {
                 let registerinfo = {
-                        Id: $("#profile_userId_input").val(),
+                        // Id: $("#profile_userId_input").val(),
+                        Id: parseInt($("#profile_userId_input").val()),
                         Name: ($("#profile_user_input").val()),
                         Email: $("#profile_email_input").val(),
                         Password: $("#profile_mdp_input").val(),
@@ -576,7 +577,11 @@
                 $("#errorDlg").dialog('open');
             }
             function successEditUser() {
-                console.log("Success EditUser Callback effectué, présentement une fonctione vide");
+                console.log("Success EditUser Callback effectué");
+                var user = getUserLogged();
+                if (user != null) {
+                    $("#loginUser").html(`<img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">` + user.Name);
+                }
             }
             function errorEditUser(status) {
                 console.log("Error EditUser (Callback)")
@@ -653,9 +658,12 @@
                                 $(this).dialog("close");
                             }
                             else{
-                                var currentUser = getUserLogged();
-                                //Check if user wants to change his password and check if some requirements are met
-
+                                // var currentUser = getUserLogged();
+                                // delete updatedUser.ImageData;
+                                // delete updatedUser.VerifyCode;
+                                console.log(updatedUser);
+                                console.log(JSON.stringify(updatedUser));
+                                console.log(JSON.parse(JSON.stringify(updatedUser)));
                                 MODIFY_USER_INFO(updatedUser, successEditUser, errorEditUser)
                                 holdCheckETag = false;
                                 $(this).dialog("close");

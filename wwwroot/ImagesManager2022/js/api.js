@@ -219,9 +219,9 @@ function MODIFY_USER_INFO(userInfo, successCallBack, errorCallBack) {
         headers: {
             authorization: 'Bearer '+ retrieveAccessToken()
         },
-        data: JSON.parse(userInfo),
+        data: JSON.stringify(userInfo),
         success: function () {
-            GETUSERINFO(userInfo.Id, successCallBack, error);
+            GETUSERINFO(userInfo.Id, successCallBack, errorCallBack);
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
