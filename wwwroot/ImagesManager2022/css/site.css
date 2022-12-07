@@ -1,7 +1,19 @@
 @import url('https://fonts.googleapis.com/css?family=Titan One');
 
+:root {
+    --primaryColor: rgb(206, 155, 248);
+    --secondaryColor: rgb(108, 75, 168);
+    --tertiaryColor: lightblue;
+    --borderColors: black;  
+    --glyphiconColor: aquamarine;
+    --labelColor: grey;
+    --primaryTextColor : white;
+    --secondaryTextColor : rgb(0, 0, 0);
+  }
+
 body {
     background-image: linear-gradient(45deg, rgb(255, 136, 0), rgb(0, 0, 169));
+    color: var(--primaryTextColor);
 }
 .mainContainer {
     display: flex;
@@ -15,12 +27,13 @@ body {
 .headerPanel {
     display: flex;
     flex-wrap: wrap;
-    background-image: linear-gradient(180deg, lightgray, gray);
+    background-image: linear-gradient(180deg, var(--secondaryColor), var(--primaryColor));
+    /* background-image: linear-gradient(180deg, lightgray, gray); */
     align-items: center;
 }
 .headerLayout {
     display: grid;
-    grid-template-columns: 80px auto 60px;
+    /* grid-template-columns: 80px auto 60px; */
     align-items: center;
 }
 .outLinedText {
@@ -61,7 +74,8 @@ body {
 .header {
     width: 100%;
     font-size: 28px;
-    color: rgb(55, 55, 55);
+    /* color: rgb(55, 55, 55); */
+    color: var(--primaryTextColor);
     text-align: left;
 }
 .connectionBar {
@@ -75,7 +89,8 @@ body {
 .scrollContainer {
     overflow-y: scroll;
     flex: 1;
-    border-top: 1px solid lightgray;
+    /* border-top: 1px solid lightgray; */
+    /* border-top: 1px solid var(--borderColors); */
     scroll-snap-type: y mandatory;
 }
 ::-webkit-scrollbar {
@@ -84,17 +99,20 @@ body {
 ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
+    background-color: var(--borderColors);
 }
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    background-color: white;
 }
 .ImageUploader {
     align-items: center;
     width: 600px;
     height: 344px;
     /* 600 X 0,57333 ratio */
-    border: 1px solid lightgray;
+    /* border: 1px solid lightgray; */
+    border: 1px solid var(--borderColors);
 }
 .ui-dialog #avatar {
     border: 0px solid white;
@@ -124,7 +142,8 @@ textarea2 {
 }
 .note {
     font-size: 12px;
-    color: blue;
+    /* color: blue; */
+    color: var(--primaryTextColor);
 }
 .image {
     height: 220px;
@@ -168,25 +187,30 @@ textarea2 {
 }
 .imageDate {
     font-size: 14px;
-    color: gray
+    /* color: gray */
+    color: var(--secondaryTextColor);
 }
 .imageDesciption {
     position: relative;
     text-align: justify;
     margin-bottom: 20px;
     padding-bottom: 24px;
-    border-bottom: 1px solid lightgray;
+    /* border-bottom: 1px solid lightgray; */
+    border-bottom: 1px solid  var(--borderColors);
+
 }
 
 .cmd {
     cursor: pointer;
     font-size: 30px;
     font-weight: bold;
-    color: blue;
+    /* color: blue; */
+    color: var(--glyphiconColor);
     text-align: center;
 }
 .cmd:hover {
-    color: rgb(2, 166, 221);
+    /* color: rgb(2, 166, 221); */
+    color: var(--tertiaryColor);
 }
 .cmd:active {
     color: lightblue;
@@ -194,7 +218,8 @@ textarea2 {
 label {
     margin-top: 10px;
     margin-bottom: 4px;
-    color: gray;
+    /* color: gray; */
+    color: var(--labelColor);
 }
 .biggerCheck {
     scale: 1.5 1.5;
@@ -233,7 +258,7 @@ div2,
 span2 {
     border: 1px solid red;
 }
-
+/* 
 .menu{
     display: grid;
     grid-template-columns: auto 35px 35px;
@@ -243,4 +268,11 @@ span2 {
     grid-template-columns: auto 35px 35px;
     text-align: right;
     float: right;
+} */
+#imagesList{
+    background-color: rgb(108, 0, 134);
+    background-color: var(--primaryColor);
+}
+.mainContainer{
+    /* background-color: var(--primaryColor); */
 }

@@ -23,8 +23,11 @@
         <div class="mainContainer">
             <div class="headerPanel">
                 <div class="headerLayout">
-                    <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images">
-                    <div style="display:flex">
+                    <div>
+                        <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images">
+                        <img src="images/Title.png" alt="" data-toggle="tooltip">
+                    </div>
+                    <!-- <div style="display:flex">
                         <span class="header outLinedText tbg-yellow">
                             P
                         </span>
@@ -55,8 +58,8 @@
                         <span class="header outLinedText tbg-yellow">
                             D
                         </span>
-                    </div>
-                    <span class="menu">
+                    </div> -->
+                    <div class="menu">
                         <span class="menuUser">
                             <span class="cmd fa fa-user-plus" id="registerCmd" title="S'inscrire"
                             data-toggle="tooltip"></span>
@@ -79,7 +82,7 @@
                             <span class="cmd fa fa-sort-amount-desc" id="sort" title="Trier"
                             data-toggle="tooltip"></span>
                         </span>
-                    </span>
+                    </div>
                     <div>                       
                         <span id="loginUser"></span>
                     </div>
@@ -123,13 +126,13 @@
                         <input type="text" id="profile_user_input" class="form-control" required>
 
                         <label for="profile_email_input">Courriel</label>
-                        <input id="profile_email_input" class="form-control" required>
+                        <input id="profile_email_input" class="form-control Email" required patternMessage="Courriel invalide">
 
                         <label for="profile_mdp_input">Mot de passe</label>
-                        <input id="profile_mdp_input" class="form-control" required>
+                        <input type="password" id="profile_mdp_input" class="form-control MatchedPassword" matchedPasswordId="profile_cmdp_input" required>
 
                         <label for="profile_cmdp_input">Confirmation</label>
-                        <input id="profile_cmdp_input" class="form-control" required>
+                        <input type="password" id="profile_cmdp_input" class="form-control" required>
 
                         <label for="avatarImage">Avatar</label>
                         <div id='avatarImage' class='ImageUploader' defaultImage='images/No_Avatar.png'
