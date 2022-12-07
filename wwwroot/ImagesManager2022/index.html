@@ -595,6 +595,18 @@
                 var user = getUserLogged();
                 if (user != null) {
                     $("#loginUser").html(`<img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">` + user.Name);
+                    $("#loginCmd").hide();
+                    $("#registerCmd").hide();  
+                    $("#editProfileCmd").show();
+                    $("#logoutCmd").show();
+                    if(user.VerifyCode == "verified"){
+                        $("#newImageCmd").show();
+                        $("#mailCmd").hide();
+                    }
+                    else{
+                        $("#mailCmd").show();
+                        $("#newImageCmd").hide();
+                    }
                 }
                 getImagesList(true);
             }
@@ -611,6 +623,12 @@
             function successLogout() {
                 $("#loginUser").html("");
                 getImagesList(true);
+                $("#loginCmd").show();
+                $("#registerCmd").show();  
+                $("#editProfileCmd").hide();
+                $("#logoutCmd").hide();
+                $("#newImageCmd").hide();
+                $("#mailCmd").hide();
             }
 
             function successGetUser(profil){
@@ -633,6 +651,18 @@
                 let user = getUserLogged();
                 if (user!=undefined){
                     GETUSERINFO(user.Id,successGetUser,error);
+                    $("#loginCmd").hide();
+                    $("#registerCmd").hide();
+                    if(user.VerifyCode == "verified")
+                        $("#mailCmd").hide();
+                    else
+                        $("#newImageCmd").hide();
+                }
+                else{ 
+                    $("#editProfileCmd").hide();
+                    $("#logoutCmd").hide();
+                    $("#newImageCmd").hide();
+                    $("#mailCmd").hide();
                 }
 
                 $("#registerDlg").dialog({
