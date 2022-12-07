@@ -262,13 +262,15 @@ div2,
 span2 {
     border: 1px solid red;
 }
-/* 
+
 .menu{
-    display: grid;
-    grid-template-columns: auto 35px 35px;
+    /* display: grid;
+    grid-template-columns: auto 35px 35px; */
+    position: absolute;
+    right: 3rem;
 }
 
-.menuUser{
+/* .menuUser{
     grid-template-columns: auto 35px 35px;
     text-align: right;
     float: right;
