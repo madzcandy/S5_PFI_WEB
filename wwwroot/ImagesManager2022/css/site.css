@@ -32,11 +32,17 @@ body {
     background-image: linear-gradient(180deg, var(--backgroundColor2), var(--backgroundColor1));
     /* background-image: linear-gradient(180deg, lightgray, gray); */
     align-items: center;
+    width: 100%;
 }
 .headerLayout {
-    display: grid;
+    /* display: flex;
+    flex: 1; */
+    flex-wrap: wrap;
+    flex-flow: row;
+    justify-content: center;
     /* grid-template-columns: 80px auto 60px; */
     align-items: center;
+    width: 100%;
 }
 .outLinedText {
     font-size: 30px !important;
@@ -266,19 +272,44 @@ span2 {
 .menu{
     /* display: grid;
     grid-template-columns: auto 35px 35px; */
-    position: absolute;
-    right: 3rem;
+    /* position: absolute; */
+    /* right: 3rem; */
+    display: flex;
+    align-items: center;
+    /* width: 20rem; */
 }
 
-/* .menuUser{
-    grid-template-columns: auto 35px 35px;
+#menuUser{
+    margin: 20px;
+    display: block;
+    /* grid-template-columns: auto 35px 35px;
     text-align: right;
+    float: right; */
+    width: auto;
+    min-width:300px;
+    max-width: 400px;
     float: right;
-} */
+}
 #imagesList{
     background-color: rgb(108, 0, 134);
     background-color: var(--backgroundColor1);
 }
-.mainContainer{
-    /* background-color: var(--backgroundColor1); */
+#loginUser{
+    float: right;
+    margin-left: 20px;
+}
+#userName{
+    font-weight: 500;
+    margin-right: 1rem;
+}
+#loginLogo{
+    min-width: 4rem;
+    min-height: 4rem;
+    border-radius: 50px;
+}
+#Title{
+    display: inline-block;
+    width: 500px !important;
+    min-width:500px;
+    max-width: 500px;
 }

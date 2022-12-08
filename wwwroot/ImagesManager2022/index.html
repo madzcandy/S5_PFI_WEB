@@ -23,7 +23,7 @@
         <div class="mainContainer">
             <div class="headerPanel">
                 <div class="headerLayout">
-                    <div>
+                    <div id="Title">
                         <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images">
                         <img src="images/Title.png" alt="" data-toggle="tooltip">
                     </div>
@@ -59,32 +59,32 @@
                             D
                         </span>
                     </div> -->
-                    <div class="menu">
-                        <span class="menuUser">
-                            <span class="cmd fa fa-user-plus" id="registerCmd" title="S'inscrire"
-                            data-toggle="tooltip"></span>
-    
-                            <span class="cmd fa fa-user-pen" id="editProfileCmd" title="Modifier le profil"
-                            data-toggle="tooltip"></span>
-
-                            <span class="cmd fa fa-envelope" id="mailCmd" title="Vérification de courriel"
-                            data-toggle="tooltip"></span>
-    
-                            <span class="cmd fa fa-user" id="loginCmd" title="Connexion"
-                            data-toggle="tooltip"></span>
-    
-                            <span class="cmd fa fa-user-times" id="logoutCmd" title="Déconnexion"
-                            data-toggle="tooltip"></span>
-                        </span>                  
-                        <span>
-                            <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
+                    <div id="menuUser">
+                        <div class="menu">
+                            <span>
+                                <span class="cmd fa fa-user-plus" id="registerCmd" title="S'inscrire"
                                 data-toggle="tooltip"></span>
-                            <span class="cmd fa fa-sort-amount-desc" id="sort" title="Trier"
-                            data-toggle="tooltip"></span>
-                        </span>
-                    </div>
-                    <div>                       
-                        <span id="loginUser"></span>
+        
+                                <span class="cmd fa fa-user-pen" id="editProfileCmd" title="Modifier le profil"
+                                data-toggle="tooltip"></span>
+
+                                <span class="cmd fa fa-envelope" id="mailCmd" title="Vérification de courriel"
+                                data-toggle="tooltip"></span>
+        
+                                <span class="cmd fa fa-user" id="loginCmd" title="Connexion"
+                                data-toggle="tooltip"></span>
+        
+                                <span class="cmd fa fa-user-times" id="logoutCmd" title="Déconnexion"
+                                data-toggle="tooltip"></span>
+                            </span>                  
+                            <span>
+                                <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
+                                    data-toggle="tooltip"></span>
+                                <span class="cmd fa fa-sort-amount-desc" id="sort" title="Trier"
+                                data-toggle="tooltip"></span>
+                            </span>                     
+                            <div id="loginUser"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -583,7 +583,7 @@
                 console.log("Success EditUser Callback effectué");
                 var user = getUserLogged();
                 if (user != null) {
-                    $("#loginUser").html(`<img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">` + user.Name);
+                    $("#loginUser").html(`<span id="userName">` + user.Name + `</span><img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">`);
                 }
             }
             function errorEditUser(status) {
@@ -594,7 +594,7 @@
             function successLogin() {
                 var user = getUserLogged();
                 if (user != null) {
-                    $("#loginUser").html(`<img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">` + user.Name);
+                    $("#loginUser").html(`<span id="userName">` + user.Name + `</span><img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">`);
                     $("#loginCmd").hide();
                     $("#registerCmd").hide();  
                     $("#editProfileCmd").show();
@@ -634,7 +634,7 @@
             function successGetUser(profil){
                 var user = getUserLogged();
                 if (user != null) {
-                    $("#loginUser").html(`<img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">` + user.Name);
+                    $("#loginUser").html(`<span id="userName">` + user.Name + `</span><img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">`);
                 }
             }
 
