@@ -12,6 +12,8 @@ module.exports =
         constructor() {
             super(new ImageModel(), true /* cached */);
             this.setBindExtraDataMethod(this.bindImageURL);
+           // this.setBindExtraDataMethod(this.bindImageURL);
+
         }
         bindImageURL(image) {
             if (image) {
@@ -27,11 +29,34 @@ module.exports =
             }
             return null;
         }
+
+        bindImageURLAndUser(){
+            if (image) {
+                let bindedImage = { ...image };
+                if (image["GUID"] != "") {
+                    bindedImage["OriginalURL"] = HttpContext.host + ImageFilesRepository.getImageFileURL(image["GUID"]);
+                    bindedImage["ThumbnailURL"] = HttpContext.host + ImageFilesRepository.getThumbnailFileURL(image["GUID"]);
+                } else {
+                    bindedImage["OriginalURL"] = "";
+                    bindedImage["ThumbnailURL"] = "";
+                }
+                let user = this.UsersRepository.get(bindedImage.UserId);
+                if(user)
+                {
+                    bindedImage.User = user;
+                    bindedImage.Username = user.Name;
+                }
+                return bindedImage;
+            }
+            return null;
+        }
+
         add(image) {
             if (this.model.valid(image)) {
                 image["GUID"] = ImageFilesRepository.storeImageData("", image["ImageData"]);
                 delete image["ImageData"];
-                return this.bindImageURL(super.add(image));
+                //return this.bindImageURL(super.add(image));
+                return this.bindImageURLAndUser(super.add(image));
             }
             return null;
         }
