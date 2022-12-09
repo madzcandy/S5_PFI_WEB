@@ -51,12 +51,4 @@ class UsersRepository extends require('./repository') {
         }
         return false;
     }
-    getInfo(id) {
-        //super(new UserModel(), true);
-        //UsersRepository userrepo = new UsersRepository();
-
-        let foundUser = this.get(id);
-       
-        return foundUser;
-      }
 }

@@ -11,7 +11,6 @@ module.exports =
     class ImagesRepository extends require('./repository') {
         constructor() {
             super(new ImageModel(), true /* cached */);
-           // this.setBindExtraDataMethod(this.bindImageURL);
             this.setBindExtraDataMethod(this.bindImageURLAndUser);
 
         }
@@ -41,12 +40,10 @@ module.exports =
                     bindedImage["ThumbnailURL"] = "";
                 }
                 
-               // UsersRepository userrepo = new UsersRepository();
-               
+
                 const UsersRepository = require('./usersRepository');
                 let usersRepository = new UsersRepository();
-                let user = usersRepository.getInfo(bindedImage.UserId); //this.UsersRepository.getInfo(bindedImage.UserId);
-
+                let user = usersRepository.get(bindedImage.UserId);
 
                 if(user)
                 {
@@ -62,7 +59,6 @@ module.exports =
             if (this.model.valid(image)) {
                 image["GUID"] = ImageFilesRepository.storeImageData("", image["ImageData"]);
                 delete image["ImageData"];
-                //return this.bindImageURL(super.add(image));
                 return this.bindImageURLAndUser(super.add(image));
             }
             return null;
