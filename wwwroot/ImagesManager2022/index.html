@@ -23,8 +23,11 @@
         <div class="mainContainer">
             <div class="headerPanel">
                 <div class="headerLayout">
-                    <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images">
-                    <div style="display:flex">
+                    <div id="Title">
+                        <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images">
+                        <img src="images/Title.png" alt="" data-toggle="tooltip">
+                    </div>
+                    <!-- <div style="display:flex">
                         <span class="header outLinedText tbg-yellow">
                             P
                         </span>
@@ -55,33 +58,33 @@
                         <span class="header outLinedText tbg-yellow">
                             D
                         </span>
-                    </div>
-                    <span class="menu">
-                        <span class="menuUser">
-                            <span class="cmd fa fa-user-plus" id="registerCmd" title="S'inscrire"
-                            data-toggle="tooltip"></span>
-    
-                            <span class="cmd fa fa-user-pen" id="editProfileCmd" title="Modifier le profil"
-                            data-toggle="tooltip"></span>
-
-                            <span class="cmd fa fa-envelope" id="mailCmd" title="Vérification de courriel"
-                            data-toggle="tooltip"></span>
-    
-                            <span class="cmd fa fa-user" id="loginCmd" title="Connexion"
-                            data-toggle="tooltip"></span>
-    
-                            <span class="cmd fa fa-user-times" id="logoutCmd" title="Déconnexion"
-                            data-toggle="tooltip"></span>
-                        </span>                  
-                        <span>
-                            <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
+                    </div> -->
+                    <div id="menuUser">
+                        <div class="menu">
+                            <span>
+                                <span class="cmd fa fa-user-plus" id="registerCmd" title="S'inscrire"
                                 data-toggle="tooltip"></span>
-                            <span class="cmd fa fa-sort-amount-desc" id="sort" title="Trier"
-                            data-toggle="tooltip"></span>
-                        </span>
-                    </span>
-                    <div>                       
-                        <span id="loginUser"></span>
+
+                                <span class="cmd fa fa-user-pen" id="editProfileCmd" title="Modifier le profil"
+                                data-toggle="tooltip"></span>
+
+                                <span class="cmd fa fa-envelope" id="mailCmd" title="Vérification de courriel"
+                                data-toggle="tooltip"></span>
+
+                                <span class="cmd fa fa-user" id="loginCmd" title="Connexion"
+                                data-toggle="tooltip"></span>
+
+                                <span class="cmd fa fa-user-times" id="logoutCmd" title="Déconnexion"
+                                data-toggle="tooltip"></span>
+                            </span>
+                            <span>
+                                <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
+                                    data-toggle="tooltip"></span>
+                                <span class="cmd fa fa-sort-amount-desc" id="sort" title="Trier"
+                                data-toggle="tooltip"></span>
+                            </span>
+                            <div id="loginUser"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -118,21 +121,18 @@
                         <input type="hidden" id="profile_userId_input" value="0">
                         <input type="hidden" id="profile_userCode_input">
                         <input type="hidden" id="profile_avatarUrl_input">
-                        
+
                         <label for="profile_user_input">Nom d'usager</label>
                         <input type="text" id="profile_user_input" class="form-control" required>
 
                         <label for="profile_email_input">Courriel</label>
-                        <input id="profile_email_input" class="form-control" required>
-
-                        <label for="profile_oldmdp_input">Ancien mot de passe</label>
-                        <input id="profile_oldmdp_input" class="form-control" required> 
+                        <input id="profile_email_input" class="form-control Email" required patternMessage="Courriel invalide">
 
                         <label for="profile_mdp_input">Mot de passe</label>
-                        <input id="profile_mdp_input" class="form-control" required>
+                        <input type="password" id="profile_mdp_input" class="form-control MatchedPassword" matchedPasswordId="profile_cmdp_input" required>
 
                         <label for="profile_cmdp_input">Confirmation</label>
-                        <input id="profile_cmdp_input" class="form-control" required>
+                        <input type="password" id="profile_cmdp_input" class="form-control" required>
 
                         <label for="avatarImage">Avatar</label>
                         <div id='avatarImage' class='ImageUploader' defaultImage='images/No_Avatar.png'
@@ -156,7 +156,7 @@
 
                 <div id="mailDlg">
                     <form id="mailForm">
-                        Consultez votre boite de courriel pour connaître votre code 
+                        Consultez votre boite de courriel pour connaître votre code
                         de vérification et inscrivez-le ci-dessous
 
                         <label for="mailCode_input">Code de vérification</label>
@@ -213,11 +213,11 @@
                     let queryString = "";
                     let userId = 0;
                     let user =getUserLogged();
-     
+
                     if(user != undefined){
                         userId=user.Id;
                     }
-        
+
                     if (appendMode) {
                         queryString = `?id=`+ userId +`&sort=Date,` + sort + `&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
                         imagesCount += appendCount;
@@ -312,9 +312,6 @@
                 holdCheckETag = true;
                 registerMode = true;
                 var user = getUserLogged();
-                //Hidding previous password input
-                $('label[for="profile_oldmdp_input"]').attr("hidden", "true")
-                $("#profile_oldmdp_input").attr("hidden", "true")
 
                 //Reset from data
                 $("#profile_userId_input").val(0);
@@ -324,7 +321,6 @@
                 $("#profile_user_input").val("");
                 $("#profile_email_input").val("");
                 $('label[for="profile_mdp_input"]').text("Mot de passe")
-                $("#profile_oldmdp_input").val("");
                 $("#profile_mdp_input").val("");
                 $("#profile_cmdp_input").val("");
                 ImageUploader.resetImage('avatarImage');
@@ -343,10 +339,6 @@
                     $("#errorDlg").dialog('open');
                 }
                 else{
-                    //Showing previous password input
-                    $('label[for="profile_oldmdp_input"]').removeAttr("hidden")
-                    $("#profile_oldmdp_input").removeAttr("hidden")
-
                     //Set form data
                     $("#profile_userId_input").val(user.Id);
                     $("#profile_userCode_input").val(user.VerifyCode);
@@ -355,7 +347,6 @@
                     $("#profile_user_input").val(user.Name);
                     $("#profile_email_input").val(user.Email);
                     $('label[for="profile_mdp_input"]').text("Nouveau mot de passe")
-                    $("#profile_oldmdp_input").val("");
                     $("#profile_mdp_input").val("");
                     $("#profile_cmdp_input").val("");
                     ImageUploader.setImage('avatarImage', user.AvatarURL);
@@ -368,12 +359,11 @@
             }
             function profileInfoFromForm() {
                 let registerinfo = {
-                        Id: $("#profile_userId_input").val(),
+                        // Id: $("#profile_userId_input").val(),
+                        Id: parseInt($("#profile_userId_input").val()),
                         Name: ($("#profile_user_input").val()),
                         Email: $("#profile_email_input").val(),
-                        OldPassword: $("#profile_oldmdp_input").val(),
                         Password: $("#profile_mdp_input").val(),
-                        ConfirmPassword: $("#profile_cmdp_input").val(),
                         ImageData: ImageUploader.getImageData('avatarImage'),
                         // AvatarURL: $("#profile_userCode_input").val(),
                         VerifyCode: $("#profile_userCode_input").val(),
@@ -543,9 +533,9 @@
             }
 
             function imageFromForm() {
-                if ($("#imageForm")[0].checkValidity()) {                 
-                    let token = getAccessToken();                           
-                    let userId = getUserLogged().Id;                      
+                if ($("#imageForm")[0].checkValidity()) {
+                    let token = getAccessToken();
+                    let userId = getUserLogged().Id;
                     let partager = 0;
 
                     if($("#partager").prop("checked"))
@@ -589,7 +579,11 @@
                 $("#errorDlg").dialog('open');
             }
             function successEditUser() {
-                console.log("Success EditUser Callback effectué, présentement une fonctione vide");
+                console.log("Success EditUser Callback effectué");
+                var user = getUserLogged();
+                if (user != null) {
+                    $("#loginUser").html(`<span id="userName">` + user.Name + `</span><img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">`);
+                }
             }
             function errorEditUser(status) {
                 console.log("Error EditUser (Callback)")
@@ -599,7 +593,19 @@
             function successLogin() {
                 var user = getUserLogged();
                 if (user != null) {
-                    $("#loginUser").html(`<img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">` + user.Name);
+                    $("#loginUser").html(`<span id="userName">` + user.Name + `</span><img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">`);
+                    $("#loginCmd").hide();
+                    $("#registerCmd").hide();
+                    $("#editProfileCmd").show();
+                    $("#logoutCmd").show();
+                    if(user.VerifyCode == "verified"){
+                        $("#newImageCmd").show();
+                        $("#mailCmd").hide();
+                    }
+                    else{
+                        $("#mailCmd").show();
+                        $("#newImageCmd").hide();
+                    }
                 }
                 getImagesList(true);
             }
@@ -616,12 +622,18 @@
             function successLogout() {
                 $("#loginUser").html("");
                 getImagesList(true);
+                $("#loginCmd").show();
+                $("#registerCmd").show();
+                $("#editProfileCmd").hide();
+                $("#logoutCmd").hide();
+                $("#newImageCmd").hide();
+                $("#mailCmd").hide();
             }
 
             function successGetUser(profil){
                 var user = getUserLogged();
                 if (user != null) {
-                    $("#loginUser").html(`<img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">` + user.Name);
+                    $("#loginUser").html(`<span id="userName">` + user.Name + `</span><img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">`);
                 }
             }
 
@@ -638,6 +650,18 @@
                 let user = getUserLogged();
                 if (user!=undefined){
                     GETUSERINFO(user.Id,successGetUser,error);
+                    $("#loginCmd").hide();
+                    $("#registerCmd").hide();
+                    if(user.VerifyCode == "verified")
+                        $("#mailCmd").hide();
+                    else
+                        $("#newImageCmd").hide();
+                }
+                else{
+                    $("#editProfileCmd").hide();
+                    $("#logoutCmd").hide();
+                    $("#newImageCmd").hide();
+                    $("#mailCmd").hide();
                 }
 
                 $("#registerDlg").dialog({
@@ -659,9 +683,7 @@
                         click: function () {
                             let updatedUser = profileInfoFromForm();
                             if (registerMode) {
-                                delete updatedUser.OldPassword;
-                                delete updatedUser.ConfirmPassword;
-                                
+
                                 console.log(updatedUser);
                                 REGISTER(updatedUser, successRegister, errorRegister);
                                 holdCheckETag = false;
@@ -678,11 +700,11 @@
                                     updatedUser.Password = currentUser.Password;
                                 }
                                 delete updatedUser.OldPassword;
-                                delete updatedUser.ConfirmPassword;                      
+                                delete updatedUser.ConfirmPassword;
                                 MODIFY_USER_INFO(updatedUser, successEditUser, errorEditUser)
                                 holdCheckETag = false;
                                 $(this).dialog("close");
-                            }                           
+                            }
                         }
                     },
                     {
@@ -710,14 +732,14 @@
                     buttons: [{
                         id: "mailDlgOkBtn",
                         text: "Title will be changed dynamically",
-                        click: function () {     
+                        click: function () {
                             let userId = getUserLogged().Id;
                             let verifyCode = $("#mailCode_input").val();
                             alert(userId);
                             alert(verifyCode);
-                            VERIFY_EMAIL(userId, verifyCode, successMail, errorMail)               
+                            VERIFY_EMAIL(userId, verifyCode, successMail, errorMail)
                             holdCheckETag = false;
-                            $(this).dialog("close");                       
+                            $(this).dialog("close");
                         }
                     },
                     {
@@ -779,7 +801,7 @@
                     buttons: [{
                         id: "imageDlgOkBtn",
                         text: "Title will be changed dynamically",
-                        click: function () {                         
+                        click: function () {
                             let image = imageFromForm();
                             console.log(image);
                             if (image) {

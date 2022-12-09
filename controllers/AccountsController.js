@@ -103,7 +103,8 @@ module.exports =
         modify(user) {
             if (this.writeAuthorization()) {
                 user.Created = utilities.nowInSeconds();
-                var userId = parseInt(user.Id);
+                var userId = user.Id;
+                // var userId = parseInt(user.Id);
                 let foundUser = this.repository.findByField("Id", userId);
                 user.VerifyCode = foundUser.VerifyCode
                 if (user.Password == '') { // password not changed
@@ -113,7 +114,7 @@ module.exports =
                     let updateResult = this.repository.update(user);
                     if (updateResult == this.repository.updateResult.ok) {
                         this.HttpContext.response.ok();
-                        if (user.Email != foundedUser.Email) {
+                        if (user.Email != foundUser.Email) {
                             user.VerifyCode = utilities.makeVerifyCode(6);
                             this.repository.update(user);
                             this.sendVerificationEmail(user);

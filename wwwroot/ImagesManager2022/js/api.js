@@ -213,16 +213,15 @@ function VERIFY_EMAIL(userId, verifyCode, successCallBack, errorCallBack) {
 // }
 function MODIFY_USER_INFO(userInfo, successCallBack, errorCallBack) {
     $.ajax({
-        url: server + "/accounts/modify",
+        url: server + "/accounts/modify/" + userInfo.Id,
         type: 'PUT',
         contentType: 'application/json',
         headers: {
             authorization: 'Bearer '+ retrieveAccessToken()
         },
-        data: JSON.parse(userInfo),
-        success: function (status) {
-            successCallBack(status);
-            GETUSERINFO(userId, successCallBack, error);
+        data: JSON.stringify(userInfo),
+        success: function () {
+            GETUSERINFO(userInfo.Id, successCallBack, errorCallBack);
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
