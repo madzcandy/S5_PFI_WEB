@@ -229,8 +229,17 @@
                 GET_ALL(refreshimagesList, error, prepareQueryString());
             }
             function refreshimagesList(images, ETag) {
-                function insertIntoImageList(image) {
+                function insertIntoImageList(image) {                                                          
+                    let imageUser = image.User.AvatarURL;                     
+                    let iconImg = '';
+                    var user = getUserLogged();
 
+                    if(user != null && image.UserId == user.Id && image.Shared)
+                        iconImg = '<img src="images/shared.png" alt="" data-toggle="tooltip" class="favicon" title="Shared image">';                     
+                    else
+                        if(user == null ||  image.UserId != user.Id)
+                            iconImg = `<img id="loginLogo" src="${imageUser}" alt="" data-toggle="tooltip" class="favicon" title="User image">`;                           
+                        
                     $("#imagesList").append(
                         $(`
                             <div class='imageLayout'>
@@ -249,7 +258,7 @@
                                 </div>
                                 <a href="${image.OriginalURL}" target="_blank">
                                     <div class='image'style="background-image:url('${image.ThumbnailURL}')">
-                                        <img src="images/shared.png" alt="" data-toggle="tooltip" class="favicon" title="Shared image">
+                                        ${iconImg}
                                     </div>
                                 </a>
                                 <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>

@@ -2,7 +2,7 @@
  // Attention de ne pas avoir des références circulaire
  // const UsersRepository = require('./usersRepository'); pas ici sinon référence ciculaire
 const ImageFilesRepository = require('./imageFilesRepository.js');
-const UsersRepository = require('./usersRepository');
+//const UsersRepository = require('./usersRepository');
 const ImageModel = require('./image.js');
 const utilities = require("../utilities");
 const HttpContext = require('../httpContext').get();
@@ -11,8 +11,8 @@ module.exports =
     class ImagesRepository extends require('./repository') {
         constructor() {
             super(new ImageModel(), true /* cached */);
-            this.setBindExtraDataMethod(this.bindImageURL);
            // this.setBindExtraDataMethod(this.bindImageURL);
+            this.setBindExtraDataMethod(this.bindImageURLAndUser);
 
         }
         bindImageURL(image) {
@@ -30,7 +30,7 @@ module.exports =
             return null;
         }
 
-        bindImageURLAndUser(){
+        bindImageURLAndUser(image){
             if (image) {
                 let bindedImage = { ...image };
                 if (image["GUID"] != "") {
@@ -40,7 +40,14 @@ module.exports =
                     bindedImage["OriginalURL"] = "";
                     bindedImage["ThumbnailURL"] = "";
                 }
-                let user = this.UsersRepository.get(bindedImage.UserId);
+                
+               // UsersRepository userrepo = new UsersRepository();
+               
+                const UsersRepository = require('./usersRepository');
+                let usersRepository = new UsersRepository();
+                let user = usersRepository.getInfo(bindedImage.UserId); //this.UsersRepository.getInfo(bindedImage.UserId);
+
+
                 if(user)
                 {
                     bindedImage.User = user;
