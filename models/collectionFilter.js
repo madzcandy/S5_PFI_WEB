@@ -3,10 +3,10 @@ const utilities = require('../utilities');
 module.exports =
     class collectionFilter {
         constructor(collection, filterParams, model = null) {
-
             this.model = model;
             this.collection = collection;
             this.sortFields = [];
+            this.searchField = [];
             this.searchKeys = [];
             this.fields = [];
             this.filteredCollection = [];
@@ -21,8 +21,10 @@ module.exports =
                     switch (paramName) {
                         case "id": instance.userid = parseInt(paramValue); break;
                         case "sort": instance.setSortFields(paramValue); break;
+                        case "searchold": instance.setSearchFields(paramValue); break;
                         case "limit": instance.limit = parseInt(paramValue); break;
                         case "offset": instance.offset = parseInt(paramValue); break;
+                        case "keywords": instance.searchField = paramValue.split(' '); break;
                         case "fields": instance.fields = paramValue.split(','); break;
                         default: instance.addSearchKey(paramName, paramValue);
                     }
@@ -56,9 +58,20 @@ module.exports =
                 ascending: !descending
             };
         }
+/*
+        makeSearchField(fieldName) {
+            let parts = fieldName.split(',');
+            let searchField = "";
 
+            if (parts.length > 0)
+                searchField = utilities.capitalizeFirstLetter(parts[0].toLowerCase().trim());
+            else
+                return null;
+        
+            return searchField;
+        }
+*/
         setSortFields(fieldNames) {
-
             let sortField = null;
 
             if (Array.isArray(fieldNames)) {
@@ -73,6 +86,24 @@ module.exports =
                     this.sortFields.push(sortField);
             }
         }
+
+        setSearchFields(fieldNames) {
+           /* let searchField = null;
+
+            if (Array.isArray(fieldNames)) {
+                for (let fieldName of fieldNames) {
+                    searchField = this.makeSearchField(fieldName);
+                    if (searchField)
+                        this.searchField.push(searchField);
+                }
+            } else {
+                searchField = this.makeSearchField(fieldNames);
+                if (searchField)
+                    this.searchField.push(searchField);
+            }*/
+        }
+
+
         addSearchKey(keyName, value) {
             if (this.model && !(keyName in this.model))
                 return;
@@ -198,13 +229,32 @@ module.exports =
             return subCollection;
         }
 
+        filterSearchImage() {
+           //this.filteredCollection = findByKeys(this.filteredCollection);
+            
+            let subCollection = [];
+
+
+            if(this.searchField != null && this.searchField.length > 0)
+            {
+                for (let item of this.filteredCollection)
+                    for (let key of this.searchField)
+                        if (this.valueMatch(item['Title'], key))    
+                            subCollection.push(item);                                        
+            
+            }
+            else
+                subCollection = this.filteredCollection;
+
+            return subCollection;
+        }
+
 
         get() {
 
             this.findByKeys(this.keepFields());
-
-
             this.filteredCollection = this.removePrivateImage();
+            this.filteredCollection = this.filterSearchImage();
 
             if (this.sortFields.length > 0)
                 this.sort();

@@ -207,6 +207,7 @@
             let previousScrollPosition = 0;
             let appendMode = false;
             let sort = "desc";
+            let textSearch = "";
 
             init_UI();
             HEAD(checkETag, error);
@@ -231,11 +232,12 @@
                     }
 
                     if (appendMode) {
-                        queryString = `?id=`+ userId +`&sort=Date,` + sort + `&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
+                        queryString = `?id=`+ userId + `&fields=Title&keywords=` + textSearch + `&sort=Date,` + sort + `&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
                         imagesCount += appendCount;
                     } else {
-                        queryString = `?id=`+ userId +`&sort=Date,` + sort + `&offset=${0}&limit=${imagesCount}`;
+                        queryString = `?id=`+ userId + `&fields=Title&keywords=` + textSearch + `&sort=Date,` + sort + `&offset=${0}&limit=${imagesCount}`;
                     }
+                    console.log(queryString);
                     return queryString;
                 }
                 GET_ALL(refreshimagesList, error, prepareQueryString());
@@ -543,13 +545,15 @@
             }
             function sortCmd(){
                 if(sort == 'asc')
-                {
                     sort = 'desc';
-                }
                 else
-                {
                     sort = 'asc';
-                }
+
+                getImagesList(true);
+            }
+
+            function searchCmd(){
+                textSearch = $("#search_input").val();
                 getImagesList(true);
             }
 
@@ -665,6 +669,7 @@
                 $("#loginCmd").click(loginCmd)
                 $("#logoutCmd").click(logoutCmd)
                 $("#sort").click(sortCmd)
+                $("#searchCmd").click(searchCmd)
                 $("#mailCmd").click(mailCmd)
 
                 var token = getAccessToken();
