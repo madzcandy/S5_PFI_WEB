@@ -58,6 +58,15 @@ function DELETE(id, successCallBack, errorCallBack) {
         success: () => { successCallBack() },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     });
+} 
+function DELETEUSERIMAGES(userId){
+    deleteUserImages
+    $.ajax({
+        url: apiBaseURL + "/" + id,
+        type: 'DELETE',
+        success: () => { successCallBack() },
+        error: function (jqXHR) { errorCallBack(jqXHR.status) }
+    });
 }
 
 

@@ -83,10 +83,13 @@
                                 <span class="cmd fa fa-envelope" id="mailCmd" title="Vérification de courriel"
                                 data-toggle="tooltip"></span>
 
-                                <span class="cmd fa fa-user" id="loginCmd" title="Connexion"
+                                <span class="cmd fa fa-right-to-bracket" id="loginCmd" title="Connexion"
                                 data-toggle="tooltip"></span>
 
-                                <span class="cmd fa fa-user-times" id="logoutCmd" title="Déconnexion"
+                                <span class="cmd fa fa-right-from-bracket" id="logoutCmd" title="Déconnexion"
+                                data-toggle="tooltip"></span>
+
+                                <span class="cmd fa fa-user-times" id="deleteAccountCmd" title="Supprimer le compte"
                                 data-toggle="tooltip"></span>
                             </span>
                             <span>
@@ -174,6 +177,11 @@
                         <label for="mailCode_input">Code de vérification</label>
                         <input id="mailCode_input" class="form-control" required>
                     </form>
+                </div>
+
+                <div id="deleteAccountDlg">
+                    <div style="margin: 20px 0px;">Voulez-vous vraiment supprimer votre compte? </div>
+                    <div>Cela mènera à la suppression de toutes les images publié.</div>
                 </div>
 
                 <div id="confirmDeleteDlg">
@@ -543,6 +551,13 @@
                 $("#description_input").val("");
                 ImageUploader.resetImage('image');
             }
+            function deleteAccountCmd() {
+                holdCheckETag = true;
+                createMode = true;
+                $("#deleteAccountDlg").dialog('option', 'title', "Suppression du compte");
+                $("#deleteAccountDlgOkBtn").text("Supprimer");
+                $("#deleteAccountDlg").dialog('open');
+            }
             function sortCmd(){
                 if(sort == 'asc')
                     sort = 'desc';
@@ -623,6 +638,8 @@
                     $("#registerCmd").hide();
                     $("#editProfileCmd").show();
                     $("#logoutCmd").show();
+                    $("#deleteAccountCmd").show();
+                    
                     if(user.VerifyCode == "verified"){
                         $("#newImageCmd").show();
                         $("#mailCmd").hide();
@@ -653,6 +670,7 @@
                 $("#logoutCmd").hide();
                 $("#newImageCmd").hide();
                 $("#mailCmd").hide();
+                $("#deleteAccountCmd").hide();
             }
 
             function successGetUser(profil){
@@ -671,6 +689,7 @@
                 $("#sort").click(sortCmd)
                 $("#searchCmd").click(searchCmd)
                 $("#mailCmd").click(mailCmd)
+                $("#deleteAccountCmd").click(deleteAccountCmd)
 
                 var token = getAccessToken();
                 let user = getUserLogged();
@@ -688,6 +707,7 @@
                     $("#logoutCmd").hide();
                     $("#newImageCmd").hide();
                     $("#mailCmd").hide();
+                    $("#deleteAccountCmd").hide();
                 }
 
                 $("#registerDlg").dialog({
@@ -841,6 +861,35 @@
                                 holdCheckETag = false;
                                 $(this).dialog("close");
                             }
+                        }
+                    },
+                    {
+                        text: "Annuler",
+                        click: function () {
+                            holdCheckETag = false;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+
+                $("#deleteAccountDlg").dialog({
+                    title: "...",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 400,
+                    minWidth: 400,
+                    maxWidth: 400,
+                    height: 400,
+                    minHeight: 400,
+                    maxHeight: 400,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [{
+                        id: "deleteAccountDlgOkBtn",
+                        text: "Supprimer",
+                        click: function () {
+                            
                         }
                     },
                     {
