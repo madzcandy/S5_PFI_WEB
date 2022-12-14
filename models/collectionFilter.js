@@ -120,6 +120,22 @@ module.exports =
             }
         }
 
+        searchvalueExist(value, searchValue) {
+            try {
+                //\b(\w*work\w*)\b
+
+                let sv = '\\b(\\w*' + searchValue.toLowerCase().replace(/\*/g, '.*') + '\\w*)\\b';
+                let v = value.toString().replace(/(\r\n|\n|\r)/gm, "").toLowerCase();
+                return new RegExp(sv).test(v);
+            } catch (error) {
+                console.log(error);
+                return false;
+            }
+        }
+
+
+
+
         itemMatch(item) {
             if (item) {
                 for (let key of this.searchKeys) {
@@ -230,18 +246,14 @@ module.exports =
         }
 
         filterSearchImage() {
-           //this.filteredCollection = findByKeys(this.filteredCollection);
-            
             let subCollection = [];
-
 
             if(this.searchField != null && this.searchField.length > 0)
             {
                 for (let item of this.filteredCollection)
                     for (let key of this.searchField)
-                        if (this.valueMatch(item['Title'], key))    
-                            subCollection.push(item);                                        
-            
+                        if (this.searchvalueExist(item['Title'], key) || this.searchvalueExist(item['Description'], key) )    
+                            subCollection.push(item);                                                  
             }
             else
                 subCollection = this.filteredCollection;
