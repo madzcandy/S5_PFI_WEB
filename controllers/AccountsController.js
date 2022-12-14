@@ -83,7 +83,7 @@ module.exports =
         }
 
 
-        // POST: account/register body payload[{"Id": 0, "Name": "...", "Email": "...", "Password": "..."}]
+        // POST: accounts/register body payload[{"Id": 0, "Name": "...", "Email": "...", "Password": "..."}]
         register(user) {
             user.Created = utilities.nowInSeconds();
             user.VerifyCode = utilities.makeVerifyCode(6);
@@ -99,7 +99,7 @@ module.exports =
             } else
                 this.HttpContext.response.unprocessable();
         }
-        // PUT:account/modify body payload[{"Id": 0, "Name": "...", "Email": "...", "Password": "..."}]
+        // PUT:accounts/modify body payload[{"Id": 0, "Name": "...", "Email": "...", "Password": "..."}]
         modify(user) {
             if (this.writeAuthorization()) {
                 user.Created = utilities.nowInSeconds();
@@ -133,7 +133,7 @@ module.exports =
             } else
                 this.HttpContext.response.unAuthorized();
         }
-        // GET:account/remove/id
+        // GET:accounts/remove/id
         remove(id) { // warning! this is not an API endpoint
             super.remove(id);
         }
