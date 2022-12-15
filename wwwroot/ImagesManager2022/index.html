@@ -141,6 +141,7 @@
                         <input type="hidden" id="profile_userId_input" value="0">
                         <input type="hidden" id="profile_userCode_input">
                         <input type="hidden" id="profile_avatarUrl_input">
+                        <input type="hidden" id="profile_avatarGUID_input">
 
                         <label for="profile_user_input">Nom d'usager</label>
                         <input type="text" id="profile_user_input" class="form-control" required>
@@ -375,6 +376,7 @@
                 $("#profile_userId_input").val(0);
                 $("#profile_userCode_input").val("");
                 $("#profile_avatarUrl_input").val("");
+                $("#profile_avatarGUID_input").val("");
 
                 $("#profile_user_input").val("");
                 $("#profile_email_input").val("");
@@ -401,6 +403,7 @@
                     $("#profile_userId_input").val(user.Id);
                     $("#profile_userCode_input").val(user.VerifyCode);
                     $("#profile_avatarUrl_input").val(user.AvatarURL);
+                    $("#profile_avatarGUID_input").val(user.AvatarGUID);
 
                     $("#profile_user_input").val(user.Name);
                     $("#profile_email_input").val(user.Email);
@@ -408,7 +411,7 @@
                     $("#profile_mdp_input").val("");
                     $("#profile_cmdp_input").val("");
                     ImageUploader.setImage('avatarImage', user.AvatarURL);
-
+                    
                     // ImageUploader.resetImage('avatarImage');//To delete after the token works
                     $("#registerDlg").dialog('option', 'title', "Modification de compte");
                     $("#registerDlgOkBtn").text("Modifier");
@@ -423,6 +426,7 @@
                         Email: $("#profile_email_input").val(),
                         Password: $("#profile_mdp_input").val(),
                         ImageData: ImageUploader.getImageData('avatarImage'),
+                        AvatarGUID: $("#profile_avatarGUID_input").val(),
                         // AvatarURL: $("#profile_userCode_input").val(),
                         VerifyCode: $("#profile_userCode_input").val(),
                 };
