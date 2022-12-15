@@ -120,7 +120,7 @@
                         <input type="hidden" id="Id_input" value="0">
                         <input type="hidden" id="date_input" value="0">
                         <input type="hidden" id="GUID_input" value="">
-
+                        <input type="hidden" id="image_userId_input" value="">
                         <label for="title_input">Titre</label>
                         <input type="text" id="title_input" class="form-control" required>
 
@@ -141,6 +141,7 @@
                         <input type="hidden" id="profile_userId_input" value="0">
                         <input type="hidden" id="profile_userCode_input">
                         <input type="hidden" id="profile_avatarUrl_input">
+                        <input type="hidden" id="profile_avatarGUID_input">
 
                         <label for="profile_user_input">Nom d'usager</label>
                         <input type="text" id="profile_user_input" class="form-control" required>
@@ -380,6 +381,7 @@
                 $("#profile_userId_input").val(0);
                 $("#profile_userCode_input").val("");
                 $("#profile_avatarUrl_input").val("");
+                $("#profile_avatarGUID_input").val("");
 
                 $("#profile_user_input").val("");
                 $("#profile_email_input").val("");
@@ -409,6 +411,7 @@
                     $("#profile_userId_input").val(user.Id);
                     $("#profile_userCode_input").val(user.VerifyCode);
                     $("#profile_avatarUrl_input").val(user.AvatarURL);
+                    $("#profile_avatarGUID_input").val(user.AvatarGUID);
 
                     $("#profile_user_input").val(user.Name);
                     $("#profile_email_input").val(user.Email);
@@ -416,7 +419,7 @@
                     $("#profile_mdp_input").val("");
                     $("#profile_cmdp_input").val("");
                     ImageUploader.setImage('avatarImage', user.AvatarURL);
-
+                    
                     // ImageUploader.resetImage('avatarImage');//To delete after the token works
                     $("#registerDlg").dialog('option', 'title', "Modification de compte");
                     $("#registerDlgOkBtn").text("Modifier");
@@ -431,6 +434,7 @@
                         Email: $("#profile_email_input").val(),
                         Password: $("#profile_mdp_input").val(),
                         ImageData: ImageUploader.getImageData('avatarImage'),
+                        AvatarGUID: $("#profile_avatarGUID_input").val(),
                         // AvatarURL: $("#profile_userCode_input").val(),
                         VerifyCode: $("#profile_userCode_input").val(),
                 };
@@ -582,6 +586,8 @@
             function resetimageForm() {
                 $("#Id_input").val("0");
                 $("#GUID_input").val("");
+                $("#image_userId_input").val("");
+                
                 $("#date_input").val(Date.now());
                 $("#title_input").val("");
                 $("#description_input").val("");
@@ -626,7 +632,7 @@
                         Id: parseInt($("#Id_input").val()),
                         GUID: $("#GUID_input").val(),
                         Shared: partager,
-                        UserId: parseInt(userId),
+                        UserId: $("#image_userId_input").val(),
                         Title: $("#title_input").val(),
                         Description: $("#description_input").val(),
                         ImageData: ImageUploader.getImageData('image'),
@@ -641,6 +647,8 @@
             function imageToForm(image) {
                 $("#Id_input").val(image.Id);
                 $("#GUID_input").val(image.GUID);
+                // $("#image_userId_input").val(image.UserId);
+                $("#image_userId_input").val(getUserLogged().Id);
                 $("#date_input").val(image.Date);
                 //$("#date_input").val(Date.now());
                 $("#title_input").val(image.Title);
@@ -906,7 +914,8 @@
                                     $(".scrollContainer").scrollTop(0);
                                 }
                                 else {                                   
-                                    PUT(image, getImagesList, error);                                    
+                                    EDIT_IMAGE(image, getImagesList, error);                                    
+                                    // PUT(image, getImagesList, error);                                    
                                 }
                                    
                                 resetimageForm();
@@ -941,12 +950,20 @@
                         id: "deleteAccountDlgOkBtn",
                         text: "Supprimer",
                         click: function () {
-                            DELETE_USER(getUserLogged().Id, success, error);
-                            function success(){
-                                
+                            var dialog = $(this);
+                            let userId = getUserLogged().Id;
+                            DELETE_USER(userId, deleteAccountSuccess, deleteAccountFailure);
+                            function deleteAccountSuccess(ETag){
+                                console.log("Success");
+                                holdCheckETag = false;
+                                // holdCheckETag = true;
+                                // currentETag = ETag;
+                                LOGOUT(userId, successLogout, error);
+                                dialog.dialog("close");
                             }
-                            function error(){
-
+                            function deleteAccountFailure(status){
+                                console.log("error");
+                                error(status);
                             }
                         }
                     },
