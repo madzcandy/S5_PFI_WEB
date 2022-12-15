@@ -31,7 +31,7 @@ module.exports =
             RouteRegister.add('GET', 'accounts', 'logout');
             RouteRegister.add('PUT', 'accounts', 'modify');
             RouteRegister.add('GET', 'accounts', 'remove');
-            RouteRegister.add('POST', 'images', 'deleteUserImages');
+            RouteRegister.add('GET', 'images', 'deleteuserimages');
         }
         static CORS_Prefligth(HttpContext) {
             APIServer.accessControlConfig(HttpContext.res);
