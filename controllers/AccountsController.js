@@ -60,11 +60,6 @@ module.exports =
         }
 
        
-        verifyb() {
-            let id = parseInt(this.HttpContext.path.params.id);
-           
-        }
-
           //GET : /accounts/verify?id=...&code=.....
         verify() {
             let id = parseInt(this.HttpContext.path.params.id);

@@ -28,8 +28,7 @@ module.exports =
             RouteRegister.add('GET', 'accounts');
             RouteRegister.add('POST', 'accounts', 'register');
             RouteRegister.add('GET', 'images', 'listuserimg');
-            RouteRegister.add('GET', 'accounts', 'verifya');
-            RouteRegister.add('GET', 'accounts', 'verifyb');
+            RouteRegister.add('GET', 'accounts', 'verify');
             RouteRegister.add('GET', 'accounts', 'logout');
             RouteRegister.add('PUT', 'accounts', 'modify');
             RouteRegister.add('GET', 'accounts', 'remove');
