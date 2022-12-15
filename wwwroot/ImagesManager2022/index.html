@@ -120,7 +120,7 @@
                         <input type="hidden" id="Id_input" value="0">
                         <input type="hidden" id="date_input" value="0">
                         <input type="hidden" id="GUID_input" value="">
-
+                        <input type="hidden" id="image_userId_input" value="">
                         <label for="title_input">Titre</label>
                         <input type="text" id="title_input" class="form-control" required>
 
@@ -578,6 +578,8 @@
             function resetimageForm() {
                 $("#Id_input").val("0");
                 $("#GUID_input").val("");
+                $("#image_userId_input").val("");
+                
                 $("#date_input").val(Date.now());
                 $("#title_input").val("");
                 $("#description_input").val("");
@@ -622,7 +624,7 @@
                         Id: parseInt($("#Id_input").val()),//if on est en ajout mettre 0 si modif mettre lid de limage courante
                         GUID: $("#GUID_input").val(),
                         Shared: partager,
-                        UserId: parseInt(userId),
+                        UserId: $("#image_userId_input").val(),
                         Title: $("#title_input").val(),
                         Description: $("#description_input").val(),
                         ImageData: ImageUploader.getImageData('image'),
@@ -640,6 +642,8 @@
 
                 $("#Id_input").val(image.Id);
                 $("#GUID_input").val(image.GUID);
+                // $("#image_userId_input").val(image.UserId);
+                $("#image_userId_input").val(getUserLogged().Id);
                 $("#date_input").val(image.Date);
                 //$("#date_input").val(Date.now());
                 $("#title_input").val(image.Title);
@@ -894,7 +898,8 @@
                                     $(".scrollContainer").scrollTop(0);
                                 }
                                 else {                                   
-                                    PUT(image, getImagesList, error);                                    
+                                    EDIT_IMAGE(image, getImagesList, error);                                    
+                                    // PUT(image, getImagesList, error);                                    
                                 }
                                    
                                 resetimageForm();

@@ -49,6 +49,19 @@ function PUT(image, successCallBack, errorCallBack) {
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     });
 }
+function EDIT_IMAGE(image, successCallBack, errorCallBack) {
+    $.ajax({
+        // url: apiBaseURL + "/" + image.Id,
+        url: server + "/images/edit/",
+        type: 'PUT',
+        contentType: 'application/json',
+        headers: { authorization: 'Bearer '+ retrieveAccessToken() },
+        // data: image,
+        data: JSON.stringify(image),
+        success: () => { successCallBack(true) },
+        error: function (jqXHR) { errorCallBack(jqXHR.status) }
+    });
+}
 function DELETE(id, successCallBack, errorCallBack) {
     $.ajax({
         url: apiBaseURL + "/" + id,
