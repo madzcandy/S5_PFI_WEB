@@ -144,15 +144,19 @@
 
                         <label for="profile_user_input">Nom d'usager</label>
                         <input type="text" id="profile_user_input" class="form-control" required>
-
+                        <div style="color: red;" id="errorUsername"></div>
+                    
                         <label for="profile_email_input">Courriel</label>
                         <input id="profile_email_input" class="form-control Email" required patternMessage="Courriel invalide">
+                        <div style="color: red;" id="errorEmail"></div>
 
                         <label for="profile_mdp_input">Mot de passe</label>
                         <input type="password" id="profile_mdp_input" class="form-control MatchedPassword" matchedPasswordId="profile_cmdp_input" required>
 
                         <label for="profile_cmdp_input">Confirmation</label>
                         <input type="password" id="profile_cmdp_input" class="form-control" required>
+
+                        <div style="color: red;" id="errorMdp"></div>
 
                         <label for="avatarImage">Avatar</label>
                         <div id='avatarImage' class='ImageUploader' defaultImage='images/No_Avatar.png'
@@ -203,6 +207,7 @@
         <script src="js/customValidation.js"></script>
         <script src="js/imageUploader.js"></script>
         <script src="js/api.js"></script>
+        <script src="js/formValidator.js"></script>
         <script src="js/date.js"></script>
         <script defer>
             const periodicRefreshPeriod = 15;
@@ -383,6 +388,9 @@
                 $("#profile_cmdp_input").val("");
                 ImageUploader.resetImage('avatarImage');
 
+                $("#errorMdp").html("");
+                $("#errorEmail").html("");
+                $("#errorUsername").html("");
                 $("#registerDlg").dialog('option', 'title', "Création de compte");
                 $("#registerDlgOkBtn").text("Créer");
                 $("#registerDlg").dialog('open');
@@ -615,7 +623,7 @@
                     }
 
                     let image = {
-                        Id: parseInt($("#Id_input").val()),//if on est en ajout mettre 0 si modif mettre lid de limage courante
+                        Id: parseInt($("#Id_input").val()),
                         GUID: $("#GUID_input").val(),
                         Shared: partager,
                         UserId: parseInt(userId),
@@ -631,9 +639,6 @@
                 return false;
             }
             function imageToForm(image) {
-                //alert("image.Id"+image.Id);
-                ///alert("image.guid"+image.GUID);
-
                 $("#Id_input").val(image.Id);
                 $("#GUID_input").val(image.GUID);
                 $("#date_input").val(image.Date);
@@ -649,7 +654,13 @@
             }
             function errorRegister(status) {
                 console.log("Error Register (Callback)")
-                $("#errorMessage").text("ERROR " + status);
+               // $("#errorMessage").text("ERROR " + status);
+
+               if(status == '409')
+               {
+                    $("#errorMessage").text("Un compte a déjà été créé avec ce courriel");
+               }
+
                 $("#errorDlg").dialog('open');
             }
             function successEditUser() {
@@ -764,26 +775,31 @@
                         text: "Title will be changed dynamically",
                         click: function () {
                             let updatedUser = profileInfoFromForm();
-                            if (registerMode) {
+                            let valid = ValidateAccount(registerMode, updatedUser.Password, $("#profile_cmdp_input").val(), updatedUser.Email, updatedUser.Name);
 
+                            if (registerMode && valid) {
                                 console.log(updatedUser);
+
                                 REGISTER(updatedUser, successRegister, errorRegister);
                                 holdCheckETag = false;
                                 $(this).dialog("close");
+                                
                             }
-                            else{
+                            else if(valid){
                                 var currentUser = getUserLogged();
                                 //Check if user wants to change his password and check if some requirements are met
                                 if(
-                                !(updatedUser.Password != String.empty &&
-                                 updatedUser.OldPassword == currentUser.Password &&
+                                !(updatedUser.Password != String.empty /*&&
+                                 updatedUser.OldPassword == currentUser.Password*/ &&
                                  updatedUser.Password == updatedUser.ConfirmPassword))
                                 {
                                     updatedUser.Password = currentUser.Password;
                                 }
-                                delete updatedUser.OldPassword;
+                                //delete updatedUser.OldPassword;
                                 delete updatedUser.ConfirmPassword;
                                 MODIFY_USER_INFO(updatedUser, successEditUser, errorEditUser)
+
+ 
                                 holdCheckETag = false;
                                 $(this).dialog("close");
                             }

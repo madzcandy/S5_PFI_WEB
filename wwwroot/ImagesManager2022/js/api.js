@@ -114,7 +114,7 @@ function getBearerAuthorizationToken(){
 // }
 
 
-/* AJAX functions utilites */
+
 
 function REGISTER(profil, successCallBack, errorCallBack) {
     $.ajax({

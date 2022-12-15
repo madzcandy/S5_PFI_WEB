@@ -52,10 +52,12 @@ $(() => {
 
   $(".MatchedPassword").each(function () {
     let password = $(this);
+   // alert(password);
     let pattern = String.raw`^\S{6,}$`;
     let matchedPassword = $(`#${password.attr('matchedPasswordId')}`);
+   // alert(matchedPassword);
     password.attr('pattern', pattern);
-    password.attr("onchange", `if(this.checkValidity()) {form.${matchedPassword.attr('id')}.pattern = this.value; form.${matchedPassword.attr('id')}.required=true;}`);
+    password.attr("onchange", `if(true) {form.${matchedPassword.attr('id')}.pattern = this.value; form.${matchedPassword.attr('id')}.required=true;}`);
     password.attr("onfocus", `if(this.checkValidity()) {form.${matchedPassword.attr('id')}.pattern = this.value; form.${matchedPassword.attr('id')}.required=this.value!='';}`);
   })
 
