@@ -45,7 +45,7 @@ function PUT(image, successCallBack, errorCallBack) {
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(image),
-        success: (image) => { successCallBack(image) },
+        success: (image) => { successCallBack(true) },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     });
 }
@@ -175,7 +175,7 @@ function GETUSERINFO(userid, successCallBack, errorCallBack) {
 }
 
 function GET_LIST_USER(successCallBack, errorCallBack) {
-    let url = server + "/images/listuserimg?id=33";
+    let url = server + "/images/listuserimg?";
     $.ajax({
         url: url,
         type: 'GET',

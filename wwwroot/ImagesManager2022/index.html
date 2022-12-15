@@ -95,6 +95,7 @@
 
                                 <span class="cmd fa fa-user-times" id="deleteAccountCmd" title="Supprimer le compte"
                                 data-toggle="tooltip"></span>
+                                
                             </span>
                             <span>
                                 <span class="cmd fa fa-plus-square" id="newImageCmd" title="Ajouter un image"
@@ -220,6 +221,7 @@
             let appendMode = false;
             let sort = "desc";
             let textSearch = "";
+            let userSelectSearch="";
 
             init_UI();
             HEAD(checkETag, error);
@@ -233,25 +235,18 @@
             }
 
             function successGetListUser(users, ETag){
-                function insertSearchUser(user) {                                                          
-                    //alert("add user"+user.Name);
-                    $("#userList").append(
-                        $(`<option value='${user.Name}'>${user.Name}</option>`)
-                    );
-                    //$("#userList").append("<option value='${user.Name}'>${user.Name}</option>" );
-                    //alert("add user2");
+                function insertSearchUser(user) {                                                   
+                     return(`<option value='${user.Id}'>${user.Name}</option>`)
                 }
                 $("#userList").empty();            
-                $("#userList").append("<select id='user'>");
-               // $("#userList").append("<option value='all'> tous </option>");
-
-                /*
+               
+                let selectinfo="<select id='userSearch'><option value=''> Tous les Usagers</options>";
                 for (let user of users) {
-                    insertSearchUser(user);
+                    selectinfo=selectinfo+insertSearchUser(user);
                 }
-                */
-                //$("#userList").append("</select>");
-                console.log($("#userList").val)
+                selectinfo=selectinfo+"</select>";                
+                $("#userList").append(selectinfo);               
+               
             }
 
             
@@ -260,6 +255,7 @@
             }
 
             function getImagesList(refresh = true) {
+                //alert("getIMAGE"+refresh);
                 appendMode = !refresh;
                 function prepareQueryString() {
                     let queryString = "";
@@ -271,10 +267,10 @@
                     }
 
                     if (appendMode) {
-                        queryString = `?id=`+ userId + `&fields=Title&keywords=` + textSearch + `&sort=Date,` + sort + `&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
+                        queryString = `?loginid=`+ userId + `&UserId=`+ userSelectSearch+ `&keywords=` + textSearch + `&sort=Date,` + sort + `&offset=${Math.trunc(imagesCount / appendCount)}&limit=${appendCount}`;
                         imagesCount += appendCount;
                     } else {
-                        queryString = `?id=`+ userId + `&fields=Title&keywords=` + textSearch + `&sort=Date,` + sort + `&offset=${0}&limit=${imagesCount}`;
+                        queryString = `?loginid=`+ userId + `&UserId=`+ userSelectSearch+ `&keywords=` + textSearch + `&sort=Date,` + sort + `&offset=${0}&limit=${imagesCount}`;
                     }
                     console.log(queryString);
                     return queryString;
@@ -549,6 +545,10 @@
             function editimage(e) {
                 holdCheckETag = true;
                 createMode = false;
+
+
+                let imageIdToMod = e.target.getAttribute("imageid");
+                //alert("imageIdToMod"+imageIdToMod);
                 GET_ID(e.target.getAttribute("imageid"), imageToForm, error);
                 holdCheckETag = true;
                 ImageUploader.imageRequired('image', false);
@@ -596,6 +596,9 @@
             }
 
             function searchCmd(){
+
+                userSelectSearch = $("#userSearch").val();
+                //alert("searchcmd:"+userSelectSearch);
                 textSearch = $("#search_input").val();
                 getImagesList(true);
             }
@@ -612,8 +615,8 @@
                     }
 
                     let image = {
-                        Id: 0,//if on est en ajout mettre 0 si modif mettre lid de limage courante
-                        GUID: token,
+                        Id: parseInt($("#Id_input").val()),//if on est en ajout mettre 0 si modif mettre lid de limage courante
+                        GUID: $("#GUID_input").val(),
                         Shared: partager,
                         UserId: parseInt(userId),
                         Title: $("#title_input").val(),
@@ -628,6 +631,9 @@
                 return false;
             }
             function imageToForm(image) {
+                //alert("image.Id"+image.Id);
+                ///alert("image.guid"+image.GUID);
+
                 $("#Id_input").val(image.Id);
                 $("#GUID_input").val(image.GUID);
                 $("#date_input").val(image.Date);
@@ -718,6 +724,7 @@
                 $("#searchCmd").click(searchCmd)
                 $("#mailCmd").click(mailCmd)
                 $("#deleteAccountCmd").click(deleteAccountCmd)
+                
                 getListUser();
 
                 var token = getAccessToken();
@@ -882,8 +889,10 @@
                                     POST(image, getImagesList, error);
                                     $(".scrollContainer").scrollTop(0);
                                 }
-                                else
-                                    PUT(image, getImagesList, error);
+                                else {                                   
+                                    PUT(image, getImagesList, error);                                    
+                                }
+                                   
                                 resetimageForm();
                                 holdCheckETag = false;
                                 $(this).dialog("close");

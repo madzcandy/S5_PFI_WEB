@@ -21,7 +21,7 @@ module.exports =
                 let paramValue = filterParams[paramName];
                 if (paramValue) {
                     switch (paramName) {
-                        case "id": instance.userid = parseInt(paramValue); break;
+                        case "loginid": instance.userid = parseInt(paramValue); break;
                         case "sort": instance.setSortFields(paramValue); break;
                         case "searchold": instance.setSearchFields(paramValue); break;
                         case "limit": instance.limit = parseInt(paramValue); break;
@@ -237,7 +237,7 @@ module.exports =
 
         removePrivateImage() {
             let subCollection = [];
-            for (let item of this.collection) {
+            for (let item of this.filteredCollection) {
                 if(item['Shared'] == 1 || item['UserId'] == this.userid)
                 {
                     item.Logouser="images/camera.png";
@@ -285,7 +285,7 @@ module.exports =
 
         get() {
             this.findByKeys(this.keepFields());
-            this.getUserListWithImg();
+           // this.getUserListWithImg();
             this.filteredCollection = this.removePrivateImage();
             this.filteredCollection = this.filterSearchImage();
 
