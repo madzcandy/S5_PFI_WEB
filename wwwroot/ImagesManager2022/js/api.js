@@ -56,16 +56,7 @@ function DELETE(id, successCallBack, errorCallBack) {
         success: () => { successCallBack() },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     });
-} 
-function DELETEUSERIMAGES(userId){
-    deleteUserImages
-    $.ajax({
-        url: apiBaseURL + "/" + id,
-        type: 'DELETE',
-        success: () => { successCallBack() },
-        error: function (jqXHR) { errorCallBack(jqXHR.status) }
-    });
-}
+}  
 
 
 
@@ -241,4 +232,33 @@ function MODIFY_USER_INFO(userInfo, successCallBack, errorCallBack) {
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
+}
+function DELETE_USER(userId, successCallBack, errorCallBack){
+    DELETEUSERIMAGES(userId, successCallBack, errorCallBack)
+    // $.ajax({
+    //     url: server + "/accounts/remove/" + userId,
+    //     type: 'GET',
+    //     headers: {
+    //         authorization: 'Bearer '+ retrieveAccessToken()
+    //     },
+    //     success: function () { console.log("SUCCESS DELETE USER") },
+    //     error: function (jqXHR) { console.log("FAILURE DELETE USER" + jqXHR.status); errorCallBack(jqXHR.status); }
+    // })
+}
+function DELETEUSERIMAGES(userId, successCallBack, errorCallBack){
+    GET_ALL(ImageFetchSuccess, ImageFetchFailure, "?UserId="+ userId);
+    function ImageFetchSuccess(images, ETag) {
+        console.log("IMAGE FETCH SUCCESS")
+        images.forEach(image => {
+            console.log(image.Id + ":   IMAGE DELETED")
+            // $.ajax({
+            //     url: apiBaseURL + "/" + image.Id,
+            //     type: 'DELETE',
+            //     success: () => { console.log("IMAGE DELETED") },
+            //     error: function (jqXHR) { errorCallBack(jqXHR.status) }
+            // });
+            // console.log("END DELETE IMAGES")
+        });
+    }
+    function ImageFetchFailure(jqXHR) { console.log("FAILURE DELETE IMAGE"); errorCallBack(jqXHR.status) }
 }

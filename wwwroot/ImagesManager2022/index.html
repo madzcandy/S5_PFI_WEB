@@ -916,7 +916,13 @@
                         id: "deleteAccountDlgOkBtn",
                         text: "Supprimer",
                         click: function () {
-                            
+                            DELETE_USER(getUserLogged().Id, success, error);
+                            function success(){
+                                
+                            }
+                            function error(){
+
+                            }
                         }
                     },
                     {
