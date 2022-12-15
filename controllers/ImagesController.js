@@ -6,22 +6,22 @@ module.exports =
         }
         // GET: images/deleteUserImages/userId
         deleteuserimages(userId){
-            // if (this.readAuthorization()) {
+            if (this.writeAuthorization()) {
                 if (this.repository != null) {
                     if(!isNaN(userId)){
                         var userImageList = this.repository.getAll({"UserId": userId.toString()});
                         userImageList.forEach(image => {
-                            // this.repository.remove(image.Id);
-                            super.remove(image.Id);
+                            if (!this.repository.remove(image.Id))
+                                return this.HttpContext.response.notFound();
                         });
-                        this.HttpContext.response.ok();
+                        this.HttpContext.response.accepted();
                     }
                     else
                         this.HttpContext.response.unprocessable();
                 } else
                     this.HttpContext.response.notImplemented();
-            // } else
-            //     this.HttpContext.response.unAuthorized();
+            } else
+                this.HttpContext.response.unAuthorized();
         }
 
         //http://localhost:5000/images/listuserimg?id=33

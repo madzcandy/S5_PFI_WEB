@@ -245,7 +245,7 @@ function DELETE_USER(userId, successCallBack, errorCallBack){
             headers: {
                 authorization: 'Bearer '+ retrieveAccessToken()
             },
-            success: function () { successCallBack(xhr.getResponseHeader("ETag")) },
+            success: function (data, status, xhr) { successCallBack(xhr.getResponseHeader("ETag")) },
             error: function (jqXHR) { errorCallBack(jqXHR.status); }
         })
     }
