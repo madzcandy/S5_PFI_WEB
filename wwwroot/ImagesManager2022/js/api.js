@@ -29,7 +29,6 @@ function GET_ALL(successCallBack, errorCallBack, queryString = null) {
     });
 }
 function POST(data, successCallBack, errorCallBack) {
-    //alert("post");
     $.ajax({
         url: apiBaseURL,
         type: 'POST',
@@ -40,7 +39,6 @@ function POST(data, successCallBack, errorCallBack) {
     });
 }
 function PUT(image, successCallBack, errorCallBack) {
-    alert("1");
     console.log(image);
     $.ajax({
         url: apiBaseURL + "/" + image.Id,
@@ -71,7 +69,6 @@ function tokenRequestURL() {
 */
 
 function storeAccessToken(token) {
-    //alert("token" + token);
     localStorage.setItem('access_Token', token);
 }
 function getAccessToken() {
@@ -120,7 +117,6 @@ function getBearerAuthorizationToken(){
 /* AJAX functions utilites */
 
 function REGISTER(profil, successCallBack, errorCallBack) {
-   // alert("API register 2");
     $.ajax({
         url: server + "/accounts/register",
         type: 'POST',
@@ -155,7 +151,6 @@ function LOGOUT(userid, successCallBack, errorCallBack) {
         type: 'GET',
         data: {},
         success: function () {
-           // alert("success Logout22");
             removeAccessToken();
             removeUserLogged();
             successCallBack()
@@ -177,6 +172,18 @@ function GETUSERINFO(userid, successCallBack, errorCallBack) {
         },
         error: function (jqXHR) { errorCallBack(jqXHR.status) }
     })
+}
+
+function GET_LIST_USER(successCallBack, errorCallBack) {
+    let url = server + "/images/listuserimg?id=33";
+    $.ajax({
+        url: url,
+        type: 'GET',
+        contentType: 'text/plain',
+        date: {},
+        success: (data, status, xhr) => { successCallBack(data, xhr.getResponseHeader("ETag")) },
+        error: function (jqXHR) { errorCallBack(jqXHR.status) }
+    });
 }
 
 

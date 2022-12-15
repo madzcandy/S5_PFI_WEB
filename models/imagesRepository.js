@@ -79,4 +79,21 @@ module.exports =
             }
             return false;
         }
+
+        getListUser(params = null) {
+            let objectsList = this.objects();
+            if (this.bindExtraDataMethod != null) {
+                objectsList = this.bindExtraData(objectsList);
+            }
+            //if (params) {
+                const CollectionFilter = require("./collectionFilter.js");
+                let collectionFilter = new CollectionFilter(
+                objectsList,
+                params,
+                this.model
+                );
+                return collectionFilter.getListUser();
+            //}
+            return objectsList;
+        }  
     }

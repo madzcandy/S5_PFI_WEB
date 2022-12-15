@@ -60,6 +60,7 @@
                         </span>
                     </div> -->
 
+                    <!--
                     <span>
                         <select id="monselect">
                             <option value="all" selected>Tout les usagers</option>
@@ -67,6 +68,9 @@
                             <option value="valeur3">Valeur 3</option>
                         </select>
                     </span>
+                -->
+                    <span id="userList"></span>
+
                     <input type="text" id="search_input">
                     <span class="cmd fa fa-search" id="searchCmd" title="Rechercher" data-toggle="tooltip"></span>
 
@@ -210,7 +214,7 @@
             let hideSearchBar = true;
             let imageIdToDelete = 0; // used by confirmDeleteDlg
             let selectedCategory = "";
-            let imagesCount = 50;
+            let imagesCount = 10;
             let appendCount = 3;
             let previousScrollPosition = 0;
             let appendMode = false;
@@ -226,6 +230,33 @@
                     currentETag = ETag;
                     getImagesList();
                 }
+            }
+
+            function successGetListUser(users, ETag){
+                function insertSearchUser(user) {                                                          
+                    //alert("add user"+user.Name);
+                    $("#userList").append(
+                        $(`<option value='${user.Name}'>${user.Name}</option>`)
+                    );
+                    //$("#userList").append("<option value='${user.Name}'>${user.Name}</option>" );
+                    //alert("add user2");
+                }
+                $("#userList").empty();            
+                $("#userList").append("<select id='user'>");
+               // $("#userList").append("<option value='all'> tous </option>");
+
+                /*
+                for (let user of users) {
+                    insertSearchUser(user);
+                }
+                */
+                //$("#userList").append("</select>");
+                console.log($("#userList").val)
+            }
+
+            
+            function getListUser() {  
+                GET_LIST_USER(successGetListUser, error);
             }
 
             function getImagesList(refresh = true) {
@@ -426,12 +457,9 @@
                 $("#mailDlg").dialog('open');
             }
             function successMail() {
-                alert("success mail");
-
                 console.log("Success register Callback effectué, présentement une fonctione vide");
             }
             function errorMail(status) {
-                alert("error mail");
                 console.log("Error Register (Callback)")
                 $("#errorMessage").text("ERROR " + status);
                 $("#errorDlg").dialog('open');
@@ -690,6 +718,7 @@
                 $("#searchCmd").click(searchCmd)
                 $("#mailCmd").click(mailCmd)
                 $("#deleteAccountCmd").click(deleteAccountCmd)
+                getListUser();
 
                 var token = getAccessToken();
                 let user = getUserLogged();
@@ -781,8 +810,6 @@
                         click: function () {
                             let userId = getUserLogged().Id;
                             let verifyCode = $("#mailCode_input").val();
-                            alert(userId);
-                            alert(verifyCode);
                             VERIFY_EMAIL(userId, verifyCode, successMail, errorMail)
                             holdCheckETag = false;
                             $(this).dialog("close");

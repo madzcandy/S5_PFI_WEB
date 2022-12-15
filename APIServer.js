@@ -12,7 +12,7 @@ module.exports =
     class APIServer {
         constructor(port = process.env.PORT || 5000) {
             this.port = port;
-            this.initMiddlewaresPipeline(); 
+            this.initMiddlewaresPipeline();
             this.accountsRouteConfig();
             this.httpContext = null;
             this.httpServer = require('http').createServer(async (req, res) => { this.handleHttpResquest(req, res) });
@@ -27,6 +27,7 @@ module.exports =
             const RouteRegister = require('./routeRegister');
             RouteRegister.add('GET', 'accounts');
             RouteRegister.add('POST', 'accounts', 'register');
+            RouteRegister.add('GET', 'images', 'listuserimg');
             RouteRegister.add('GET', 'accounts', 'verify');
             RouteRegister.add('GET', 'accounts', 'logout');
             RouteRegister.add('PUT', 'accounts', 'modify');
