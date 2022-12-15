@@ -8,7 +8,7 @@ module.exports =
         deleteuserimages(userId){
             if (this.writeAuthorization()) {
                 if (this.repository != null) {
-                        var userImageList = this.repository.getAll({"UserId": userId});
+                        var userImageList = this.repository.getAll({"UserId": userId.toString()});
                         userImageList.forEach(image => {
                             // this.repository.remove(image.Id);
                         });
