@@ -173,7 +173,7 @@
                         <input id="log_email_input" class="form-control" required>
 
                         <label for="log_mdp_input">Mot de passe</label>
-                        <input id="log_mdp_input" class="form-control" required>
+                        <input type="password" id="log_mdp_input" class="form-control" required>
 
                         <input type="checkbox" id="log_souvenir">Se souvenir de moi</div>
                     </form>
@@ -295,21 +295,30 @@
                         if(user == null ||  image.UserId != user.Id)
                             iconImg = `<img id="loginLogo" src="${imageUser}" alt="" data-toggle="tooltip" class="favicon" title="User image">`;                           
                         
+
+                    let buttImg = '';
+
+                    if(user != null && image.UserId == user.Id) {
+                        buttImg = 
+                        `<div    class="cmd editCmd  fa fa-pencil-square"
+                                imageid="${image.Id}"
+                                title="Editer ${image.Title}"
+                                data-toggle="tooltip">
+                        </div>
+                        <div    class="cmd deleteCmd fa fa-window-close"
+                                imageid="${image.Id}"
+                                title="Effacer ${image.Title}"
+                                data-toggle="tooltip">
+                        </div>`
+                  }  
+
+
                     $("#imagesList").append(
                         $(`
                             <div class='imageLayout'>
                                 <div class='imageHeader'>
                                     <div class="imageTitle">${image.Title}</div>
-                                    <div    class="cmd editCmd  fa fa-pencil-square"
-                                            imageid="${image.Id}"
-                                            title="Editer ${image.Title}"
-                                            data-toggle="tooltip">
-                                    </div>
-                                    <div    class="cmd deleteCmd fa fa-window-close"
-                                            imageid="${image.Id}"
-                                            title="Effacer ${image.Title}"
-                                            data-toggle="tooltip">
-                                    </div>
+                                    ${buttImg}
                                 </div>
                                 <a href="${image.OriginalURL}" target="_blank">
                                     <div class='image'style="background-image:url('${image.ThumbnailURL}')">
@@ -466,6 +475,9 @@
             }
             function successMail() {
                 console.log("Success register Callback effectué, présentement une fonctione vide");
+                $("#newImageCmd").show();
+                $("#mailCmd").hide();
+                getImagesList(true);
             }
             function errorMail(status) {
                 console.log("Error Register (Callback)")
@@ -632,7 +644,7 @@
                         Id: parseInt($("#Id_input").val()),
                         GUID: $("#GUID_input").val(),
                         Shared: partager,
-                        UserId: $("#image_userId_input").val(),
+                        UserId: parseInt(userId),//$("#image_userId_input").val(),
                         Title: $("#title_input").val(),
                         Description: $("#description_input").val(),
                         ImageData: ImageUploader.getImageData('image'),

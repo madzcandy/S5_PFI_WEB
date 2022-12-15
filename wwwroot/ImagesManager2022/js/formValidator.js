@@ -15,7 +15,7 @@ function ValidateAccount(registerMode, password, cpassword, email, username)
 
     if(!VerifyEmail(email))
     {
-        alert (valid);
+       
         valid = false;
         $("#errorEmail").html("Le courriel est invalide.");
     }
@@ -42,8 +42,6 @@ function VerifyEmail(email)
 {
     let regExp = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
     let valid = false;
-
-    alert(regExp.test(email));
 
     if(regExp.test(email.trim()))
         valid = true;
