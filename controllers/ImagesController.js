@@ -29,26 +29,7 @@ module.exports =
 
 
         }
-        /*
-        getListUser() {
-
-            if (this.readAuthorization()) {
-                if (this.repository != null) {
-                    let data = this.repository.getListUser();
-                    if (data != null)
-                        this.HttpContext.response.JSON(data);
-                    else
-                        this.HttpContext.response.notFound();
-
-                  //  this.HttpContext.response.badRequest();
-                  //  this.HttpContext.response.JSON(this.repository.getAll(this.HttpContext.path.params), this.repository.ETag);
-                }
-                else
-                    this.HttpContext.response.notImplemented();
-            }
-            else
-                this.HttpContext.response.unAuthorized();
-        }*/
+       
 
 
     }

@@ -89,5 +89,14 @@
         "VerifyCode": "verified",
         "Created": 1670024669,
         "AvatarGUID": "4934fc60-729b-11ed-89ff-b9a283a64af2"
+    },
+    {
+        "Id": 10,
+        "Name": "Annie",
+        "Email": "amelie.bouchard23@outlook.fr",
+        "Password": "12345",
+        "VerifyCode": "verified",
+        "Created": 1671107289,
+        "AvatarGUID": "eedc4650-7c73-11ed-9aae-29b8a7ed94b7"
     }
 ]
