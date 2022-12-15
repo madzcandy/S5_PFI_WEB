@@ -1,3 +1,4 @@
+const { find } = require('../CachedRequestsManager');
 const utilities = require('../utilities');
 
 module.exports =
@@ -5,6 +6,7 @@ module.exports =
         constructor(collection, filterParams, model = null) {
             this.model = model;
             this.collection = collection;
+            this.lstUserActive = [];
             this.sortFields = [];
             this.searchField = [];
             this.searchKeys = [];
@@ -261,10 +263,29 @@ module.exports =
             return subCollection;
         }
 
+        getUserListWithImg()
+        {
+            for (let item of this.collection)  {
+                var userAlreadyExist = this.lstUserActive.find(e => e.Id == item.User.Id)
+                
+                if (userAlreadyExist == undefined) {
+                    this.lstUserActive.push(item.User); 
+                }               
+            }                  
+        }
+
+        getListUser()
+        {
+            //this.findByKeys(this.keepFields());
+            this.getUserListWithImg();
+
+            return this.lstUserActive;
+        }
+
 
         get() {
-
             this.findByKeys(this.keepFields());
+            this.getUserListWithImg();
             this.filteredCollection = this.removePrivateImage();
             this.filteredCollection = this.filterSearchImage();
 

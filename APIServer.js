@@ -27,11 +27,14 @@ module.exports =
             const RouteRegister = require('./routeRegister');
             RouteRegister.add('GET', 'accounts');
             RouteRegister.add('POST', 'accounts', 'register');
-            RouteRegister.add('GET', 'accounts', 'verify');
+            RouteRegister.add('GET', 'images', 'listuserimg');
+            RouteRegister.add('GET', 'accounts', 'verifya');
+            RouteRegister.add('GET', 'accounts', 'verifyb');
             RouteRegister.add('GET', 'accounts', 'logout');
             RouteRegister.add('PUT', 'accounts', 'modify');
             RouteRegister.add('GET', 'accounts', 'remove');
             RouteRegister.add('GET', 'images', 'deleteUserImages');
+            //RouteRegister.add('GET', 'images', 'getLer');
         }
         static CORS_Prefligth(HttpContext) {
             APIServer.accessControlConfig(HttpContext.res);
