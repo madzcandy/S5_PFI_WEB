@@ -234,16 +234,25 @@ function MODIFY_USER_INFO(userInfo, successCallBack, errorCallBack) {
     })
 }
 function DELETE_USER(userId, successCallBack, errorCallBack){
-    DELETEUSERIMAGES(userId, successCallBack, errorCallBack)
-    // $.ajax({
-    //     url: server + "/accounts/remove/" + userId,
-    //     type: 'GET',
-    //     headers: {
-    //         authorization: 'Bearer '+ retrieveAccessToken()
-    //     },
-    //     success: function () { console.log("SUCCESS DELETE USER") },
-    //     error: function (jqXHR) { console.log("FAILURE DELETE USER" + jqXHR.status); errorCallBack(jqXHR.status); }
-    // })
+    console.log("allo")
+
+    DELETEUSERIMAGES(userId, imageDeleteSuccessCallback, imageDeleteErrorCallback)
+    function imageDeleteSuccessCallback(){
+        console.log("imagedeletesuccess")
+        $.ajax({
+            url: server + "/accounts/remove/" + userId,
+            type: 'GET',
+            headers: {
+                authorization: 'Bearer '+ retrieveAccessToken()
+            },
+            success: function () { successCallBack(xhr.getResponseHeader("ETag")) },
+            error: function (jqXHR) { errorCallBack(jqXHR.status); }
+        })
+    }
+    function imageDeleteErrorCallback(status){
+        console.log("imagedeleteerror")
+        errorCallBack(status);
+    }
 }
 function DELETEUSERIMAGES(userId, successCallBack, errorCallBack){
     $.ajax({
@@ -252,23 +261,7 @@ function DELETEUSERIMAGES(userId, successCallBack, errorCallBack){
         headers: {
             authorization: 'Bearer '+ retrieveAccessToken()
         },
-        success: function () { console.log("SUCCESS DELETE IMAGES") },
-        error: function (jqXHR) { console.log("FAILURE DELETE IMAGES" + jqXHR.status); errorCallBack(jqXHR.status); }
+        success: function () { console.log("allo2"); successCallBack() },
+        error: function (jqXHR) { console.log("allo3"); errorCallBack(jqXHR.status) }
     })
-    // GET_ALL(ImageFetchSuccess, ImageFetchFailure, "?UserId="+ userId);
-    // function ImageFetchSuccess(images, ETag) {
-    //     console.log("IMAGE FETCH SUCCESS")
-    //     images.forEach(image => {
-    //         console.log(image.Id + ":   IMAGE DELETED")
-    //         // $.ajax({
-    //         //     url: apiBaseURL + "/" + image.Id,
-    //         //     type: 'DELETE',
-    //         //     success: () => { console.log("IMAGE DELETED") },
-    //         //     error: function (jqXHR) { errorCallBack(jqXHR.status) }
-    //         // });
-    //         // console.log("END DELETE IMAGES")
-    //     });
-    // }
-    // function ImageFetchFailure(jqXHR) { console.log("FAILURE FETCH IMAGE"); errorCallBack(jqXHR.status) }
-
 }

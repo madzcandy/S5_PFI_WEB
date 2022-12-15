@@ -916,12 +916,18 @@
                         id: "deleteAccountDlgOkBtn",
                         text: "Supprimer",
                         click: function () {
-                            DELETE_USER(getUserLogged().Id, success, error);
-                            function success(){
-                                
+                            let userId = getUserLogged().Id;
+                            DELETE_USER(userId, deleteAccountSuccess, deleteAccountFailure);
+                            function deleteAccountSuccess(ETag){
+                                console.log("Success");
+                                holdCheckETag = true;
+                                currentETag = ETag;
+                                LOGOUT(userId, successLogout, error);
+                                $(this).dialog("close");
                             }
-                            function error(){
-
+                            function deleteAccountFailure(status){
+                                console.log("error");
+                                error(status);
                             }
                         }
                     },
