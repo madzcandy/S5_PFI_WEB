@@ -339,8 +339,22 @@
                                 imageid="${image.Id}"
                                 title="Effacer ${image.Title}"
                                 data-toggle="tooltip">
+                        </div>
+                        <div    class="cmd detailsCmd fa fa-eye"
+                                imageid="${image.Id}"
+                                title="Voir ${image.Title}"
+                                data-toggle="tooltip">
                         </div>`
-                  }  
+                    }  
+                    else
+                    {
+                        buttImg = 
+                            `<div    class="cmd detailsCmd fa fa-eye"
+                                    imageid="${image.Id}"
+                                    title="Voir ${image.Title}"
+                                    data-toggle="tooltip">
+                            </div>`
+                    }
 
 
 
@@ -350,11 +364,6 @@
                                 <div class='imageHeader'>
                                     <div class="imageTitle">${image.Title}</div>
                                     ${buttImg}
-                                    <div class="cmd detailsCmd fa fa-eye"
-                                        imageid="${image.Id}"
-                                        title="Voir ${image.Title}"
-                                        data-toggle="tooltip">
-                                    </div>
                                 </div>
                                 <div imageid="${image.Id}" title="Voir ${image.Title}"  data-toggle="tooltip">
                                     <div class='image'style="background-image:url('${image.ThumbnailURL}')">
