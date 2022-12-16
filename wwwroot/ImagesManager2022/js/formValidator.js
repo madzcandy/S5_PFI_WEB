@@ -15,8 +15,7 @@ function ValidateAccount(registerMode, password, cpassword, email, username, Ima
     }
 
     if(!VerifyEmail(email))
-    {
-       
+    {  
         valid = false;
         $("#errorEmail").html("Le courriel est invalide.");
     }
@@ -34,6 +33,7 @@ function ValidateAccount(registerMode, password, cpassword, email, username, Ima
             $("#errorMdp").html("Les mots de passes sont différents.");
         }                      
     }
+
     if(registerMode && ImageData == ''){
         valid = false;
         $("#errorAvatar").html("Vous devez insérer une image");
@@ -50,5 +50,28 @@ function VerifyEmail(email)
     if(regExp.test(email.trim()))
         valid = true;
     
+    return valid;
+}
+
+
+
+function ValidateImage(title, description)
+{
+    let valid = true;
+    $("#errorTitle").html("");
+    $("#errorDescription").html("");
+
+    if(title.trim() == "")
+    {
+        valid = false;
+        $("#errorTitle").html("Le titre de l'image est invalide.");
+    }
+
+    if(description.trim() == "")
+    {
+        valid = false;
+        $("#errorDescription").html("La description de l'image est invalide.");
+    }
+
     return valid;
 }

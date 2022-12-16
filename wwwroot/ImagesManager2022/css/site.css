@@ -185,7 +185,7 @@ textarea2 {
 }
 .imageLayout:hover .imageHeader {
     display: grid;
-    grid-template-columns: auto 35px 35px;
+    grid-template-columns: auto 35px 35px 35px;
 }
 .imageTitle {
     font-size: 20px;
