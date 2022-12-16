@@ -338,3 +338,7 @@ span2 {
     padding: 1rem;
     font-size: 2rem;
 }
+.detailImage{
+    width: 500px;
+    max-height: 600px;
+}

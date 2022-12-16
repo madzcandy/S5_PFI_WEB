@@ -556,8 +556,8 @@
                 $("#date_details_input").html(convertToFrenchDate(parseInt(image.Date)));
                 $("#title_details_input").html(image.Title);
                 $("#description_details_input").html(image.Description);
-                $("#image_details").html("<a href='"+image.OriginalURL+"' target='_blank'><img width='400' height='400' src='" + image.OriginalURL + "' alt='image'></a>");          
-                $("#creator_details_input").html(image.User.Name + "<img id='loginLogo' width='30' height='30' src='" + image.User.AvatarURL + "' alt='image'>");            
+                $("#image_details").html("<a href='"+image.OriginalURL+"' target='_blank'><img class='detailImage' src='" + image.OriginalURL + "' alt='image'></a>");          
+                $("#creator_details_input").html(image.User.Name + "<img id='loginLogo' style='margin-left: 10px' width='30' height='30' src='" + image.User.AvatarURL + "' alt='image'>");            
             }
             
             function detailsimage(e) {
