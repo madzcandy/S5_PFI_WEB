@@ -102,7 +102,7 @@ module.exports =
             }
             // else
             //     this.HttpContext.response.unprocessable();
-        }
+        // }
         // PUT:accounts/modify body payload[{"Id": 0, "Name": "...", "Email": "...", "Password": "..."}]
         modify(user) {
             if (this.writeAuthorization()) {
