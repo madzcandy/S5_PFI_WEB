@@ -41,7 +41,6 @@ module.exports =
         edit(image) {
             if (this.writeAuthorization()) {
                 if (this.repository != null) {
-                    image.Date = utilities.nowInSeconds();
                     let foundImage = this.repository.findByField("Id", image.Id);
                     if(foundImage.UserId == image.UserId)
                     {
