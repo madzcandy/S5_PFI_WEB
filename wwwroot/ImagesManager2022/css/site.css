@@ -313,3 +313,28 @@ span2 {
     min-width:500px;
     max-width: 500px;
 }
+#backBtn{
+    margin: 0;
+    position: relative;
+    transform: translateY(40%);
+  
+    margin-left: 15px;
+}
+.aboutContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 75vh;
+
+    color: var(--textColor1);
+
+    text-shadow:
+    -1px -1px 0 var(--backgroundColor2),
+    1px -1px 0 var(--backgroundColor2),
+    -1px 1px 0 var(--backgroundColor2),
+    1px 1px 0 var(--backgroundColor2);  
+
+    padding: 1rem;
+    font-size: 2rem;
+}
