@@ -239,10 +239,12 @@
                 $("#userList").empty(); 
                 let userLogged = getUserLogged();                                       
                 let selectinfo ="<select id='userSearch'><option value=''>Tous les Usagers</option>";
-                selectinfo = selectinfo + "<option value='" + userLogged.Id + "'>Mes images</option>";
-                alert(selectinfo);
-                
 
+                if(userLogged != undefined)
+                {
+                    selectinfo = selectinfo + "<option value='" + userLogged.Id + "'>Mes images</option>";
+                }
+                
                 for (let user of users) {
                     if(userLogged == undefined || user.Id != userLogged.Id)
                     {
