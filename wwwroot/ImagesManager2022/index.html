@@ -136,6 +136,31 @@
                     </form>
                 </div>
 
+
+                <div id="imageDetailsDlg">
+                    <div>
+                        <label for="creator_details_input">Créateur</label>
+                        <span id="creator_details_input"></span>
+                    </div>   
+                    <div>
+                        <label for="title_details_input">Titre</label>
+                        <span id="title_details_input"></span>
+                    </div>
+                    <div>
+                        <label for="decription_details_input">Description</label>
+                        <span id="description_details_input"></span>
+                    </div>
+                    <div>
+                        <label for="date_details_input">Date</label>
+                        <span id="date_details_input"></span>
+                    </div>
+                    <div>
+                        <label for="image_details">Image</label>
+                        <span id='image_details'></span>
+                    </div>            
+                </div>
+
+
                 <div id="registerDlg">
                     <form id="registerForm">
                         <input type="hidden" id="profile_userId_input" value="0">
@@ -318,18 +343,24 @@
                   }  
 
 
+
                     $("#imagesList").append(
                         $(`
                             <div class='imageLayout'>
                                 <div class='imageHeader'>
                                     <div class="imageTitle">${image.Title}</div>
                                     ${buttImg}
+                                    <div class="cmd detailsCmd fa fa-eye"
+                                        imageid="${image.Id}"
+                                        title="Voir ${image.Title}"
+                                        data-toggle="tooltip">
+                                    </div>
                                 </div>
-                                <a href="${image.OriginalURL}" target="_blank">
+                                <div imageid="${image.Id}" title="Voir ${image.Title}"  data-toggle="tooltip">
                                     <div class='image'style="background-image:url('${image.ThumbnailURL}')">
                                         ${iconImg}
                                     </div>
-                                </a>
+                                </div>
                                 <div class="imageDate">${convertToFrenchDate(parseInt(image.Date))}</div>
                             </div>
                         `)
@@ -351,6 +382,7 @@
                 $(".deleteCmd").off();
                 $(".showMore").off();
                 $(".editCmd").click(e => { editimage(e) });
+                $(".detailsCmd").click(e => { detailsimage(e) });
                 $(".deleteCmd").click(e => { deleteimage(e) });
 
                 $('[data-toggle="tooltip"]').tooltip();
@@ -545,6 +577,29 @@
                 $("#imageDlgOkBtn").text("Modifier");
                 $("#imageDlg").dialog('open');
             }
+
+            function imageSetDetails(image)
+            {
+                $("#date_details_input").html(convertToFrenchDate(parseInt(image.Date)));
+                $("#title_details_input").html(image.Title);
+                $("#description_details_input").html(image.Description);
+                $("#image_details").html("<a href='"+image.OriginalURL+"' target='_blank'><img src='" + image.OriginalURL + "' alt='image'></a>");          
+                $("#creator_details_input").html(image.User.Name + "<img id='loginLogo' width='30' height='30' src='" + image.User.AvatarURL + "' alt='image'>");            
+            }
+            
+            function detailsimage(e) {
+                holdCheckETag = true;
+                createMode = false;
+
+                let imageIdToMod = e.target.getAttribute("imageid");
+                GET_ID(e.target.getAttribute("imageid"), imageSetDetails, error);
+                holdCheckETag = true;
+                ImageUploader.imageRequired('image', false);
+                $("#imageDetailsDlg").dialog('option', 'title', "Détails de l'image");
+                $("#imageDetailsDlgOkBtn").text("Description");
+                $("#imageDetailsDlg").dialog('open');
+            }
+
             function deleteimage(e) {
                 holdCheckETag = true;
                 imageIdToDelete = e.target.getAttribute("imageid")
@@ -918,6 +973,34 @@
                         }
                     }]
                 });
+
+
+
+                $("#imageDetailsDlg").dialog({
+                    title: "...",
+                    autoOpen: false,
+                    modal: true,
+                    show: { effect: 'fade', speed: 400 },
+                    hide: { effect: 'fade', speed: 400 },
+                    width: 640,
+                    minWidth: 640,
+                    maxWidth: 640,
+                    height: 780,
+                    minHeight: 780,
+                    maxHeight: 780,
+                    position: { my: "top", at: "top", of: window },
+                    buttons: [
+                    {
+                        text: "Fermer",
+                        click: function () {
+                            holdCheckETag = false;
+                            $(this).dialog("close");
+                        }
+                    }]
+                });
+
+
+
 
                 $("#deleteAccountDlg").dialog({
                     title: "...",
