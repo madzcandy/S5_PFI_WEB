@@ -688,6 +688,14 @@
                 if (user != null) {
                     $("#loginUser").html(`<span id="userName">` + user.Name + `</span><img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">`);
                 }
+                if(user.VerifyCode == "verified"){
+                        $("#newImageCmd").show();
+                        $("#mailCmd").hide();
+                    }
+                    else{
+                        $("#mailCmd").show();
+                        $("#newImageCmd").hide();
+                    }
             }
             function errorEditUser(status) {
                 console.log("Error EditUser (Callback)")
