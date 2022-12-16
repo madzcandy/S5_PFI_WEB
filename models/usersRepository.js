@@ -12,7 +12,7 @@ class UsersRepository extends require('./repository') {
     bindAvatarURL(user){
         if (user) {
             let bindedUser = {...user};
-            //bindedUser.Password = "********";
+            //bindedUser.Password = "********"; //cause un problème si on se connecter apres avoir modifier le mot de passe
             if (user["AvatarGUID"] != ""){
                 bindedUser["AvatarURL"] = HttpContext.host + ImageFilesRepository.getImageFileURL(user["AvatarGUID"]);
             } else {
