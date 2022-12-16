@@ -1,4 +1,4 @@
-function ValidateAccount(registerMode, password, cpassword, email, username)
+function ValidateAccount(registerMode, password, cpassword, email, username, ImageData)
 {
     let regExpmdp = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})");
     let valid = true;
@@ -6,6 +6,7 @@ function ValidateAccount(registerMode, password, cpassword, email, username)
     $("#errorMdp").html("");
     $("#errorEmail").html("");
     $("#errorUsername").html("");
+    $("#errorAvatar").html("");
 
     if(username.trim() == "")
     {
@@ -33,7 +34,10 @@ function ValidateAccount(registerMode, password, cpassword, email, username)
             $("#errorMdp").html("Les mots de passes sont différents.");
         }                      
     }
-
+    if(registerMode && ImageData == ''){
+        valid = false;
+        $("#errorAvatar").html("Vous devez insérer une image");
+    }
     return valid;
 }
 

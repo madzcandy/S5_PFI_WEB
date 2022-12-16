@@ -162,6 +162,9 @@
                         <label for="avatarImage">Avatar</label>
                         <div id='avatarImage' class='ImageUploader' defaultImage='images/No_Avatar.png'
                             waitingImage='images/writing.gif'>
+
+                        <div style="color: red;" id="errorAvatar"></div>
+                        
                         </div>
                         <div class="note">Cliquez-Déposez votre avatar</div>
                     </form>
@@ -404,6 +407,8 @@
                 $("#errorMdp").html("");
                 $("#errorEmail").html("");
                 $("#errorUsername").html("");
+                $("#errorAvatar").html("");
+                
                 $("#registerDlg").dialog('option', 'title', "Création de compte");
                 $("#registerDlgOkBtn").text("Créer");
                 $("#registerDlg").dialog('open');
@@ -760,7 +765,7 @@
                         text: "Title will be changed dynamically",
                         click: function () {
                             let updatedUser = profileInfoFromForm();
-                            let valid = ValidateAccount(registerMode, updatedUser.Password, $("#profile_cmdp_input").val(), updatedUser.Email, updatedUser.Name);
+                            let valid = ValidateAccount(registerMode, updatedUser.Password, $("#profile_cmdp_input").val(), updatedUser.Email, updatedUser.Name, updatedUser.ImageData);
 
                             if (registerMode && valid) {
                                 console.log(updatedUser);

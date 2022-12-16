@@ -94,7 +94,8 @@ class ImageUploader {
         });
     }
     static clearImageData(id) {
-        $("#" + id).val("");
+        // $(`#${id}_Data`).val("");
+        $("#" + id).val(""); //prof
     }
     static getImageData(id) {
         return $(`#${id}_Data`).val();

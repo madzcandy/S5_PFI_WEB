@@ -85,19 +85,23 @@ module.exports =
 
         // POST: accounts/register body payload[{"Id": 0, "Name": "...", "Email": "...", "Password": "..."}]
         register(user) {
-            user.Created = utilities.nowInSeconds();
-            user.VerifyCode = utilities.makeVerifyCode(6);
-            let newUser = this.repository.add(user);
-            if (newUser && user.ImageData != '') {
-                if (!newUser.conflict) {
-                    // mask password in the json object response 
-                    newUser.Password = "********";
-                    this.HttpContext.response.created(newUser);
-                    this.sendVerificationEmail(user);
+            // if(user.ImageData != '' && user.ImageData != undefined){
+                user.Created = utilities.nowInSeconds();
+                user.VerifyCode = utilities.makeVerifyCode(6);
+                let newUser = this.repository.add(user);
+                if (newUser) {
+                    if (!newUser.conflict) {
+                        // mask password in the json object response 
+                        newUser.Password = "********";
+                        this.HttpContext.response.created(newUser);
+                        this.sendVerificationEmail(user);
+                    } else
+                        this.HttpContext.response.conflict();
                 } else
-                    this.HttpContext.response.conflict();
-            } else
-                this.HttpContext.response.unprocessable();
+                    this.HttpContext.response.unprocessable();
+            }
+            // else
+            //     this.HttpContext.response.unprocessable();
         }
         // PUT:accounts/modify body payload[{"Id": 0, "Name": "...", "Email": "...", "Password": "..."}]
         modify(user) {
