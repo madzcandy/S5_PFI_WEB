@@ -24,7 +24,7 @@
             <div class="headerPanel">
                 <div class="headerLayout">
                     <div id="Title">
-                        <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images">
+                        <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images" id="Title_Logo">
                         <img src="images/Title.png" alt="" data-toggle="tooltip">
                     </div>
                     <!-- <div style="display:flex">
@@ -632,6 +632,9 @@
                 $("#deleteAccountDlgOkBtn").text("Supprimer");
                 $("#deleteAccountDlg").dialog('open');
             }
+            function goToAbout(){
+                ABOUT();
+            }
             function sortCmd(){
                 if(sort == 'asc')
                     sort = 'desc';
@@ -780,7 +783,7 @@
                 $("#searchCmd").click(searchCmd)
                 $("#mailCmd").click(mailCmd)
                 $("#deleteAccountCmd").click(deleteAccountCmd)
-                
+                $("#Title_Logo").click(goToAbout);
                 getListUser();
 
                 var token = getAccessToken();

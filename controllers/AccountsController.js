@@ -3,6 +3,8 @@ const ImagesRepository = require('../models/imagesRepository');
 const TokenManager = require('../tokenManager');
 const utilities = require("../utilities");
 const Gmail = require("../gmail");
+const path = require('path');
+const fs = require('fs');
 
 module.exports =
     class AccountsController extends require('./Controller') {
@@ -141,4 +143,11 @@ module.exports =
         remove(id) { // warning! this is not an API endpoint
             super.remove(id);
         }
+
+        // GET: accounts/about
+        about(){
+            let aboutPagePath = path.join(process.cwd(), wwwroot, 'API-Help-Pages/About.html');
+            this.HttpContext.response.HTML(fs.readFileSync(aboutPagePath));
+        }
+
     }

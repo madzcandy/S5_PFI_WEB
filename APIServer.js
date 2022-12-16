@@ -32,6 +32,7 @@ module.exports =
             RouteRegister.add('GET', 'accounts', 'logout');
             RouteRegister.add('PUT', 'accounts', 'modify');
             RouteRegister.add('GET', 'accounts', 'remove');
+            RouteRegister.add('GET', 'accounts', 'about');
             RouteRegister.add('GET', 'images', 'deleteuserimages');
             RouteRegister.add('PUT', 'images', 'edit');
         }

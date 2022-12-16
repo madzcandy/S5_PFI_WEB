@@ -273,3 +273,15 @@ function DELETEUSERIMAGES(userId, successCallBack, errorCallBack){
         error: function (jqXHR) { console.log("allo3"); errorCallBack(jqXHR.status) }
     })
 }
+function ABOUT(){
+    $.ajax({
+        url: server + "/accounts/about",
+        type: 'GET',
+        success: function (htmlPage) { 
+            document.open();
+            document.write(htmlPage);
+            document.close(); 
+        },
+        error: function (jqXHR) { console.log("Error while transfering to the about page"); }
+    })
+}
