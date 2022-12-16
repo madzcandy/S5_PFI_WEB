@@ -268,7 +268,7 @@ module.exports =
             for (let item of this.collection)  {
                 var userAlreadyExist = this.lstUserActive.find(e => e != null && item.User != null && e.Id == item.User.Id)
                 
-                if (userAlreadyExist == undefined && item.User != undefined) {
+                if (userAlreadyExist == undefined && item.User != undefined && item.Shared==1) {
                     this.lstUserActive.push(item.User); 
                 }               
             }                  

@@ -1,5 +1,7 @@
 const apiBaseURL = "http://localhost:5000/api/images";
 const server = "http://localhost:5000";
+//const apiBaseURL = "https://minnievinnie-pfi-s5.glitch.me/api/images";
+//const server = "https://minnievinnie-pfi-s5.glitch.me";
 const service = "/api/images";
 
 function HEAD(successCallBack, errorCallBack) {
@@ -139,12 +141,15 @@ function REGISTER(profil, successCallBack, errorCallBack) {
 
 
 function LOGIN(loginInfo, successCallBack, errorCallBack) {
+    //alert("1");
+    console.log("info111"+JSON.stringify(loginInfo));
     $.ajax({
         url: server + "/token",
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(loginInfo),
         success: function (tokenInfo) {
+            //alert("2");
             storeAccessToken(tokenInfo.Access_token);
             GETUSERINFO(tokenInfo.UserId, successCallBack, errorCallBack)
             // successCallBack()

@@ -716,6 +716,7 @@
                     }
                 }
                 getImagesList(true);
+                getListUser();
             }
             function errorLogin(status) {
                 console.log("Erreur lors de la connexion --- Statut: " + status);
@@ -737,6 +738,7 @@
                 $("#newImageCmd").hide();
                 $("#mailCmd").hide();
                 $("#deleteAccountCmd").hide();
+                getListUser();
             }
 
             function successGetUser(profil){
@@ -937,8 +939,8 @@
                                         $(".scrollContainer").scrollTop(0);
                                     }
                                     else {                                   
-                                        EDIT_IMAGE(image, getImagesList, error);                                    
-                                        // PUT(image, getImagesList, error);                                    
+                                        //EDIT_IMAGE(image, getImagesList, error);                                    
+                                        PUT(image, getImagesList, error);                                    
                                     }
                                     
                                     resetimageForm();
