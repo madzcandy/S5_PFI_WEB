@@ -15,8 +15,7 @@ function ValidateAccount(registerMode, password, cpassword, email, username, Ima
     }
 
     if(!VerifyEmail(email))
-    {
-       
+    {  
         valid = false;
         $("#errorEmail").html("Le courriel est invalide.");
     }
@@ -34,6 +33,7 @@ function ValidateAccount(registerMode, password, cpassword, email, username, Ima
             $("#errorMdp").html("Les mots de passes sont différents.");
         }                      
     }
+
     if(registerMode && ImageData == ''){
         valid = false;
         $("#errorAvatar").html("Vous devez insérer une image");
