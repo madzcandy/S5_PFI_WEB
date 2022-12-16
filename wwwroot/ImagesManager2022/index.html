@@ -450,22 +450,6 @@
                         VerifyCode: $("#profile_userCode_input").val(),
                 };
                 return registerinfo;
-
-
-                /* if ($("#registerForm")[0].checkValidity()) {
-                    let registerinfo = {
-                        Id: 0, // parseInt($("#id_input").val()),
-                        Name: ($("#profile_user_input").val()),
-                        Email: $("#profile_email_input").val(),
-                        Password: $("#profile_mdp_input").val(),
-                    };
-                    return registerinfo;
-                } else {
-                    $("#registerForm")[0].reportValidity()
-                }
-                */
-                //return false;
-                //return true;
             }
 
             function mailCmd() {
@@ -483,7 +467,11 @@
             }
             function errorMail(status) {
                 console.log("Error Register (Callback)")
-                $("#errorMessage").text("ERROR " + status);
+
+                if(status == 480)
+                    $("#errorMessage").text("Mauvais code de vérification.");
+
+                $("#mailDlg").dialog('open');
                 $("#errorDlg").dialog('open');
             }
 
@@ -522,22 +510,6 @@
                         Password: $("#log_mdp_input").val(),
                 };
                 return logininfo;
-
-
-                /* if ($("#registerForm")[0].checkValidity()) {
-                    let registerinfo = {
-                        Id: 0, // parseInt($("#id_input").val()),
-                        Name: ($("#profile_user_input").val()),
-                        Email: $("#profile_email_input").val(),
-                        Password: $("#profile_mdp_input").val(),
-                    };
-                    return registerinfo;
-                } else {
-                    $("#registerForm")[0].reportValidity()
-                }
-                */
-                //return false;
-                //return true;
             }
 
 
@@ -850,6 +822,7 @@
                             let userId = getUserLogged().Id;
                             let verifyCode = $("#mailCode_input").val();
                             VERIFY_EMAIL(userId, verifyCode, successMail, errorMail)
+                            $("#mailCode_input").val("");
                             holdCheckETag = false;
                             $(this).dialog("close");
                         }
