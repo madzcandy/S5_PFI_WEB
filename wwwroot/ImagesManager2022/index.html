@@ -27,48 +27,7 @@
                         <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images" id="Title_Logo">
                         <img src="images/Title.png" alt="" data-toggle="tooltip">
                     </div>
-                    <!-- <div style="display:flex">
-                        <span class="header outLinedText tbg-yellow">
-                            P
-                        </span>
-                        <span class="header outLinedText tbg-orange">
-                            I
-                        </span>
-                        <span class="header outLinedText tbg-red">
-                            C
-                        </span>
-                        <span class="header outLinedText tbg-pink ">
-                            T
-                        </span>
-                        <span class="header outLinedText tbg-black">
-                            -
-                        </span>
-                        <span class="header outLinedText tbg-purple">
-                            C
-                        </span>
-                        <span class="header outLinedText tbg-blue">
-                            L
-                        </span>
-                        <span class="header outLinedText tbg-green">
-                            O
-                        </span>
-                        <span class="header outLinedText tbg-grass">
-                            U
-                        </span>
-                        <span class="header outLinedText tbg-yellow">
-                            D
-                        </span>
-                    </div> -->
 
-                    <!--
-                    <span>
-                        <select id="monselect">
-                            <option value="all" selected>Tout les usagers</option>
-                            <option value="valeur2">Valeur 2</option>
-                            <option value="valeur3">Valeur 3</option>
-                        </select>
-                    </span>
-                -->
                     <span id="userList"></span>
 
                     <input type="text" id="search_input"  placeholder="Recherche par mots-clés">
@@ -275,17 +234,23 @@
 
             function successGetListUser(users, ETag){
                 function insertSearchUser(user) {                                                   
-                     return(`<option value='${user.Id}'>${user.Name}</option>`)
+                    return(`<option value='${user.Id}'>${user.Name}</option>`)
                 }
-                $("#userList").empty();            
-               
-                let selectinfo="<select id='userSearch'><option value=''> Tous les Usagers</options>";
+                $("#userList").empty(); 
+                let userLogged = getUserLogged();                                       
+                let selectinfo ="<select id='userSearch'><option value=''>Tous les Usagers</option>";
+                selectinfo = selectinfo + "<option value='" + userLogged.Id + "'>Mes images</option>";
+                alert(selectinfo);
+                
+
                 for (let user of users) {
-                    selectinfo=selectinfo+insertSearchUser(user);
+                    if(userLogged == undefined || user.Id != userLogged.Id)
+                    {
+                        selectinfo=selectinfo+insertSearchUser(user);
+                    }
                 }
                 selectinfo=selectinfo+"</select>";                
-                $("#userList").append(selectinfo);               
-               
+                $("#userList").append(selectinfo);                          
             }
 
             
@@ -545,18 +510,15 @@
 
             function logoutCmd() {
                 holdCheckETag = true;
-                //alert("1");
                 let userId = getUserLogged();
-                //alert("2");
                 LOGOUT(userId, successLogout, error);
-                //alert("logout");
                 holdCheckETag = false;
             }
 
             function logoutFromForm() {
                 let logoutinfo = {
-                        Email: $("#log_email_input").val(),
-                        Password: $("#log_mdp_input").val(),
+                    Email: $("#log_email_input").val(),
+                    Password: $("#log_mdp_input").val(),
                 };
                 return logininfo;
             }
