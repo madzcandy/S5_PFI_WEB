@@ -335,8 +335,8 @@
                                     <div class="imageTitle">${image.Title}</div>
                                     ${buttImg}
                                 </div>
-                                <div imageid="${image.Id}" title="Voir ${image.Title}"  data-toggle="tooltip">
-                                    <div class='image'style="background-image:url('${image.ThumbnailURL}')">
+                                <div  title="Voir ${image.Title}"  data-toggle="tooltip">
+                                    <div class='image detailsCmd' imageid="${image.Id}" style="background-image:url('${image.ThumbnailURL}')">
                                         ${iconImg}
                                     </div>
                                 </div>
@@ -556,8 +556,8 @@
                 $("#date_details_input").html(convertToFrenchDate(parseInt(image.Date)));
                 $("#title_details_input").html(image.Title);
                 $("#description_details_input").html(image.Description);
-                $("#image_details").html("<a href='"+image.OriginalURL+"' target='_blank'><img width='400' height='400' src='" + image.OriginalURL + "' alt='image'></a>");          
-                $("#creator_details_input").html(image.User.Name + "<img id='loginLogo' width='30' height='30' src='" + image.User.AvatarURL + "' alt='image'>");            
+                $("#image_details").html("<a href='"+image.OriginalURL+"' target='_blank'><img class='detailImage' src='" + image.OriginalURL + "' alt='image'></a>");          
+                $("#creator_details_input").html(image.User.Name + "<img id='loginLogo' style='margin-left: 10px' width='30' height='30' src='" + image.User.AvatarURL + "' alt='image'>");            
             }
             
             function detailsimage(e) {
@@ -661,6 +661,7 @@
                 $("#date_input").val(Date.now());
                 $("#title_input").val(image.Title);
                 $("#description_input").val(image.Description);
+                $("#partager").prop( "checked", image.Shared);
                 ImageUploader.setImage('image', image.OriginalURL);
             }
 
@@ -690,6 +691,14 @@
                 if (user != null) {
                     $("#loginUser").html(`<span id="userName">` + user.Name + `</span><img id="loginLogo" src="` + user.AvatarURL + `" alt="logo utilisateur" width="30" height="30">`);
                 }
+                if(user.VerifyCode == "verified"){
+                        $("#newImageCmd").show();
+                        $("#mailCmd").hide();
+                    }
+                    else{
+                        $("#mailCmd").show();
+                        $("#newImageCmd").hide();
+                    }
             }
             function errorEditUser(status) {
                 console.log("Error EditUser (Callback)")
