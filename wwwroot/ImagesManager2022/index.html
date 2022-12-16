@@ -320,7 +320,7 @@
                     var user = getUserLogged();
 
                     if(user != null && image.UserId == user.Id && image.Shared)
-                        iconImg = `<img src="images/shared.png" alt="" data-toggle="tooltip" class="favicon" title="Partagé par ${image.User.Name}">`;                     
+                        iconImg = `<img src="images/shared.png" alt="" data-toggle="tooltip" class="favicon" title="Votre image partagée">`;                     
                     else
                         if(user == null ||  image.UserId != user.Id)
                             iconImg = `<img id="loginLogo" src="${imageUser}" alt="" data-toggle="tooltip" class="favicon" title="${image.User.Name}">`;                           
