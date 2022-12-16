@@ -52,3 +52,26 @@ function VerifyEmail(email)
     
     return valid;
 }
+
+
+
+function ValidateImage(title, description)
+{
+    let valid = true;
+    $("#errorTitle").html("");
+    $("#errorDescription").html("");
+
+    if(title.trim() == "")
+    {
+        valid = false;
+        $("#errorTitle").html("Le titre de l'image est invalide.");
+    }
+
+    if(description.trim() == "")
+    {
+        valid = false;
+        $("#errorDescription").html("La description de l'image est invalide.");
+    }
+
+    return valid;
+}

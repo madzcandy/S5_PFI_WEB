@@ -121,11 +121,14 @@
                         <input type="hidden" id="date_input" value="0">
                         <input type="hidden" id="GUID_input" value="">
                         <input type="hidden" id="image_userId_input" value="">
+
                         <label for="title_input">Titre</label>
-                        <input type="text" id="title_input" class="form-control" required>
+                        <input type="text" id="title_input" class="form-control">
+                        <div style="color: red;" id="errorTitle"></div>
 
                         <label for="decription_input">Description</label>
-                        <textarea id="description_input" class="form-control" required></textarea>
+                        <textarea id="description_input" class="form-control"></textarea>
+                        <div style="color: red;" id="errorDescription"></div>
 
                         <label for="image">Image</label>
                         <div id='image' class='ImageUploader' defaultImage='images/No_Image.png'
@@ -249,7 +252,7 @@
             let hideSearchBar = true;
             let imageIdToDelete = 0; // used by confirmDeleteDlg
             let selectedCategory = "";
-            let imagesCount = 10;
+            let imagesCount = 20;
             let appendCount = 3;
             let previousScrollPosition = 0;
             let appendMode = false;
@@ -575,10 +578,7 @@
             function editimage(e) {
                 holdCheckETag = true;
                 createMode = false;
-
-
                 let imageIdToMod = e.target.getAttribute("imageid");
-                //alert("imageIdToMod"+imageIdToMod);
                 GET_ID(e.target.getAttribute("imageid"), imageToForm, error);
                 holdCheckETag = true;
                 ImageUploader.imageRequired('image', false);
@@ -592,7 +592,7 @@
                 $("#date_details_input").html(convertToFrenchDate(parseInt(image.Date)));
                 $("#title_details_input").html(image.Title);
                 $("#description_details_input").html(image.Description);
-                $("#image_details").html("<a href='"+image.OriginalURL+"' target='_blank'><img src='" + image.OriginalURL + "' alt='image'></a>");          
+                $("#image_details").html("<a href='"+image.OriginalURL+"' target='_blank'><img width='400' height='400' src='" + image.OriginalURL + "' alt='image'></a>");          
                 $("#creator_details_input").html(image.User.Name + "<img id='loginLogo' width='30' height='30' src='" + image.User.AvatarURL + "' alt='image'>");            
             }
             
@@ -710,10 +710,10 @@
                 console.log("Error Register (Callback)")
                // $("#errorMessage").text("ERROR " + status);
 
-               if(status == '409')
-               {
-                    $("#errorMessage").text("Un compte a déjà été créé avec ce courriel");
-               }
+                if(status == '409')
+                {
+                        $("#errorMessage").text("Un compte a déjà été créé avec ce courriel");
+                }
 
                 $("#errorDlg").dialog('open');
             }
@@ -961,18 +961,23 @@
                             let image = imageFromForm();
                             console.log(image);
                             if (image) {
-                                if (createMode) {
-                                    POST(image, getImagesList, error);
-                                    $(".scrollContainer").scrollTop(0);
-                                }
-                                else {                                   
-                                    EDIT_IMAGE(image, getImagesList, error);                                    
-                                    // PUT(image, getImagesList, error);                                    
-                                }
-                                   
-                                resetimageForm();
-                                holdCheckETag = false;
-                                $(this).dialog("close");
+                                let valid = ValidateImage(image.Title, image.Description);
+
+                                if(valid)
+                                {
+                                    if (createMode) {
+                                        POST(image, getImagesList, error);
+                                        $(".scrollContainer").scrollTop(0);
+                                    }
+                                    else {                                   
+                                        EDIT_IMAGE(image, getImagesList, error);                                    
+                                        // PUT(image, getImagesList, error);                                    
+                                    }
+                                    
+                                    resetimageForm();
+                                    holdCheckETag = false;
+                                    $(this).dialog("close");
+                                }                    
                             }
                         }
                     },
