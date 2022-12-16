@@ -24,12 +24,26 @@
             <div class="headerPanel">
                 <div class="headerLayout">
                     <div id="Title">
+                        <span class="cmd fa fa-arrow-left" id="backBtn" title="Revenir à la galerie"
+                        data-toggle="tooltip"></span>
                         <img src="images/camera.png" alt="" data-toggle="tooltip" class="favicon" title="Gestionnaire d'images" id="Title_Logo">
-                        <button onClick="window.location.reload();">Revenir</button>
                         <img src="images/Title.png" alt="" data-toggle="tooltip"></button>
                     </div>
                 </div>
             </div>
+            <div class="aboutContainer">
+                <div>
+                    <h1 style="margin-bottom: 2.5rem;">À propos</h1>
+                    <p>Projet développé par Amélie Bouchard et Vincent Laverdure dans 
+                        le cadre du cours de développement de services d'échanges.</p>
+                </div>
+            </div>
         </div>
     </body>
+    <script defer>
+        init();
+        function init(){
+            $("#backBtn").click(function() { location.reload() })
+        }
+    </script>
 </html>
