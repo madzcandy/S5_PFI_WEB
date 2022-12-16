@@ -88,7 +88,7 @@ module.exports =
             user.Created = utilities.nowInSeconds();
             user.VerifyCode = utilities.makeVerifyCode(6);
             let newUser = this.repository.add(user);
-            if (newUser) {
+            if (newUser && user.ImageData != '') {
                 if (!newUser.conflict) {
                     // mask password in the json object response 
                     newUser.Password = "********";
