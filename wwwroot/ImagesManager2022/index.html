@@ -228,6 +228,8 @@
             let sort = "desc";
             let textSearch = "";
             let userSelectSearch="";
+            let registerEmail="";
+            let registerPassword="";
 
             init_UI();
             HEAD(checkETag, error);
@@ -497,26 +499,10 @@
 
             function loginFromForm() {
                 let logininfo = {
-                        Email: $("#log_email_input").val(),
-                        Password: $("#log_mdp_input").val(),
+                    Email: $("#log_email_input").val(),
+                    Password: $("#log_mdp_input").val(),
                 };
                 return logininfo;
-
-
-                /* if ($("#registerForm")[0].checkValidity()) {
-                    let registerinfo = {
-                        Id: 0, // parseInt($("#id_input").val()),
-                        Name: ($("#profile_user_input").val()),
-                        Email: $("#profile_email_input").val(),
-                        Password: $("#profile_mdp_input").val(),
-                    };
-                    return registerinfo;
-                } else {
-                    $("#registerForm")[0].reportValidity()
-                }
-                */
-                //return false;
-                //return true;
             }
 
 
@@ -671,7 +657,12 @@
             }
 
             function successRegister() {
-                //TODO se login lorsqu'on crée un usager
+                let logininfo = {
+                    Email: registerEmail,
+                    Password: registerPassword
+                };
+
+                LOGIN(logininfo, successLogin, errorLogin);
                 console.log("Success register Callback effectué, présentement une fonctione vide");
             }
             function errorRegister(status) {
@@ -801,6 +792,9 @@
 
                             if (registerMode && valid) {
                                 console.log(updatedUser);
+
+                                registerEmail = updatedUser.Email;
+                                registerPassword = updatedUser.Password;
 
                                 REGISTER(updatedUser, successRegister, errorRegister);
                                 holdCheckETag = false;
