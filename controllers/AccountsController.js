@@ -58,8 +58,7 @@ module.exports =
             const gmail = new Gmail();
             gmail.send(user.Email, 'Courriel confirmé...', html);
         }
-
-       
+     
           //GET : /accounts/verify?id=...&code=.....
         verify() {
             let id = parseInt(this.HttpContext.path.params.id);

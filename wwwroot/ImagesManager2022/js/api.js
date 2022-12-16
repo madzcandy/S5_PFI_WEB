@@ -75,11 +75,6 @@ function DELETE(id, successCallBack, errorCallBack) {
 
 
 /*Local storage utilities fonctions*/
-/*
-function tokenRequestURL() {
-    return server + '/token'
-}
-*/
 
 function storeAccessToken(token) {
     localStorage.setItem('access_Token', token);
@@ -188,7 +183,7 @@ function GETUSERINFO(userid, successCallBack, errorCallBack) {
 }
 
 function GET_LIST_USER(successCallBack, errorCallBack) {
-    let url = server + "/images/listuserimg?";
+    let url = server + "/images/listuserimg?id=33";
     $.ajax({
         url: url,
         type: 'GET',

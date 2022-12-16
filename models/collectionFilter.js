@@ -266,9 +266,9 @@ module.exports =
         getUserListWithImg()
         {
             for (let item of this.collection)  {
-                var userAlreadyExist = this.lstUserActive.find(e => e.Id == item.User.Id)
+                var userAlreadyExist = this.lstUserActive.find(e => e != null && item.User != null && e.Id == item.User.Id)
                 
-                if (userAlreadyExist == undefined) {
+                if (userAlreadyExist == undefined && item.User != undefined) {
                     this.lstUserActive.push(item.User); 
                 }               
             }                  

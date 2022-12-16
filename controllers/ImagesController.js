@@ -33,10 +33,9 @@ module.exports =
                 this.HttpContext.response.JSON(data);
             else
                 this.HttpContext.response.notFound();
-
-
         }
-       
+        
+        
         // PUT: /images/edit body payload[{"Id": 0, "Title": "...", "Description": "...", "Shared": "...", "ImageData": "..."}]
         edit(image) {
             if (this.writeAuthorization()) {
