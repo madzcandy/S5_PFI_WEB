@@ -94,7 +94,7 @@ module.exports =
                 if (newUser) {
                     if (!newUser.conflict) {
                         // mask password in the json object response 
-                        newUser.Password = "********";
+                        newUser.Password = "********";                                              
                         this.HttpContext.response.created(newUser);
                         this.sendVerificationEmail(user);
                     } else

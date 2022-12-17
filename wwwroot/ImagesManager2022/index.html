@@ -822,23 +822,15 @@
                             }
                             else if(valid){
                                 var currentUser = getUserLogged();
-                                //Check if user wants to change his password and check if some requirements are met
-                                if(
-                                !(updatedUser.Password != String.empty /*&&
-                                 updatedUser.OldPassword == currentUser.Password*/ &&
-                                 updatedUser.Password == updatedUser.ConfirmPassword))
-                                {
+
+                                if(updatedUser.Password.trim() == "")
                                     updatedUser.Password = currentUser.Password;
-                                }
-                                //delete updatedUser.OldPassword;
+
                                 delete updatedUser.ConfirmPassword;
                                 MODIFY_USER_INFO(updatedUser, successEditUser, errorEditUser)
-
- 
                                 holdCheckETag = false;
                                 $(this).dialog("close");
                             }
-
                             ImageUploader.resetImage('avatarImage');
                         }
                     },

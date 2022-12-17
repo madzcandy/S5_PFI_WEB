@@ -1,5 +1,8 @@
 const apiBaseURL = "http://localhost:5000/api/images";
 const server = "http://localhost:5000";
+//const apiBaseURL = "https://imagemanager-pfi-ab-lv.glitch.me/api/images";
+//const server = "https://imagemanager-pfi-ab-lv.glitch.me";
+
 //const apiBaseURL = "https://minnievinnie-pfi-s5.glitch.me/api/images";
 //const server = "https://minnievinnie-pfi-s5.glitch.me";
 const service = "/api/images";
@@ -102,11 +105,6 @@ function removeUserLogged() {
     localStorage.removeItem('user');
 }
 
-
-// function eraseAccessToken(){
-//     localStorage.removeItem('access_Token');
-// }
-
 function retrieveAccessToken(){
     return localStorage.getItem('access_Token');
 }
@@ -114,17 +112,6 @@ function retrieveAccessToken(){
 function getBearerAuthorizationToken(){
     return {'authorization': 'Bearer '+ retrieveAccessToken()};
 }
-
-// function registerRequestURL(){
-//     return server + 'Accounts/register';
-// }
-
-// function storeLoggedUser(user){
-//     localStorage.setItem('user', JSON.str)
-// }
-
-
-
 
 function REGISTER(profil, successCallBack, errorCallBack) {
     $.ajax({
@@ -216,21 +203,6 @@ function VERIFY_EMAIL(userId, verifyCode, successCallBack, errorCallBack) {
     })
 }
 
-
-// function MODIFY_USER_INFO(userInfo, successCallBack, errorCallBack) {
-//     $.ajax({
-//         url: server + "/Accounts/verify" + "/" + userInfo.Id,
-//         type: 'PUT',
-//         contentType: 'application/json',
-//         headers: getBearerAuthorizationToken(),
-//         date: JSON.stringify(userInfo),
-//         success: function () {
-
-//             GETUSERINFO(userId, successCallBack, error);
-//         },
-//         error: function (jqXHR) { errorCallBack(jqXHR.status) }
-//     })
-// }
 function MODIFY_USER_INFO(userInfo, successCallBack, errorCallBack) {
     $.ajax({
         url: server + "/accounts/modify/" + userInfo.Id,
